@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "DreamWar helper",
+  "description": "bot from site dreamwar.ru",
+  "version": "1.8.4",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "./assets/src/icon16.png",
+    "default_title": "Бот from kas"
+  },
+  "permissions": ["storage", "scripting", "tabs"],
+  "background": {
+    "service_worker": "./assets/js/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.dreamwar.ru/*"],
+      "js": [
+        "./assets/secret.js",
+        "./assets/js/content/config.js",
+        "./assets/js/content/content-script.js"
+      ]
+    }
+  ],
+  "host_permissions": ["*://*.dreamwar.ru/"]
+}
