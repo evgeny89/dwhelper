@@ -15,13 +15,16 @@ chrome.storage.onChanged.addListener(function (changes) {
     }
 
     if (
-        changes.hasOwnProperty('global') ||
-        (url.pathname === '/inventory.php' && changes.hasOwnProperty('inventory_actions')) ||
-        (url.pathname === '/parcels.php' && changes.hasOwnProperty('parcels')) ||
-        (url.pathname === '/battle_group.php' && changes.hasOwnProperty('battles')) ||
-        (url.pathname === '/world/world.php' && changes.hasOwnProperty('world')) ||
-        (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
-        (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type)
+        state.global.run &&
+        (
+            changes.hasOwnProperty('global') ||
+            (url.pathname === '/inventory.php' && changes.hasOwnProperty('inventory_actions')) ||
+            (url.pathname === '/parcels.php' && changes.hasOwnProperty('parcels')) ||
+            (url.pathname === '/battle_group.php' && changes.hasOwnProperty('battles')) ||
+            (url.pathname === '/world/world.php' && changes.hasOwnProperty('world')) ||
+            (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
+            (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type)
+        )
     ) {
         setTimeout(refresh, delay.long);
     }
@@ -112,15 +115,19 @@ function refresh() {
     document.location.reload();
 }
 
-function getServiceCaptcha() {
-    let object = null;
+async function getServiceCaptchaInstance() {
+    let object;
+    const {lvl} = await getInfo();
 
     switch (state.global.captcha) {
         case "1":
-            object = new ExtractCapMonster();
+            object = new ExtractCapMonster(lvl);
             break;
         case "2":
-            object = new ExtractRuCaptcha();
+            object = new ExtractRuCaptcha(lvl);
+            break;
+        default:
+            object = new ExtractClassBase(lvl)
     }
 
     return object;

@@ -56,21 +56,18 @@ const useService = async () => {
         if (state.extract.is_entered_code) {
             fixEmptyImage();
         } else {
-            const service = getServiceCaptcha();
-            if (service) {
-                state.extract.is_entered_code = true;
-                updateState({name: 'extract', value: state.extract});
+            const instance = await getServiceCaptchaInstance();
                 const img = document.querySelector('img[src*="../caramba.php"]')
-                service.getImage(img);
-                await service.createTask();
-                if (service.id) {
-                    service.waitResult();
+                instance.getImage(img);
+                const localAnswer = instance.checkLocalAnswer();
+
+                if (localAnswer) {
+                    state.extract.is_entered_code = true;
+                    updateState({name: 'extract', value: state.extract});
+                    instance.submitCode(localAnswer);
                 } else {
-                    wait(5)
+                    await instance.createTask(usually);
                 }
-            } else {
-                wait(1)
-            }
         }
     } else {
         waitResources();
