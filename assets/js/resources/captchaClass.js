@@ -1,4 +1,4 @@
-class ExtractClassBase {
+class CaptchaBase {
     delimiter = null;
 
     constructor(lvl) {
@@ -59,7 +59,7 @@ class ExtractClassBase {
     }
 }
 
-class ExtractCapMonster extends ExtractClassBase {
+class CaptchaCapMonster extends CaptchaBase {
     constructor(lvl) {
         super(lvl);
         this.token = captcha.capmonster.token;
@@ -130,7 +130,7 @@ class ExtractCapMonster extends ExtractClassBase {
     }
 }
 
-class ExtractRuCaptcha extends ExtractClassBase {
+class CaptchaRuCaptcha extends CaptchaBase {
 
     constructor(lvl) {
         super(lvl);

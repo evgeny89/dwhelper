@@ -85,7 +85,7 @@ const paths = {
         url: "/world/resource.php",
         script: "./assets/js/content/extract.js",
     },
-    service: "./assets/js/resources/extractClass.js",
+    service: "./assets/js/resources/captchaClass.js",
 };
 
 const setState = (payload) => {
