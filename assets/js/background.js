@@ -84,8 +84,8 @@ const paths = {
     extract: {
         url: "/world/resource.php",
         script: "./assets/js/content/extract.js",
-        service: "./assets/js/resources/extractClass.js"
-    }
+    },
+    service: "./assets/js/resources/extractClass.js",
 };
 
 const setState = (payload) => {
@@ -201,7 +201,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             case paths.dungeon.url:
                 chrome.scripting.executeScript({
                     target: {tabId: tabId},
-                    files: [paths.world.script],
+                    files: [paths.world.script, paths.service],
                 });
                 break;
             case paths.extract.url:
@@ -209,7 +209,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                     const execPaths = [paths.extract.script];
 
                     if (state.extract.type === "2") {
-                        execPaths.unshift(paths.extract.service);
+                        execPaths.unshift(paths.service);
                     }
 
                     chrome.scripting.executeScript({
