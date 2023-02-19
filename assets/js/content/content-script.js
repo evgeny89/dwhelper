@@ -115,19 +115,22 @@ function refresh() {
     document.location.reload();
 }
 
-async function getServiceCaptchaInstance() {
+async function getServiceCaptchaInstance(lvlArg = null) {
     let object;
-    const {lvl} = await getInfo();
+    if (!lvlArg) {
+        const {lvl} = await getInfo();
+        lvlArg = lvl;
+    }
 
     switch (state.global.captcha) {
         case "1":
-            object = new ExtractCapMonster(lvl);
+            object = new CaptchaCapMonster(lvlArg);
             break;
         case "2":
-            object = new ExtractRuCaptcha(lvl);
+            object = new CaptchaRuCaptcha(lvlArg);
             break;
         default:
-            object = new ExtractClassBase(lvl)
+            object = new CaptchaBase(lvlArg)
     }
 
     return object;

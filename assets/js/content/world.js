@@ -56,6 +56,22 @@ const updateStepInState = () => {
     updateState({name: 'move', value: {...state.move}})
 }
 
+const solve = async() => {
+    increment = false;
+    const instance = await getServiceCaptchaInstance();
+    const img = document.querySelector('img[src*="../caramba.php"]')
+    instance.getImage(img);
+    const localAnswer = instance.checkLocalAnswer();
+
+    console.log(localAnswer)
+
+    if (localAnswer) {
+        instance.submitCode(localAnswer);
+    } else {
+        await instance.createTask();
+    }
+}
+
 class UserInfo {
     city = "";
     lvl = "";
@@ -93,8 +109,12 @@ class UserInfo {
     }
 }
 
+if (checkText(words.captcha)) {
+    solve();
+}
+
 if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
-    const link = searchLink(words.toAttack);
+    const link = searchLink(words.toAttack) || searchLink(words.inBattle);
     if (link) {
         increment = false;
         link.click();
