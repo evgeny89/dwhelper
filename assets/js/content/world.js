@@ -5,11 +5,61 @@ const maps = {
     toLairFromNecropolis: '666666662222666666666666666666666666', // к логову из некра
     toNecropolis: '444444444444444444444444888844444444', // в некр от логова
     fallen: '42222442444442444884888484', // падшие
-    test1: '224442',
-    test2: '888666',
+    dragons: {
+        entry: '222688442286', //драконы вход
+        west: '44442424242222222222222222262626626668884686484686422222266668686868868844226888888888888888484844862', //Драконы запад.
+        east: '666624662626222222222222222688442262242424424444444848484626266266688846864846864', // Драконы восток.
+        north: '22222222222222222642462642462224444848484626266266666668686868848862268848888888888888484844862', // Драконы центр.
+    },
+    mysterious: '6688662266666666824444444488442244888866884488666622666666226666668844448844448866888866668866226682448844222266222268844228868866662266224422666622668888668888448866886884426222662', // тайны
+}
+let increment = true;
+
+const getDragonsKey = async (iteration = 1) => {
+    if (iteration > 5) {
+        return 0;
+    }
+    if (!url.searchParams.has('type')) {
+        url.searchParams.set('type', '5');
+    }
+
+    const response = await fetch(`${url.origin}/service_events.php${url.search}`);
+    if (response.ok) {
+        const text = await response.text();
+        const regex = /Ключ (.+?) Прохода Пещеры Драконов/
+        const found = text.match(regex)[1];
+
+        switch (found) {
+            case "Западного":
+                return 1
+            case "Восточного":
+                return 2
+            case "Северного":
+                return 3
+        }
+    }
+    return await getDragonsKey(iteration++);
 }
 
-let increment = true;
+const getDragonsPath = async () => {
+    const key = await getDragonsKey();
+
+    switch (key) {
+        case 1:
+            return maps.dragons.west
+        case 2:
+            return maps.dragons.east
+        case 3:
+            return maps.dragons.north
+        default:
+            return maps.empty
+    }
+}
+
+// после инициализации методов
+const routeFunctions = {
+    chooseDragonPath: getDragonsPath,
+}
 
 const doStep = (direction) => {
     const link = document.querySelector(`a[accesskey="${direction}"]`);
@@ -42,7 +92,8 @@ const getDungeonsId = (name, lvl) => {
 
 const getDungeonsLink = (dungeonsName, userLvl) => {
     const dungeonID = getDungeonsId(dungeonsName, userLvl);
-    return `${url.origin}/world/dungeon.php${url.search}&dungeon_id=${dungeonID}`;
+    url.searchParams.set('dungeon_id', String(dungeonID));
+    return `${url.origin}/world/dungeon.php${url.search}`;
 }
 
 const goToUrl = (url) => {
@@ -56,14 +107,12 @@ const updateStepInState = () => {
     updateState({name: 'move', value: {...state.move}})
 }
 
-const solve = async() => {
+const solve = async () => {
     increment = false;
     const instance = await getServiceCaptchaInstance();
     const img = document.querySelector('img[src*="../caramba.php"]')
     instance.getImage(img);
     const localAnswer = instance.checkLocalAnswer();
-
-    console.log(localAnswer)
 
     if (localAnswer) {
         instance.submitCode(localAnswer);
@@ -120,56 +169,91 @@ if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) 
         link.click();
     }
 }
+
 if (+state.world.map && !state.move.routes.length) {
-        (async () => {
-            const info = await UserInfo.fetchCity();
+    (async () => {
+        const info = await UserInfo.fetchCity();
 
-            const routes = {
-                1: [maps[info.getForward()]],
-                2: [maps[info.getBack()]],
-                3: [
-                    maps[info.getForward()],
-                    [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
-                    maps.fallen,
-                    [words.leaveLairsLobby, words.yes],
-                    maps[info.getBack()]
-                ],
-                4: [maps[info.getForward()], maps[info.getBack()]],
-                5: [maps.test1],
-                6: [maps.test2, [words.toCity]]
-            }
-
-            state.move.routes = routes[state.world.map];
-            updateState({name: 'move', value: {...state.move}});
-            refresh();
-        })();
-    }
-else if (+state.world.map && state.move.routes.length && increment) {
-    const step = state.move.step;
-
-    if (step < state.move.routes[state.move.active].length) {
-        if (/^http(s?):\/\/.+$/.test(state.move.routes[state.move.active][step])) {
-            updateStepInState();
-            goToUrl(state.move.routes[state.move.active][step]);
+        const routes = {
+            1: [
+                maps[info.getForward()],
+                [words.toLairsLobby, getDungeonsLink(words.lairForsworn, info.lvl)],
+                maps.fallen,
+                [words.leaveLairsLobby, words.yes],
+                maps[info.getBack()]
+            ],
+            2: [
+                maps[info.getForward()],
+                [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
+                maps.fallen,
+                [words.leaveLairsLobby, words.yes],
+                maps[info.getBack()]
+            ],
+            3: [
+                maps[info.getForward()],
+                [words.toLairsLobby, getDungeonsLink(words.lairDragon, info.lvl)],
+                maps.dragons.entry,
+                ['chooseDragonPath'],
+                [words.leaveLairsLobby, words.yes],
+                maps[info.getBack()]
+            ],
+            4: [
+                maps[info.getForward()],
+                [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
+                maps.mysterious,
+                [words.leaveLairsLobby, words.yes],
+                maps[info.getBack()]
+            ],
+            5: [
+                maps[info.getForward()],
+                [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
+                maps.fallen,
+                [words.leaveLairsLobby, words.yes],
+                [words.toLairsLobby, getDungeonsLink(words.lairDragon, info.lvl)],
+                maps.dragons.entry,
+                ['chooseDragonPath'],
+                [words.leaveLairsLobby, words.yes],
+                [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
+                maps.mysterious,
+                [words.leaveLairsLobby, words.yes],
+                maps[info.getBack()]
+            ],
         }
-        else if (isNaN(state.move.routes[state.move.active][step])) {
+
+        state.move.routes = routes[state.world.map];
+        updateState({name: 'move', value: {...state.move}});
+        refresh();
+    })();
+} else if (+state.world.map && state.move.routes.length && increment) {
+    const step = state.move.step;
+    const activeRoute = state.move.routes[state.move.active];
+    const currentStep = activeRoute[step];
+
+    if (step < activeRoute.length) {
+        if (/^http(s?):\/\/.+$/.test(currentStep)) {
+            updateStepInState();
+            goToUrl(currentStep);
+        } else if (routeFunctions[currentStep]) {
+            (async () => {
+                state.move.routes[state.move.active][step] = await routeFunctions[currentStep]();
+                updateState({name: 'move', value: {...state.move}});
+                refresh();
+            })()
+        } else if (isNaN(currentStep)) {
             updateStepInState();
             setTimeout(() => {
-                searchLink(state.move.routes[state.move.active][step]).click();
+                searchLink(currentStep).click();
             }, delay.fast)
-        }
-        else if (checkText("Север:")) {
+        } else if (checkText("Север:")) {
             updateStepInState();
-            setTimeout(doStep, delay.fast, state.move.routes[state.move.active][step]);
+            setTimeout(doStep, delay.fast, currentStep);
         }
-    }
-    else if (state.world.map && state.move.routes[state.move.active + 1]) {
+    } else if (state.world.map && state.move.routes[state.move.active + 1]) {
         state.move.active += 1;
         state.move.step = 0;
         updateState({name: 'move', value: {...state.move}});
         setTimeout(refresh, delay.long);
-    }
-    else {
+    } else {
         state.move.routes = [];
         state.move.step = 0;
         state.move.active = 0;

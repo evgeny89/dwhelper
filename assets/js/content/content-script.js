@@ -15,25 +15,32 @@ chrome.storage.onChanged.addListener(function (changes) {
     }
 
     if (
-        state.global.run &&
-        (
-            changes.hasOwnProperty('global') ||
-            (url.pathname === '/inventory.php' && changes.hasOwnProperty('inventory_actions')) ||
-            (url.pathname === '/parcels.php' && changes.hasOwnProperty('parcels')) ||
-            (url.pathname === '/battle_group.php' && changes.hasOwnProperty('battles')) ||
-            (url.pathname === '/world/world.php' && changes.hasOwnProperty('world')) ||
-            (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
-            (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type)
+        (changes.hasOwnProperty('global') && !changes.global.newValue.run && changes.global.oldValue.run) || (
+            state.global.run &&
+            (
+                changes.hasOwnProperty('global') ||
+                (url.pathname === '/inventory.php' && changes.hasOwnProperty('inventory_actions')) ||
+                (url.pathname === '/parcels.php' && changes.hasOwnProperty('parcels')) ||
+                (url.pathname === '/battle_group.php' && changes.hasOwnProperty('battles')) ||
+                (url.pathname === '/world/world.php' && changes.hasOwnProperty('world')) ||
+                (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
+                (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type)
+            )
         )
     ) {
         setTimeout(refresh, delay.long);
+    }
+
+    if (!state.global.run) {
+        // если бот вырублен, то нет смысла обрабатывать изменения ниже...
+        return;
     }
 
     if (url.pathname === '/inventory.php' && changes.hasOwnProperty('inventory_filters')) {
         runFilter();
     }
 
-    if (url.pathname !== '/world/world.php' && changes.hasOwnProperty('world') && changes.world.newValue.map !== 0) {
+    if (url.pathname !== '/world/world.php' && changes.hasOwnProperty('world') && changes.world.newValue.map !== 0 && changes.world.oldValue.map === 0) {
         window.location.href = `${url.origin}/world/world.php${url.search}`;
     }
 });
@@ -56,7 +63,6 @@ function updateState(payload, type = 'update') {
 }
 
 async function scanFolders() {
-    const url = new URL(document.location.href);
     url.searchParams.set('chest', '1');
     const response = await fetch(`${url.origin}/inventory.php${url.search}`);
     if (response.ok) {
