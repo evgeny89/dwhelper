@@ -111,13 +111,18 @@ class CaptchaCapMonster extends CaptchaBase {
     }
 
     async createTask() {
-        const response = await fetch(this.urls.createTaskUrl, this._getOptions());
-        const json = await response.json();
-        if (json.taskId) {
-            this.id = json.taskId;
-            this._waitResult();
-        } else {
-            wait(5);
+        try {
+            const response = await fetch(this.urls.createTaskUrl, this._getOptions());
+            const json = await response.json();
+            if (json.taskId) {
+                this.id = json.taskId;
+                this._waitResult();
+            } else {
+                wait(5);
+            }
+        } catch (e) {
+            console.log(e.message)
+            wait(3);
         }
     }
 
@@ -180,19 +185,26 @@ class CaptchaRuCaptcha extends CaptchaBase {
         if (json.status) {
             if (this._validation(json.request)) {
                 this.submitCode(json.request);
+            } else {
+                wait(1);
             }
         }
     }
 
     async createTask() {
-        const response = await fetch(this.urls.createTaskUrl, this._getOptions());
-        const json = await response.json();
-        if (json.status) {
-            this.id = json.request;
-            this._waitResult();
-        } else {
-            console.log(json.error_text)
-            wait(5);
+        try {
+            const response = await fetch(this.urls.createTaskUrl, this._getOptions());
+            const json = await response.json();
+            if (json.status) {
+                this.id = json.request;
+                this._waitResult();
+            } else {
+                console.log(json.error_text)
+                wait(5);
+            }
+        } catch (e) {
+            console.log(e.message)
+            wait(3);
         }
     }
 
