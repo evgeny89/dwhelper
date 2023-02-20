@@ -56,7 +56,6 @@ function updateState(payload, type = 'update') {
 }
 
 async function scanFolders() {
-    const url = new URL(document.location.href);
     url.searchParams.set('chest', '1');
     const response = await fetch(`${url.origin}/inventory.php${url.search}`);
     if (response.ok) {

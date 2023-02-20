@@ -58,8 +58,6 @@ function actionItems() {
         case '4':
             actionApply(words.saleItemText);
             break;
-        default:
-            console.log("work");
     }
 }
 
