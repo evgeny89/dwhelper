@@ -107,7 +107,7 @@ const updateStepInState = () => {
     updateState({name: 'move', value: {...state.move}})
 }
 
-const solve = async() => {
+const solve = async () => {
     increment = false;
     const instance = await getServiceCaptchaInstance();
     const img = document.querySelector('img[src*="../caramba.php"]')
@@ -171,8 +171,8 @@ if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) 
 }
 
 if (+state.world.map && !state.move.routes.length) {
-        (async () => {
-            const info = await UserInfo.fetchCity();
+    (async () => {
+        const info = await UserInfo.fetchCity();
 
         const routes = {
             1: [
