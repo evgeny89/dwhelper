@@ -90,39 +90,6 @@ const getDungeonsId = (name, lvl) => {
     }
 }
 
-const getDragonsPath = async () => {
-    const key = await getDragonsKey();
-    switch (key) {
-        case 1:
-            return maps.dragons.west
-        case 2:
-            return maps.dragons.east
-        case 3:
-            return maps.dragons.north
-    }
-}
-
-const getDragonsKey = async () => {
-    url.searchParams.set('type', '5');
-    const response = await fetch(`${url.origin}/inventory.php${url.search}`);
-    if (response.ok) {
-        const text = await response.text();
-        const regex = /Ключ (.+?) Прохода Пещеры Драконов/
-        const found = text.match(regex);
-
-        switch (found) {
-            case "Западного":
-                return 1
-            case "Восточного":
-                return 2
-            case "Северного":
-                return 3
-        }
-    } else {
-        return await getDragonsKey();
-    }
-}
-
 const getDungeonsLink = (dungeonsName, userLvl) => {
     const dungeonID = getDungeonsId(dungeonsName, userLvl);
     url.searchParams.set('dungeon_id', String(dungeonID));
