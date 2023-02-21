@@ -56,6 +56,48 @@ const setSelectOptions = (folders) => {
     }
 }
 
+const addSkillsControls = (skills) => {
+    const list = popup.querySelector('#skills');
+
+    if (!Object.keys(skills).length) return;
+
+    list.innerHTML = "";
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('uk-column-1-3', 'uk-margin');
+
+    for (const item in skills) {
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        const el = document.createElement('p')
+
+        el.classList.add('uk-margin-small')
+
+        input.classList.add('uk-checkbox', 'uk-margin-small-right');
+        input.type = 'checkbox';
+        input.dataset.state = `skills.${item}.value`;
+        input.checked = skills[item].value
+
+        label.innerText = skills[item].name
+
+        label.insertAdjacentElement('afterbegin', input)
+        el.insertAdjacentElement('beforeend', label)
+        wrapper.insertAdjacentElement('beforeend', el);
+    }
+
+    list.insertAdjacentElement('beforeend', wrapper);
+
+    const controls = list.querySelectorAll('[data-state]');
+
+    controls.forEach(item => {
+        item.addEventListener('change', function (e) {
+            const [property, subProperty, field] = e.target.dataset.state.split('.');
+            console.log(state)
+            state[property][subProperty][field] = e.target[elementsType[e.target.type]];
+            updateState({name: property, value: {...state[property]}});
+        });
+    })
+}
+
 function checkSleep(global) {
     const el = popup.querySelector("#count-down");
     if (global.sleep) {
@@ -72,6 +114,7 @@ function checkSleep(global) {
 const reCalcPopup = (state) => {
     checkSleep(state.global);
     setSelectOptions(state.folders);
+    addSkillsControls(state.skills);
     elements.forEach(item => {
         const [property, subProperty] = item.dataset.state.split('.');
         if (item.type === "radio") {
@@ -166,6 +209,7 @@ const addListeners = () => {
     });
     popup.querySelector("#clear").addEventListener("click", clearState);
     popup.querySelector("#scan-folders").addEventListener("click", scanFolders);
+    popup.querySelector("#scan-skills").addEventListener("click", scanSkills);
     popup.querySelector("#sleep-time-btn").addEventListener("click", setSleepTime);
     popup.querySelector("#sleep-time-close").addEventListener("click", closeSleepTime);
 }
