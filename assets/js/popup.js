@@ -91,7 +91,6 @@ const addSkillsControls = (skills) => {
     controls.forEach(item => {
         item.addEventListener('change', function (e) {
             const [property, subProperty, field] = e.target.dataset.state.split('.');
-            console.log(state)
             state[property][subProperty][field] = e.target[elementsType[e.target.type]];
             updateState({name: property, value: {...state[property]}});
         });
