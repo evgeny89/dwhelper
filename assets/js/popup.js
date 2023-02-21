@@ -27,6 +27,24 @@ function updateState(payload, type = 'update') {
     chrome.runtime.sendMessage({action: 'set-state', type, payload});
 }
 
+const showSuccessMessage = (message) => {
+    UIkit.notification({
+        message: `${icons.ok} ${message}`,
+        pos: 'top-right',
+        status: 'success',
+        timeout: noteTime.success,
+    })
+}
+
+const showErrorMessage = (message) => {
+    UIkit.notification({
+        message: `${icons.err} ${message}`,
+        pos: 'top-right',
+        status: 'warning',
+        timeout: noteTime.error,
+    })
+}
+
 const setSelectOptions = (folders) => {
     const select = popup.querySelector('select[data-state="inventory_actions.to_folders"]');
 
@@ -71,74 +89,51 @@ const reCalcPopup = (state) => {
     })
 }
 
-const clearState = () => {
-    popup.querySelector("#clear").disabled = true;
-    chrome.runtime.sendMessage({action: 'clear-state'}, function (res) {
-        if (res) {
-            UIkit.notification({
-                message: `${icons.ok} Настройки сброшены`,
-                pos: 'top-right',
-                status: 'success',
-                timeout: noteTime.success,
-            })
-        } else {
-            UIkit.notification({
-                message: `${icons.err} Ошибка сброса настроек`,
-                pos: 'top-right',
-                status: 'warning',
-                timeout: noteTime.error,
-            })
-        }
-        popup.querySelector("#clear").disabled = false;
-    });
+const sendMessageOnClickButton = async (selector, action) => {
+    return new Promise((resolve, reject) => {
+        popup.querySelector(`#${selector}`).disabled = true;
+        chrome.runtime.sendMessage({action: action}, function (res) {
+            if (chrome.runtime.lastError) {
+                return reject(chrome.runtime.lastError);
+            }
+            popup.querySelector(`#${selector}`).disabled = false;
+            resolve(res)
+        });
+    })
 }
 
-const scanFolders = () => {
-    popup.querySelector("#scan-folders").disabled = true;
-    chrome.runtime.sendMessage({action: 'scans-folders'}, function (response) {
-        if (response) {
-            state.inventory_actions.to_folders = 0;
-            updateState({name: 'inventory_actions', value: {...state.inventory_actions}});
-            UIkit.notification({
-                message: `${icons.ok} Отделы сканированы`,
-                pos: 'top-right',
-                status: 'success',
-                timeout: noteTime.success,
-            })
-        } else {
-            UIkit.notification({
-                message: `${icons.err} Ошибка сканирования`,
-                pos: 'top-right',
-                status: 'warning',
-                timeout: noteTime.error,
-            })
-        }
-        popup.querySelector("#scan-folders").disabled = false;
-    });
+const clearState = async () => {
+    const res = await sendMessageOnClickButton('clear', 'clear-state');
+    res ? showSuccessMessage('Настройки сброшены') : showErrorMessage('Ошибка сброса настроек')
+}
+
+const scanFolders = async () => {
+    const res = await sendMessageOnClickButton('scan-folders', 'scan-folders');
+    if (res) {
+        state.inventory_actions.to_folders = 0;
+        updateState({name: 'inventory_actions', value: {...state.inventory_actions}});
+        showSuccessMessage('Отделы сканированы')
+    } else {
+        showErrorMessage('Ошибка сканирования отделов')
+    }
+}
+
+const scanSkills = async () => {
+    const res = await sendMessageOnClickButton('scan-skills', 'scan-skills');
+    res ? showSuccessMessage('Умения сканированы') : showErrorMessage('Ошибка сканирования умений')
 }
 
 const setSleepTime = () => {
     const sleepInput = popup.querySelector("#sleep-time-input");
     const minutes = +sleepInput.value;
     if (minutes < 1 || minutes > 300) {
-        UIkit.notification({
-            message: `${icons.err} Недопустимое значение`,
-            pos: 'top-right',
-            status: 'warning',
-            timeout: noteTime.error,
-        })
+        showErrorMessage('Недопустимое значение')
     } else {
         const time = Date.now() + minutes * 60000;
         state.global.sleep = new Date(time).toISOString();
         updateState({name: 'global', value: {...state.global}}, 'sleep');
         sleepInput.value = '';
-
-        UIkit.notification({
-            message: `${icons.ok} Время задано`,
-            pos: 'top-right',
-            status: 'warning',
-            timeout: noteTime.success,
-        })
+        showSuccessMessage('Время задано')
     }
 }
 
@@ -193,10 +188,7 @@ getState()
         addListeners();
     })
     .catch(e => {
-        const el = popup.querySelector('.error-modal');
-        const textElement = el.querySelector('.modal-text');
-        textElement.textContent = e.message;
-        UIkit.modal(el).show();
+        showErrorMessage(e.message);
     })
 
 chrome.storage.local.onChanged.addListener(function (changes) {

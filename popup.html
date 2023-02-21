@@ -86,8 +86,8 @@
             <ul class="uk-list uk-margin">
                 <li>
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                        <button class="uk-margin-left uk-button uk-button-primary" id="scan-folders">сканировать отделы
-                            рюкзака
+                        <button class="uk-margin-left uk-button uk-button-primary" id="scan-folders">
+                            сканировать отделы рюкзака
                         </button>
                     </div>
                 </li>
@@ -363,7 +363,10 @@
             <hr>
             <ul class="uk-list">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Бродилки</h5>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Маршруты</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
@@ -462,13 +465,6 @@
             </ul>
         </li>
     </ul>
-    <div class="error-modal" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <h2 class="uk-modal-title uk-text-danger">Error</h2>
-            <p class="modal-text"></p>
-        </div>
-    </div>
 </div>
 <script src="assets/js/popup.js"></script>
 </body>

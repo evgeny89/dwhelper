@@ -52,7 +52,7 @@ const initialState = {
         routes: [],
         active: 0,
         step: 0,
-    }
+    },
 };
 
 const state = {};
@@ -117,7 +117,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
 chrome.storage.local.get(null, function (res) {
     Object.assign(state, res);
 
-    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    chrome.runtime.onMessage.addListener(
+        function (request, sender, sendResponse) {
             if (request.action === "get-state") {
                 sendResponse(state);
             }
@@ -155,10 +156,10 @@ chrome.storage.local.get(null, function (res) {
                 }
                 setState(request.payload);
             }
-            if (request.action === 'scans-folders') {
+            if (request.action === 'scan-folders') {
                 chrome.tabs.query({currentWindow: true}, function (tabs) {
                     const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                    chrome.tabs.sendMessage(tab.id, {action: "scans-folders"}, function (response) {
+                    chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
                         setState(response);
                         sendResponse(true);
                     });
