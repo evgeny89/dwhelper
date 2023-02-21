@@ -15,7 +15,7 @@
         <li><a href="#">инвентарь</a></li>
         <li><a href="#">город</a></li>
         <li><a href="#">земли</a></li>
-        <li><a href="#">info</a></li>
+        <li><a href="#">бои</a></li>
     </ul>
     <ul class="uk-switcher uk-margin">
         <li>
@@ -82,26 +82,40 @@
                     </div>
                 </li>
             </ul>
-            <hr>
             <ul class="uk-list uk-margin">
                 <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                        <button class="uk-margin-left uk-button uk-button-primary" id="scan-folders">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <button class="uk-margin-left uk-button-small uk-button-primary" id="scan-folders">
                             сканировать отделы рюкзака
                         </button>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                        <button class="uk-margin-left uk-button uk-button-primary" id="scan-skills">
+                        <button class="uk-margin-left uk-button-small uk-button-primary" id="scan-skills">
                             сканировать умения
                         </button>
                     </div>
                 </li>
                 <li>
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                        <button class="uk-margin-left uk-button uk-button-danger" id="clear">сброс настроек</button>
+                        <button class="uk-margin-left uk-button-small uk-button-danger" id="clear">сброс настроек
+                        </button>
                     </div>
+                </li>
+            </ul>
+            <ul class="uk-list">
+                <li>
+                    <h5 class="uk-text-primary uk-margin-small-bottom">Бейджи</h5>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li class="uk-flex uk-flex-between uk-flex-top">
+                    <span class="uk-label">auto</span>
+                    <p class="uk-margin-remove">При активации выполняет всю работу за вас</p>
+                </li>
+                <li class="uk-flex uk-flex-between">
+                    <span class="uk-label uk-label-success uk-flex-top">semi&#8209;auto</span>
+                    <p class="uk-margin-remove">Выполняет вспомогательные действия, но не всю работу</p>
+                </li>
+                <li class="uk-flex uk-flex-between">
+                    <span class="uk-label uk-label-success uk-flex-top">help</span>
+                    <p class="uk-margin-remove">Вспомогательный элемент</p>
                 </li>
             </ul>
         </li>
@@ -295,53 +309,6 @@
         <li>
             <ul class="uk-list">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Бои</h5>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="battles.run">
-                            авто-бой
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.attack">
-                            авто-нападение
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.attackAll">
-                            нападать на всех
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-            </ul>
-            <hr>
-            <ul class="uk-list">
-                <li>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Умения</h5>
-                        <span class="uk-label">auto</span>
-                    </div>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li id="skills">
-                    Отсканируйте умения
-                </li>
-            </ul>
-            <hr>
-            <ul class="uk-list">
-                <li>
                     <h5 class="uk-text-primary uk-margin-small-bottom">Добыча ресурсов</h5>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
@@ -433,54 +400,48 @@
         <li>
             <ul class="uk-list">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Бейджи</h5>
+                    <h5 class="uk-text-primary uk-margin-small-bottom">Бои</h5>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
-                <li class="uk-flex uk-flex-between uk-flex-top">
-                    <span class="uk-label">auto</span>
-                    <p class="uk-margin-remove">При активации выполняет всю работу за вас</p>
-                </li>
-                <li class="uk-flex uk-flex-between">
-                    <span class="uk-label uk-label-success uk-flex-top">semi&#8209;auto</span>
-                    <p class="uk-margin-remove">Выполняет вспомогательные действия, но не всю работу</p>
-                </li>
-                <li class="uk-flex uk-flex-between">
-                    <span class="uk-label uk-label-success uk-flex-top">help</span>
-                    <p class="uk-margin-remove">Вспомогательный элемент</p>
-                </li>
-                <li class="uk-flex uk-flex-between">
-                    <span class="uk-label uk-label-warning uk-flex-top">dsbl</span>
-                    <p class="uk-margin-remove">Временно выключена функция</p>
-                </li>
-                <hr>
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Сноски</h5>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="battles.run">
+                            авто-бой
+                        </label>
+                        <span class="uk-label">auto</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="world.attack">
+                            авто-нападение
+                        </label>
+                        <span class="uk-label">auto</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="world.attackAll">
+                            нападать на всех
+                        </label>
+                        <span class="uk-label">auto</span>
+                    </div>
+                </li>
+            </ul>
+            <hr>
+            <ul class="uk-list">
+                <li>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Умения</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
-                <li class="uk-flex uk-flex-top">
-                    <span class="popup-tooltip note-desc" data-text="*"></span>
-                    <p class="uk-margin-remove">
-                        Если выключено, то не будет работать никакая автоматизация,
-                        но управление настройками все так же доступно
-                    </p>
-                </li>
-                <li class="uk-flex uk-flex-top">
-                    <span class="popup-tooltip note-desc" data-text="**"></span>
-                    <p class="uk-margin-remove">Перемещает в указанный выше отдел</p>
-                </li>
-                <li class="uk-flex uk-flex-top">
-                    <span class="popup-tooltip note-desc" data-text="***"></span>
-                    <p class="uk-margin-remove">
-                        Работает только при включении опции "заполнять посылки".
-                        Отправляет все что есть в инвентаре.
-                    </p>
-                </li>
-                <li class="uk-flex uk-flex-top">
-                    <span class="popup-tooltip note-desc" data-text="****"></span>
-                    <p class="uk-margin-remove">
-                        Если не куплено отключение капчи или не использовать сторонние сервисы,
-                        то работает в полуавтаматическом режиме (цифры надо вводить самим)
-                    </p>
+                <li id="skills">
+                    Отсканируйте умения
                 </li>
             </ul>
         </li>
