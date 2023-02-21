@@ -53,6 +53,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     sendResponse({name: 'folders', value: folders})
                 });
             return true;
+        case "scan-skills":
+            scanSkills()
+                .then(skillList => {
+                    sendResponse({name: 'skills', value: skillList})
+                });
+            return true;
         default:
             return true;
     }
@@ -62,20 +68,44 @@ function updateState(payload, type = 'update') {
     chrome.runtime.sendMessage({action: 'set-state', type, payload});
 }
 
+const toHtml = (text) => {
+    const body = text.replace(/(\r\n|\r|\n)/mg, '').match(/.*<body>(.+)<\/body>.*/)[1];
+    const el = document.createElement('DIV');
+    el.innerHTML = body;
+
+    return el;
+}
+
 async function scanFolders() {
     url.searchParams.set('chest', '1');
     const response = await fetch(`${url.origin}/inventory.php${url.search}`);
     if (response.ok) {
         const chestPageText = await response.text();
-        const chestPageBody = chestPageText.replace(/\n/mg, '').match(/.*<body>(.+)<\/body>.*/)[0];
-        const el = document.createElement('DIV');
-        el.innerHTML = chestPageBody;
+        const el = toHtml(chestPageText)
         const links = el.querySelectorAll('a[href*="chest=1&folder="]');
         const result = [];
         links.forEach(item => {
-            const name = item.textContent.trim().replace(/\[\d+]$/, "");
+            const name = item.textContent.trim().replace(/\[\d+]$/, "").trim();
             const id = new URL(item.href).searchParams.get('folder');
             result.push({name, id});
+        })
+        return result;
+    }
+}
+
+async function scanSkills() {
+    url.searchParams.set('myskills', '1');
+    const response = await fetch(`${url.origin}/skill_learn.php${url.search}`);
+    if (response.ok) {
+        const skillsPageText = await response.text();
+        const el = toHtml(skillsPageText)
+        const table = el.querySelector('table');
+        const links = table.querySelectorAll('a[href*="info="]');
+        const result = [];
+        links.forEach(item => {
+            const name = item.textContent.trim();
+            const id = new URL(item.href).searchParams.get('info');
+            result.push({name, id, value: false});
         })
         return result;
     }

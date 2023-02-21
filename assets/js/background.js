@@ -40,6 +40,7 @@ const initialState = {
         to_folders: 0,
     },
     folders: {},
+    skills: {},
     battles: {
         run: false,
     },
@@ -160,6 +161,16 @@ chrome.storage.local.get(null, function (res) {
                 chrome.tabs.query({currentWindow: true}, function (tabs) {
                     const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
                     chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
+                        setState(response);
+                        sendResponse(true);
+                    });
+                });
+                return true;
+            }
+            if (request.action === 'scan-skills') {
+                chrome.tabs.query({currentWindow: true}, function (tabs) {
+                    const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+                    chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
                         setState(response);
                         sendResponse(true);
                     });
