@@ -180,14 +180,16 @@ if (+state.world.map && !state.move.routes.length) {
                 [words.toLairsLobby, getDungeonsLink(words.lairForsworn, info.lvl)],
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
             2: [
                 maps[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
             3: [
                 maps[info.getForward()],
@@ -195,14 +197,16 @@ if (+state.world.map && !state.move.routes.length) {
                 maps.dragons.entry,
                 'chooseDragonPath',
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
             4: [
                 maps[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
                 maps.mysterious,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
             5: [
                 maps[info.getForward()],
@@ -216,7 +220,8 @@ if (+state.world.map && !state.move.routes.length) {
                 [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
                 maps.mysterious,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
         }
 
