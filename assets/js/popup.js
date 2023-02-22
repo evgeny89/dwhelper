@@ -59,7 +59,10 @@ const setSelectOptions = (folders) => {
 const addSkillsControls = (skills) => {
     const list = popup.querySelector('#skills');
 
-    if (!Object.keys(skills).length) return;
+    if (!Object.keys(skills).length) {
+        list.innerText = "Отсканируйте умения";
+        return;
+    }
 
     list.innerHTML = "";
     const wrapper = document.createElement('div');
