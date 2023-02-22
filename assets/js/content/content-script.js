@@ -7,7 +7,6 @@ chrome.runtime.sendMessage({action: 'get-state'}, function (res) {
     resetRefresh();
 });
 
-
 chrome.storage.onChanged.addListener(function (changes) {
 
     for (const prop in changes) {

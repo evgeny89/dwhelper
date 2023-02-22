@@ -44,6 +44,7 @@ class CaptchaBase {
     }
 
     submitCode(code) {
+        this._hideLoader();
         const form = document.forms[0];
         form.elements.code.value = code;
         form.submit();
@@ -56,6 +57,18 @@ class CaptchaBase {
     _validation(number) {
         const value = (typeof number === "string") ? number : number.toString();
         return this.validator.test(value);
+    }
+
+    _showLoader() {
+        if (loader.style.display !== "flex") {
+            loader.style.display = "flex";
+        }
+    }
+
+    _hideLoader() {
+        if (loader.style.display !== "none") {
+            loader.style.display = "none";
+        }
     }
 }
 
@@ -92,7 +105,9 @@ class CaptchaCapMonster extends CaptchaBase {
         });
         const json = await response.json();
         if (json.errorId) {
+            this._hideLoader();
             console.log(json.errorCode)
+            wait(10);
         }
 
         if (json.status === "ready") {
@@ -100,6 +115,7 @@ class CaptchaCapMonster extends CaptchaBase {
             if (this._validation(num)) {
                 this.submitCode(num);
             } else {
+                this._hideLoader();
                 wait(1)
             }
         }
@@ -112,6 +128,7 @@ class CaptchaCapMonster extends CaptchaBase {
 
     async createTask() {
         try {
+            this._showLoader();
             const response = await fetch(this.urls.createTaskUrl, this._getOptions());
             const json = await response.json();
             if (json.taskId) {
@@ -121,6 +138,7 @@ class CaptchaCapMonster extends CaptchaBase {
                 wait(5);
             }
         } catch (e) {
+            this._hideLoader();
             console.log(e.message)
             wait(3);
         }
@@ -128,6 +146,7 @@ class CaptchaCapMonster extends CaptchaBase {
 
     _waitResult() {
         if (this.loop > this.maxLoop) {
+            this._hideLoader();
             this.loop = 1;
             return null;
         }
@@ -179,13 +198,16 @@ class CaptchaRuCaptcha extends CaptchaBase {
         }
 
         if (!json.status) {
+            this._hideLoader();
             console.log(json.request)
+            wait(10)
         }
 
         if (json.status) {
             if (this._validation(json.request)) {
                 this.submitCode(json.request);
             } else {
+                this._hideLoader();
                 wait(1);
             }
         }
@@ -193,6 +215,7 @@ class CaptchaRuCaptcha extends CaptchaBase {
 
     async createTask() {
         try {
+            this._showLoader();
             const response = await fetch(this.urls.createTaskUrl, this._getOptions());
             const json = await response.json();
             if (json.status) {
@@ -203,6 +226,7 @@ class CaptchaRuCaptcha extends CaptchaBase {
                 wait(5);
             }
         } catch (e) {
+            this._hideLoader();
             console.log(e.message)
             wait(3);
         }
