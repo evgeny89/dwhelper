@@ -1,5 +1,6 @@
 const words = {
     captcha: "Введите код",
+    castleName: "Великая Русь",
     errorText: "В данной локации отсутствуют ресурсы!",
     getLinkText: "Добыть",
     gotToLand: "В земли грез",
@@ -12,6 +13,7 @@ const words = {
     lairFallen: "Подземелья Падших",
     lairDragon: "Пещера Драконов",
     lairMysterious: "Таинственные Земли",
+    notForgeItemsText: "Извините, но вам нечего затачивать",
     outChestText: "Из рюкзака",
     receiveLinkText: "Забрать",
     refreshLinkText: "Обновить",
@@ -21,6 +23,7 @@ const words = {
     toCity: "В город",
     toFolderLinkText: "В отдел",
     toFolderText: "Выберите отдел",
+    toForge: "Точить вещь",
     toLairsLobby: "Вход в Логова",
     yes: "Да",
 }

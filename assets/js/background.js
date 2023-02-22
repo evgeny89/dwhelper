@@ -16,6 +16,9 @@ const initialState = {
     totems: {
         run: false,
     },
+    castle: {
+        run: false,
+    },
     parcels: {
         send: false,
         fill: false,
@@ -85,6 +88,10 @@ const paths = {
     extract: {
         url: "/world/resource.php",
         script: "./assets/js/content/extract.js",
+    },
+    castle: {
+        url: "/world/castle.php",
+        script: "./assets/js/content/castle.js",
     },
     service: "./assets/js/resources/captchaClass.js",
 };
@@ -237,6 +244,14 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                     chrome.scripting.executeScript({
                         target: {tabId: tabId},
                         files: [paths.battles.script],
+                    });
+                }
+                break;
+            case paths.castle.url:
+                if (state.castle.run) {
+                    chrome.scripting.executeScript({
+                        target: {tabId: tabId},
+                        files: [paths.castle.script],
                     });
                 }
                 break;

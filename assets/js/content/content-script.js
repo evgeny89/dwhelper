@@ -62,6 +62,7 @@ chrome.storage.onChanged.addListener(function (changes) {
                 (url.pathname === '/parcels.php' && changes.hasOwnProperty('parcels')) ||
                 (url.pathname === '/battle_group.php' && changes.hasOwnProperty('battles')) ||
                 (url.pathname === '/world/world.php' && changes.hasOwnProperty('world')) ||
+                (url.pathname === '/world/castle.php' && changes.hasOwnProperty('castle')) ||
                 (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
                 (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type)
             )

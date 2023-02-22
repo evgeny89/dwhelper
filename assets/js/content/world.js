@@ -1,9 +1,17 @@
 const maps = {
     empty: "",
-    toLairFromKorheim: '488666666666666666666666662222222666666666666666666666666', // к логову из корха
-    toKorheim: '444444444444444444444444888888844444444444444444444444226', // в корх от логова
-    toLairFromNecropolis: '666666662222666666666666666666666666', // к логову из некра
-    toNecropolis: '444444444444444444444444888844444444', // в некр от логова
+    lair: { // к логову и обратно
+        fromKorheim: '488666666666666666666666662222222666666666666666666666666',
+        toKorheim: '444444444444444444444444888888844444444444444444444444226',
+        fromNecropolis: '666666662222666666666666666666666666',
+        toNecropolis: '444444444444444444444444888844444444',
+    },
+    castle: { // во дворец и назад
+        fromKorheim: "488666666666666222222",
+        fromNecropolis: "224442",
+        toKorheim: "888888444444444444226",
+        toNecropolis: "888666",
+    },
     fallen: '42222442444442444884888484', // падшие
     dragons: {
         entry: '222688442286', //драконы вход
@@ -107,6 +115,11 @@ const updateStepInState = () => {
     updateState({name: 'move', value: {...state.move}})
 }
 
+const dropMap = () => {
+    state.world.map = 0;
+    updateState({name: 'world', value: {...state.world}});
+}
+
 const solve = async () => {
     increment = false;
     const instance = await getServiceCaptchaInstance();
@@ -138,9 +151,9 @@ class UserInfo {
     getForward = () => {
         switch (this.city) {
             case "Корхейм":
-                return "toLairFromKorheim";
+                return "fromKorheim";
             case "Некрополь":
-                return "toLairFromNecropolis";
+                return "fromNecropolis";
             default:
                 return "empty"
         }
@@ -176,40 +189,40 @@ if (+state.world.map && !state.move.routes.length) {
 
         const routes = {
             1: [
-                maps[info.getForward()],
+                maps.lair[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairForsworn, info.lvl)],
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()],
+                maps.lair[info.getBack()],
                 [words.toCity]
             ],
             2: [
-                maps[info.getForward()],
+                maps.lair[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()],
+                maps.lair[info.getBack()],
                 [words.toCity]
             ],
             3: [
-                maps[info.getForward()],
+                maps.lair[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairDragon, info.lvl)],
                 maps.dragons.entry,
                 'chooseDragonPath',
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()],
+                maps.lair[info.getBack()],
                 [words.toCity]
             ],
             4: [
-                maps[info.getForward()],
+                maps.lair[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
                 maps.mysterious,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()],
+                maps.lair[info.getBack()],
                 [words.toCity]
             ],
             5: [
-                maps[info.getForward()],
+                maps.lair[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
@@ -220,7 +233,13 @@ if (+state.world.map && !state.move.routes.length) {
                 [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
                 maps.mysterious,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()],
+                maps.lair[info.getBack()],
+                [words.toCity]
+            ],
+            6: [
+                maps.castle[info.getForward()],
+                [words.castleName],
+                maps.castle[info.getBack()],
                 [words.toCity]
             ],
         }
@@ -247,6 +266,9 @@ if (+state.world.map && !state.move.routes.length) {
         } else if (isNaN(currentStep)) {
             updateStepInState();
             setTimeout(() => {
+                if (!state.move.routes[state.move.active + 1] && !activeRoute[step + 1]) {
+                    dropMap();
+                }
                 searchLink(currentStep).click();
             }, delay.fast)
         } else if (checkText("Север:")) {
@@ -259,12 +281,6 @@ if (+state.world.map && !state.move.routes.length) {
         updateState({name: 'move', value: {...state.move}});
         setTimeout(refresh, delay.long);
     } else {
-        state.move.routes = [];
-        state.move.step = 0;
-        state.move.active = 0;
-        updateState({name: 'move', value: {...state.move}});
-
-        state.world.map = 0;
-        updateState({name: 'world', value: {...state.world}});
+        dropMap();
     }
 }
