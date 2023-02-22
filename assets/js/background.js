@@ -152,6 +152,7 @@ chrome.storage.local.get(null, function (res) {
                     if (request.payload.name === "world" && request.payload.value.map === 0) {
                         state.move.routes = [];
                         state.move.step = 0;
+                        state.move.active = 0;
                         setState({name: "move", value: {...state.move}});
                     }
                 }
