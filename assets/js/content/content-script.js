@@ -2,11 +2,50 @@ let state = {}
 
 const url = new URL(location.href)
 
+const loaderSVG = () => {
+    return `
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="100px" height="100px" viewBox="0 0 128 128" xml:space="preserve">
+        <g>
+            <linearGradient id="linear-gradient">
+                <stop offset="0%" stop-color="#000"/>
+                <stop offset="100%" stop-color="#0090fe"/>
+            </linearGradient>
+            <linearGradient id="linear-gradient2">
+                <stop offset="0%" stop-color="#000"/>
+                <stop offset="100%" stop-color="#90e6fe"/>
+            </linearGradient>
+            <path d="M64 .98A63.02 63.02 0 1 1 .98 64 63.02 63.02 0 0 1 64 .98zm0 15.76A47.26 47.26 0 1 1 16.74 64 47.26 47.26 0 0 1 64 16.74z" fill-rule="evenodd" fill="url(#linear-gradient)"/>
+            <path d="M64.12 125.54A61.54 61.54 0 1 1 125.66 64a61.54 61.54 0 0 1-61.54 61.54zm0-121.1A59.57 59.57 0 1 0 123.7 64 59.57 59.57 0 0 0 64.1 4.43zM64 115.56a51.7 51.7 0 1 1 51.7-51.7 51.7 51.7 0 0 1-51.7 51.7zM64 14.4a49.48 49.48 0 1 0 49.48 49.48A49.48 49.48 0 0 0 64 14.4z" fill-rule="evenodd" fill="url(#linear-gradient2)"/>
+            <animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="1800ms" repeatCount="indefinite"></animateTransform>
+        </g>
+    </svg>
+`;
+}
+
+(function() {
+    const div = document.createElement('div');
+    div.style.position = "fixed";
+    div.style.top = "0";
+    div.style.width = "100%";
+    div.style.height = "100vh";
+    div.style.backgroundColor = "#0007";
+    div.style.display = "none";
+    div.style.alignItems = "center";
+    div.style.justifyContent = "center";
+    div.id = "bot-loader";
+
+    div.insertAdjacentHTML('beforeend', loaderSVG());
+
+    document.body.insertAdjacentElement('beforeend', div);
+})()
+
+const loader = document.querySelector('#bot-loader');
+
 chrome.runtime.sendMessage({action: 'get-state'}, function (res) {
     Object.assign(state, res);
     resetRefresh();
 });
-
 
 chrome.storage.onChanged.addListener(function (changes) {
 
@@ -47,10 +86,16 @@ chrome.storage.onChanged.addListener(function (changes) {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.action) {
-        case "scans-folders":
+        case "scan-folders":
             scanFolders()
                 .then(folders => {
                     sendResponse({name: 'folders', value: folders})
+                });
+            return true;
+        case "scan-skills":
+            scanSkills()
+                .then(skillList => {
+                    sendResponse({name: 'skills', value: skillList})
                 });
             return true;
         default:
@@ -62,20 +107,44 @@ function updateState(payload, type = 'update') {
     chrome.runtime.sendMessage({action: 'set-state', type, payload});
 }
 
+const toHtml = (text) => {
+    const body = text.replace(/(\r\n|\r|\n)/mg, '').match(/.*<body>(.+)<\/body>.*/)[1];
+    const el = document.createElement('DIV');
+    el.innerHTML = body;
+
+    return el;
+}
+
 async function scanFolders() {
     url.searchParams.set('chest', '1');
     const response = await fetch(`${url.origin}/inventory.php${url.search}`);
     if (response.ok) {
         const chestPageText = await response.text();
-        const chestPageBody = chestPageText.replace(/\n/mg, '').match(/.*<body>(.+)<\/body>.*/)[0];
-        const el = document.createElement('DIV');
-        el.innerHTML = chestPageBody;
+        const el = toHtml(chestPageText)
         const links = el.querySelectorAll('a[href*="chest=1&folder="]');
         const result = [];
         links.forEach(item => {
-            const name = item.textContent.trim().replace(/\[\d+]$/, "");
+            const name = item.textContent.trim().replace(/\[\d+]$/, "").trim();
             const id = new URL(item.href).searchParams.get('folder');
             result.push({name, id});
+        })
+        return result;
+    }
+}
+
+async function scanSkills() {
+    url.searchParams.set('myskills', '1');
+    const response = await fetch(`${url.origin}/skill_learn.php${url.search}`);
+    if (response.ok) {
+        const skillsPageText = await response.text();
+        const el = toHtml(skillsPageText)
+        const table = el.querySelector('table');
+        const links = table.querySelectorAll('a[href*="info="]');
+        const result = [];
+        links.forEach(item => {
+            const name = item.textContent.trim();
+            const id = new URL(item.href).searchParams.get('info');
+            result.push({name, id, value: false});
         })
         return result;
     }

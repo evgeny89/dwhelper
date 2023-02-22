@@ -180,29 +180,33 @@ if (+state.world.map && !state.move.routes.length) {
                 [words.toLairsLobby, getDungeonsLink(words.lairForsworn, info.lvl)],
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
             2: [
                 maps[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
             3: [
                 maps[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairDragon, info.lvl)],
                 maps.dragons.entry,
-                ['chooseDragonPath'],
+                'chooseDragonPath',
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
             4: [
                 maps[info.getForward()],
                 [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
                 maps.mysterious,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
             5: [
                 maps[info.getForward()],
@@ -211,12 +215,13 @@ if (+state.world.map && !state.move.routes.length) {
                 [words.leaveLairsLobby, words.yes],
                 [words.toLairsLobby, getDungeonsLink(words.lairDragon, info.lvl)],
                 maps.dragons.entry,
-                ['chooseDragonPath'],
+                'chooseDragonPath',
                 [words.leaveLairsLobby, words.yes],
                 [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
                 maps.mysterious,
                 [words.leaveLairsLobby, words.yes],
-                maps[info.getBack()]
+                maps[info.getBack()],
+                [words.toCity]
             ],
         }
 
@@ -233,9 +238,9 @@ if (+state.world.map && !state.move.routes.length) {
         if (/^http(s?):\/\/.+$/.test(currentStep)) {
             updateStepInState();
             goToUrl(currentStep);
-        } else if (routeFunctions[currentStep]) {
+        } else if (routeFunctions[activeRoute]) {
             (async () => {
-                state.move.routes[state.move.active][step] = await routeFunctions[currentStep]();
+                state.move.routes[state.move.active] = await routeFunctions[currentStep]();
                 updateState({name: 'move', value: {...state.move}});
                 refresh();
             })()
