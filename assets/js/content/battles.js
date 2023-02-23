@@ -20,6 +20,14 @@ const isUseSkill = (id) => {
     return true;
 }
 
+const checkDefeat = () => {
+    const defeat = checkText(words.defeat);
+    if (defeat && state.world.map) {
+        state.world.map = 0;
+        updateState({name: 'world', value: {...state.world}});
+    }
+}
+
 
 if (form) {
     skillControls.forEach(control => {
@@ -37,6 +45,7 @@ if (form) {
         const toWorld = searchLink(words.gotToLand);
         const toBattle = searchLink(words.inBattle);
         if (toWorld) {
+            checkDefeat();
             toWorld.click()
         } else {
             toBattle ? toBattle.click() : refresh();

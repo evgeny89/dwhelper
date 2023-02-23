@@ -2,6 +2,7 @@ const words = {
     arena: "Вход на Арену",
     captcha: "Введите код",
     castleName: "Великая Русь",
+    defeat: "Поражение",
     errorText: "В данной локации отсутствуют ресурсы!",
     getLinkText: "Добыть",
     gotToLand: "В земли грез",
