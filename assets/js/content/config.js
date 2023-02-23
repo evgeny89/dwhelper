@@ -11,9 +11,9 @@ const words = {
     inventoryLinkText: "Инвентарь",
     inWorld: "В Земли",
     leaveLairsLobby: "Покинуть Логово",
+    lairDragon: "Пещера Драконов",
     lairForsworn: "Подземелья Изгоев",
     lairFallen: "Подземелья Падших",
-    lairDragon: "Пещера Драконов",
     lairMysterious: "Таинственные Земли",
     notForgeItemsText: "Извините, но вам нечего затачивать",
     outChestText: "Из рюкзака",
@@ -28,6 +28,11 @@ const words = {
     toForge: "Точить вещь",
     toLairsLobby: "Вход в Логова",
     yes: "Да",
+}
+
+const urls = {
+    lairLobby: "/world/dungeon.php",
+    world: "world/world.php",
 }
 
 const delay = {

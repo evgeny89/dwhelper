@@ -152,14 +152,24 @@ class UserInfo {
         return new UserInfo(info);
     }
 
-    getForward = () => {
+    getForward = (type) => {
+        if (type === "lair" && checkText(words.toLairsLobby)) {
+            return maps.empty;
+        }
+        if (type === "castle" && checkText(words.castleName)) {
+            return maps.empty;
+        }
+        if (type === "arena" && checkText(words.arena)) {
+            return maps.empty;
+        }
+
         switch (this.city) {
             case "Корхейм":
-                return "fromKorheim";
+                return maps[type].fromKorheim;
             case "Некрополь":
-                return "fromNecropolis";
+                return maps[type].fromNecropolis;
             default:
-                return "empty"
+                return maps.empty;
         }
     }
 
@@ -173,6 +183,26 @@ class UserInfo {
                 return "empty"
         }
     }
+}
+
+const pathBack = (user) => {
+    return [
+        [words.leaveLairsLobby, words.yes],
+        maps.lair[user.getBack()],
+        [words.toCity]
+    ]
+}
+
+const checkInLair = (type, user) => {
+    if (searchLink(words.toLairsLobby)) {
+        return [words.toLairsLobby, getDungeonsLink(type, user.lvl)];
+    }
+
+    if (checkText(words.lairForsworn) && url.pathname === urls.lairLobby) {
+        return [getDungeonsLink(type, user.lvl)];
+    }
+
+    return maps.empty;
 }
 
 if (checkText(words.captcha)) {
@@ -193,61 +223,51 @@ if (+state.world.map && !state.move.routes.length) {
 
         const routes = {
             1: [
-                maps.lair[info.getForward()],
-                [words.toLairsLobby, getDungeonsLink(words.lairForsworn, info.lvl)],
+                info.getForward("lair"),
+                checkInLair(words.lairForsworn, info.lvl),
                 maps.fallen,
-                [words.leaveLairsLobby, words.yes],
-                maps.lair[info.getBack()],
-                [words.toCity]
+                ...pathBack(info),
             ],
             2: [
-                maps.lair[info.getForward()],
-                [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
+                info.getForward("lair"),
+                checkInLair(words.lairForsworn, info.lvl),
                 maps.fallen,
-                [words.leaveLairsLobby, words.yes],
-                maps.lair[info.getBack()],
-                [words.toCity]
+                ...pathBack(info),
             ],
             3: [
-                maps.lair[info.getForward()],
-                [words.toLairsLobby, getDungeonsLink(words.lairDragon, info.lvl)],
+                info.getForward("lair"),
+                checkInLair(words.lairForsworn, info.lvl),
                 maps.dragons.entry,
                 'chooseDragonPath',
-                [words.leaveLairsLobby, words.yes],
-                maps.lair[info.getBack()],
-                [words.toCity]
+                ...pathBack(info),
             ],
             4: [
-                maps.lair[info.getForward()],
-                [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
+                info.getForward("lair"),
+                checkInLair(words.lairForsworn, info.lvl),
                 maps.mysterious,
-                [words.leaveLairsLobby, words.yes],
-                maps.lair[info.getBack()],
-                [words.toCity]
+                ...pathBack(info),
             ],
             5: [
-                maps.lair[info.getForward()],
-                [words.toLairsLobby, getDungeonsLink(words.lairFallen, info.lvl)],
+                info.getForward("lair"),
+                checkInLair(words.lairForsworn, info.lvl),
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                [words.toLairsLobby, getDungeonsLink(words.lairDragon, info.lvl)],
+                checkInLair(words.lairForsworn, info.lvl),
                 maps.dragons.entry,
                 'chooseDragonPath',
                 [words.leaveLairsLobby, words.yes],
-                [words.toLairsLobby, getDungeonsLink(words.lairMysterious, info.lvl)],
+                checkInLair(words.lairForsworn, info.lvl),
                 maps.mysterious,
-                [words.leaveLairsLobby, words.yes],
-                maps.lair[info.getBack()],
-                [words.toCity]
+                ...pathBack(info),
             ],
             6: [
-                maps.castle[info.getForward()],
+                info.getForward("castle"),
                 [words.castleName],
                 maps.castle[info.getBack()],
                 [words.toCity]
             ],
             7: [
-                maps.arena[info.getForward()],
+                info.getForward("arena"),
                 [words.arena],
                 maps.lair[info.getBack()],
                 [words.toCity]
@@ -276,7 +296,7 @@ if (+state.world.map && !state.move.routes.length) {
         } else if (isNaN(currentStep)) {
             updateStepInState();
             setTimeout(() => {
-                if (!state.move.routes[state.move.active + 1] && !activeRoute[step + 1]) {
+                if (currentStep === words.toCity) {
                     dropMap();
                 }
                 searchLink(currentStep).click();
