@@ -6,6 +6,10 @@ const maps = {
         fromNecropolis: '666666662222666666666666666666666666',
         toNecropolis: '444444444444444444444444888844444444',
     },
+    arena: { // к арене (обратно от логова...)
+        fromKorheim: '488688',
+        fromNecropolis: '4448884444444444488',
+    },
     castle: { // во дворец и назад
         fromKorheim: "488666666666666222222",
         fromNecropolis: "224442",
@@ -240,6 +244,12 @@ if (+state.world.map && !state.move.routes.length) {
                 maps.castle[info.getForward()],
                 [words.castleName],
                 maps.castle[info.getBack()],
+                [words.toCity]
+            ],
+            7: [
+                maps.arena[info.getForward()],
+                [words.arena],
+                maps.lair[info.getBack()],
                 [words.toCity]
             ],
         }
