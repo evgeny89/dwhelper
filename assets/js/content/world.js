@@ -209,6 +209,10 @@ if (checkText(words.captcha)) {
     solve();
 }
 
+if (checkText(words.failLair)) {
+    dropMap();
+}
+
 if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
     const link = searchLink(words.toAttack) || searchLink(words.inBattle);
     if (link) {
@@ -230,33 +234,33 @@ if (+state.world.map && !state.move.routes.length) {
             ],
             2: [
                 info.getForward("lair"),
-                checkInLair(words.lairForsworn, info.lvl),
+                checkInLair(words.lairFallen, info.lvl),
                 maps.fallen,
                 ...pathBack(info),
             ],
             3: [
                 info.getForward("lair"),
-                checkInLair(words.lairForsworn, info.lvl),
+                checkInLair(words.lairDragon, info.lvl),
                 maps.dragons.entry,
                 'chooseDragonPath',
                 ...pathBack(info),
             ],
             4: [
                 info.getForward("lair"),
-                checkInLair(words.lairForsworn, info.lvl),
+                checkInLair(words.lairMysterious, info.lvl),
                 maps.mysterious,
                 ...pathBack(info),
             ],
             5: [
                 info.getForward("lair"),
-                checkInLair(words.lairForsworn, info.lvl),
+                checkInLair(words.lairFallen, info.lvl),
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                checkInLair(words.lairForsworn, info.lvl),
+                checkInLair(words.lairDragon, info.lvl),
                 maps.dragons.entry,
                 'chooseDragonPath',
                 [words.leaveLairsLobby, words.yes],
-                checkInLair(words.lairForsworn, info.lvl),
+                checkInLair(words.lairMysterious, info.lvl),
                 maps.mysterious,
                 ...pathBack(info),
             ],
@@ -274,7 +278,7 @@ if (+state.world.map && !state.move.routes.length) {
             ],
         }
 
-        state.move.routes = routes[state.world.map];
+        state.move.routes = routes[+state.world.map];
         updateState({name: 'move', value: {...state.move}});
         refresh();
     })();
@@ -287,9 +291,9 @@ if (+state.world.map && !state.move.routes.length) {
         if (/^http(s?):\/\/.+$/.test(currentStep)) {
             updateStepInState();
             goToUrl(currentStep);
-        } else if (routeFunctions[activeRoute]) {
+        } else if (routeFunctions.hasOwnProperty(activeRoute)) {
             (async () => {
-                state.move.routes[state.move.active] = await routeFunctions[currentStep]();
+                state.move.routes[state.move.active] = await routeFunctions[activeRoute]();
                 updateState({name: 'move', value: {...state.move}});
                 refresh();
             })()

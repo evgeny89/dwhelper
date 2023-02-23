@@ -4,6 +4,7 @@ const words = {
     castleName: "Великая Русь",
     defeat: "Поражение",
     errorText: "В данной локации отсутствуют ресурсы!",
+    failLair: "Вы или кто-то из Вашей группы не подходите по уровню!",
     getLinkText: "Добыть",
     gotToLand: "В земли грез",
     inBattle: "В бой",
