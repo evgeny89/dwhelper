@@ -192,24 +192,20 @@ class CaptchaRuCaptcha extends CaptchaBase {
     async _wait() {
         const response = await fetch(this.urls.getResultUrl + "?" + this._getResultOptions());
         const json = await response.json();
-        if (!json.status && json.request === "CAPCHA_NOT_READY") {
+        if (json.request === "CAPCHA_NOT_READY") {
             this.loop += 1;
             this._waitResult();
-        }
-
-        if (!json.status) {
-            this._hideLoader();
-            console.log(json.request)
-            wait(10)
-        }
-
-        if (json.status) {
+        } else if (json.status) {
             if (this._validation(json.request)) {
                 this.submitCode(json.request);
             } else {
                 this._hideLoader();
                 wait(1);
             }
+        } else if (!json.status) {
+            this._hideLoader();
+            console.log(json.request)
+            wait(10)
         }
     }
 
