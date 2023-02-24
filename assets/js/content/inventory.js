@@ -56,29 +56,43 @@ function actionItems() {
             actionApply(words.outChestText);
             break;
         case '4':
-            actionApply(words.saleItemText);
+            saleItems();
             break;
+    }
+}
+
+const endAction = () => {
+    state.inventory_actions.moved = 0;
+    updateState({name: 'inventory_actions', value: state.inventory_actions})
+}
+
+const fetchSale = async (link) => {
+    const url = new URL(link.href);
+    url.searchParams.set('yes', '1');
+
+    const response = await fetch(url);
+    return response.text();
+
+}
+
+const saleItems = async () => {
+    const links = allLinks(words.saleItemText);
+    if (links.length) {
+        for (const link of links) {
+            await fetchSale(link);
+        }
+        refresh();
+    } else {
+        endAction();
     }
 }
 
 function actionApply(text) {
     const actionLink = searchLink(text);
-    const ok = checkText(words.saleSuccessText);
     if (actionLink) {
-        if (text === words.saleItemText) {
-            const url = new URL(actionLink.href);
-            url.searchParams.set('yes', '1');
-            actionLink.href = url.href;
-        }
         actionLink.click();
-    } else if (ok) {
-        const toInventory = searchLink(words.inventoryLinkText);
-        if (toInventory) {
-            toInventory.click();
-        }
     } else {
-        state.inventory_actions.moved = 0;
-        updateState({name: 'inventory_actions', value: state.inventory_actions})
+        endAction();
     }
 }
 

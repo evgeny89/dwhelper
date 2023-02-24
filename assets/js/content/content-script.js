@@ -175,6 +175,12 @@ function searchLink(text) {
     return links.find((e) => regEx.test(e.textContent));
 }
 
+function allLinks(text) {
+    const links = [...document.getElementsByTagName("a")];
+    const regEx = new RegExp(text);
+    return links.filter((e) => regEx.test(e.textContent));
+}
+
 function checkText(text) {
     const regExp = new RegExp(text);
     return regExp.test(document.body.innerHTML);
