@@ -35,7 +35,7 @@ const getDragonsKey = async (iteration = 1) => {
         url.searchParams.set('type', '5');
     }
 
-    const response = await fetch(`${url.origin}/service_events.php${url.search}`);
+    const response = await fetch(`${url.origin}${pathNames.events}${url.search}`);
     if (response.ok) {
         const text = await response.text();
         const regex = /Ключ (.+?) Прохода Пещеры Драконов/
@@ -105,7 +105,7 @@ const getDungeonsId = (name, lvl) => {
 const getDungeonsLink = (dungeonsName, userLvl) => {
     const dungeonID = getDungeonsId(dungeonsName, userLvl);
     url.searchParams.set('dungeon_id', String(dungeonID));
-    return `${url.origin}/world/dungeon.php${url.search}`;
+    return `${url.origin}${pathNames.lairLobby}${url.search}`;
 }
 
 const goToUrl = (url) => {
@@ -198,7 +198,7 @@ const checkInLair = (type, user) => {
         return [words.toLairsLobby, getDungeonsLink(type, user.lvl)];
     }
 
-    if (checkText(words.lairForsworn) && url.pathname === urls.lairLobby) {
+    if (checkText(words.lairForsworn) && url.pathname === pathNames.lairLobby) {
         return [getDungeonsLink(type, user.lvl)];
     }
 

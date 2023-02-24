@@ -1,8 +1,8 @@
 const captcha = {
-    capmonster: {
+    capMonster: {
         token: "you_api_token",
     },
-    rucaptcha: {
+    ruCaptcha: {
         token: "you_api_token",
     },
 }

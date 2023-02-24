@@ -58,13 +58,13 @@ chrome.storage.onChanged.addListener(function (changes) {
             state.global.run &&
             (
                 changes.hasOwnProperty('global') ||
-                (url.pathname === '/inventory.php' && changes.hasOwnProperty('inventory_actions')) ||
-                (url.pathname === '/parcels.php' && changes.hasOwnProperty('parcels')) ||
-                (url.pathname === '/battle_group.php' && changes.hasOwnProperty('battles')) ||
-                (url.pathname === '/world/world.php' && changes.hasOwnProperty('world')) ||
-                (url.pathname === '/world/castle.php' && changes.hasOwnProperty('castle')) ||
-                (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
-                (url.pathname === '/world/resource.php' && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type)
+                (url.pathname === pathNames.inventory && changes.hasOwnProperty('inventory_actions')) ||
+                (url.pathname === pathNames.parcels && changes.hasOwnProperty('parcels')) ||
+                (url.pathname === pathNames.battles && changes.hasOwnProperty('battles')) ||
+                (url.pathname === pathNames.world && changes.hasOwnProperty('world')) ||
+                (url.pathname === pathNames.castle && changes.hasOwnProperty('castle')) ||
+                (url.pathname === pathNames.resources && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
+                (url.pathname === pathNames.resources && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type)
             )
         )
     ) {
@@ -76,12 +76,12 @@ chrome.storage.onChanged.addListener(function (changes) {
         return;
     }
 
-    if (url.pathname === '/inventory.php' && changes.hasOwnProperty('inventory_filters')) {
+    if (url.pathname === pathNames.inventory && changes.hasOwnProperty('inventory_filters')) {
         runFilter();
     }
 
-    if (url.pathname !== '/world/world.php' && changes.hasOwnProperty('world') && changes.world.newValue.map !== 0 && changes.world.oldValue.map === 0) {
-        window.location.href = `${url.origin}/world/world.php${url.search}`;
+    if (url.pathname !== pathNames.world && changes.hasOwnProperty('world') && changes.world.newValue.map !== 0 && changes.world.oldValue.map === 0) {
+        window.location.href = `${url.origin}${pathNames.world}${url.search}`;
     }
 });
 
@@ -118,7 +118,7 @@ const toHtml = (text) => {
 
 async function scanFolders() {
     url.searchParams.set('chest', '1');
-    const response = await fetch(`${url.origin}/inventory.php${url.search}`);
+    const response = await fetch(`${url.origin}${pathNames.inventory}${url.search}`);
     if (response.ok) {
         const chestPageText = await response.text();
         const el = toHtml(chestPageText)
@@ -135,7 +135,7 @@ async function scanFolders() {
 
 async function scanSkills() {
     url.searchParams.set('myskills', '1');
-    const response = await fetch(`${url.origin}/skill_learn.php${url.search}`);
+    const response = await fetch(`${url.origin}${pathNames.skills}${url.search}`);
     if (response.ok) {
         const skillsPageText = await response.text();
         const el = toHtml(skillsPageText)
@@ -152,7 +152,7 @@ async function scanSkills() {
 }
 
 async function getInfo() {
-    const response = await fetch(`${url.origin}/user.php${url.search}`);
+    const response = await fetch(`${url.origin}${pathNames.user}${url.search}`);
     if (response.ok) {
         const userPageText = await response.text();
         const city = userPageText.match(/<b>Сейчас в:<\/b> ([А-я]+)/)[1];

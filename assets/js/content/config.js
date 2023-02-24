@@ -31,9 +31,17 @@ const words = {
     yes: "Да",
 }
 
-const urls = {
+const pathNames = {
+    battles: "/battle_group.php",
+    castle: "/world/castle.php",
+    events: "/service_events.php",
+    inventory: "/inventory.php",
     lairLobby: "/world/dungeon.php",
-    world: "world/world.php",
+    parcels: "/parcels.php",
+    resources: "/world/resource.php",
+    skills: "/skill_learn.php",
+    user: "/user.php",
+    world: "/world/world.php",
 }
 
 const delay = {
@@ -43,11 +51,11 @@ const delay = {
 }
 
 const api = {
-    capmonster: {
+    capMonster: {
         createTaskUrl: "https://api.capmonster.cloud/createTask",
         getResultUrl: "https://api.capmonster.cloud/getTaskResult",
     },
-    rucaptcha: {
+    ruCaptcha: {
         createTaskUrl: "https://rucaptcha.com/in.php",
         getResultUrl: "https://rucaptcha.com/res.php",
     },

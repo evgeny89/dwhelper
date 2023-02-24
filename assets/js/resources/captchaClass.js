@@ -75,8 +75,8 @@ class CaptchaBase {
 class CaptchaCapMonster extends CaptchaBase {
     constructor(lvl) {
         super(lvl);
-        this.token = captcha.capmonster.token;
-        this.urls = api.capmonster;
+        this.token = captcha.capMonster.token;
+        this.urls = api.capMonster;
         this.delimiter = ':';
     }
 
@@ -158,8 +158,8 @@ class CaptchaRuCaptcha extends CaptchaBase {
 
     constructor(lvl) {
         super(lvl);
-        this.token = captcha.rucaptcha.token;
-        this.urls = api.rucaptcha;
+        this.token = captcha.ruCaptcha.token;
+        this.urls = api.ruCaptcha;
         this.delimiter = ',';
     }
 

@@ -8,7 +8,7 @@ if (forgeLink) {
     const form = document.querySelector('form');
 
     if (complete) {
-        window.location = `${url.origin}/world/world.php${url.search}`;
+        window.location = `${url.origin}${pathNames.world}${url.search}`;
     }
 
     if (form) {

@@ -1,9 +1,9 @@
 (async () => {
     const url = new URL(document.location.href);
-    const response = await fetch(`${url.origin}/user.php${url.search}`);
+    const response = await fetch(`${url.origin}${pathNames.user}${url.search}`);
     if (response.ok) {
         const userPageText = await response.text();
-        const userPageBody = userPageText.replace(/\n/mg, '').match(/.*<body>(.+)<\/body>.*/);
+        const userPageBody = userPageText.replace(/\n/mg, '').match(/.*<body>(.+)<\/body>.*/)[1];
         const el = document.createElement('DIV');
         el.innerHTML = userPageBody;
         const div = el.querySelector(".mmain").nextElementSibling;
@@ -13,7 +13,7 @@
         let result = 0;
         for (const item of items) {
             const response = await fetch(item.querySelector('a[href*="&i=1&"]').href);
-            const text = await setTimeout(response.text, 300);
+            const text = await response.text();
             if (/\[Включено]/.test(text)) {
                 result++;
             }
