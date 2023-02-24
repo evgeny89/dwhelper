@@ -47,7 +47,7 @@ function actionItems() {
         case '0':
             break;
         case '1':
-            inSelectedFolder();
+            actionApply(words.toFolderLinkText);
             break;
         case '2':
             actionApply(words.inChestText);
@@ -56,9 +56,28 @@ function actionItems() {
             actionApply(words.outChestText);
             break;
         case '4':
-            saleItems();
+            actionApply(words.saleItemText);
             break;
     }
+}
+
+const getFormAction = (itemId) => {
+    const formAction = new URL(`${url.origin}${pathNames.inventory}`);
+    formAction.searchParams.set('chest', '1');
+    formAction.searchParams.set('item', itemId);
+    formAction.searchParams.set('UIN', url.searchParams.get('UIN'));
+    formAction.searchParams.set('pass', url.searchParams.get('pass'));
+
+    return formAction;
+}
+
+const getBody = () => {
+    const params = new URLSearchParams();
+    params.set('tofolder', state.inventory_actions.to_folders)
+    params.set('pass', atob(url.searchParams.get('pass')))
+    params.set('UIN', url.searchParams.get('UIN'))
+
+    return params;
 }
 
 const endAction = () => {
@@ -75,46 +94,48 @@ const fetchSale = async (link) => {
 
 }
 
-const saleItems = async () => {
-    const links = allLinks(words.saleItemText);
+const toFolders = async (link) => {
+    const itemUrl = new URL(link.href);
+    const action = getFormAction(itemUrl.searchParams.get('item'))
+
+    const response = await fetch(action.href, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: getBody().toString()
+    })
+    await response.text();
+}
+
+async function actionApply(text) {
+    if (text === words.toFolderLinkText && !+state.inventory_actions.to_folders) {
+        endAction();
+        return;
+    }
+
+    const links = allLinks(text);
     if (links.length) {
         showLoader();
         for (const link of links) {
-            await fetchSale(link);
+            switch (text) {
+                case words.saleItemText:
+                    await fetchSale(link);
+                    break;
+
+                case words.toFolderLinkText:
+                    await toFolders(link);
+                    break;
+
+                default:
+                    const response = await fetch(link.href);
+                    await response.text();
+            }
         }
         hideLoader();
         refresh();
     } else {
         endAction();
-    }
-}
-
-function actionApply(text) {
-    const actionLink = searchLink(text);
-    if (actionLink) {
-        actionLink.click();
-    } else {
-        endAction();
-    }
-}
-
-function inSelectedFolder() {
-    const toFolderLink = searchLink(words.toFolderLinkText);
-    const checkForm = checkText(words.toFolderText);
-    if (!+state.inventory_actions.to_folders) {
-        return;
-    }
-
-    if (toFolderLink) {
-        toFolderLink.click();
-    } else if (checkForm) {
-        const select = document.querySelector('[name="tofolder"]');
-        const currentOption = select.querySelector('option[value="' + state.inventory_actions.to_folders + '"]');
-        currentOption.selected = true;
-        document.querySelector('form').submit();
-    } else {
-        state.inventory_actions.moved = 0;
-        updateState({name: 'inventory_actions', value: state.inventory_actions})
     }
 }
 
