@@ -194,7 +194,7 @@ const pathBack = (user) => {
 }
 
 const checkInLair = (type, user) => {
-    if (searchLink(words.toLairsLobby)) {
+    if (searchLink(words.toLairsLobby) || url.pathname !== words.world) {
         return [words.toLairsLobby, getDungeonsLink(type, user.lvl)];
     }
 
