@@ -209,7 +209,7 @@ if (checkText(words.captcha)) {
     solve();
 }
 
-if (checkText(words.failLair)) {
+if (checkText(words.failLvlLair) || checkText(words.failTimeLair)) {
     dropMap();
 }
 
@@ -228,39 +228,39 @@ if (+state.world.map && !state.move.routes.length) {
         const routes = {
             1: [
                 info.getForward("lair"),
-                checkInLair(words.lairForsworn, info.lvl),
+                checkInLair(words.lairForsworn, info),
                 maps.fallen,
                 ...pathBack(info),
             ],
             2: [
                 info.getForward("lair"),
-                checkInLair(words.lairFallen, info.lvl),
+                checkInLair(words.lairFallen, info),
                 maps.fallen,
                 ...pathBack(info),
             ],
             3: [
                 info.getForward("lair"),
-                checkInLair(words.lairDragon, info.lvl),
+                checkInLair(words.lairDragon, info),
                 maps.dragons.entry,
                 'chooseDragonPath',
                 ...pathBack(info),
             ],
             4: [
                 info.getForward("lair"),
-                checkInLair(words.lairMysterious, info.lvl),
+                checkInLair(words.lairMysterious, info),
                 maps.mysterious,
                 ...pathBack(info),
             ],
             5: [
                 info.getForward("lair"),
-                checkInLair(words.lairFallen, info.lvl),
+                checkInLair(words.lairFallen, info),
                 maps.fallen,
                 [words.leaveLairsLobby, words.yes],
-                checkInLair(words.lairDragon, info.lvl),
+                checkInLair(words.lairDragon, info),
                 maps.dragons.entry,
                 'chooseDragonPath',
                 [words.leaveLairsLobby, words.yes],
-                checkInLair(words.lairMysterious, info.lvl),
+                checkInLair(words.lairMysterious, info),
                 maps.mysterious,
                 ...pathBack(info),
             ],
