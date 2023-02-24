@@ -42,6 +42,18 @@ const loaderSVG = () => {
 
 const loader = document.querySelector('#bot-loader');
 
+const showLoader = () => {
+    if (loader.style.display !== "flex") {
+        loader.style.display = "flex";
+    }
+}
+
+const hideLoader = () => {
+    if (loader.style.display !== "none") {
+        loader.style.display = "none";
+    }
+}
+
 chrome.runtime.sendMessage({action: 'get-state'}, function (res) {
     Object.assign(state, res);
     resetRefresh();

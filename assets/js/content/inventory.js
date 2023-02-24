@@ -78,9 +78,11 @@ const fetchSale = async (link) => {
 const saleItems = async () => {
     const links = allLinks(words.saleItemText);
     if (links.length) {
+        showLoader();
         for (const link of links) {
             await fetchSale(link);
         }
+        hideLoader();
         refresh();
     } else {
         endAction();
