@@ -152,6 +152,10 @@ async function scanSkills() {
         const skillsPageText = await response.text();
         const el = toHtml(skillsPageText)
         const table = el.querySelector('table');
+        if (!table) {
+            return {};
+        }
+
         const links = table.querySelectorAll('a[href*="info="]');
         const result = [];
         links.forEach(item => {
