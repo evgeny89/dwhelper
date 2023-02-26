@@ -183,10 +183,14 @@ chrome.storage.local.get(null, function (res) {
             if (request.action === 'scan-skills') {
                 chrome.tabs.query({currentWindow: true}, function (tabs) {
                     const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                    chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
-                        setState(response);
-                        sendResponse(true);
-                    });
+                    if (tab) {
+                        chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
+                            setState(response);
+                            sendResponse(true);
+                        });
+                    } else {
+                        sendResponse(false);
+                    }
                 });
                 return true;
             }
