@@ -4,6 +4,9 @@ const skillControls = document.querySelectorAll('input[name="skills[]"]');
 const [, currentHp, fullHp] = (function () {
     const uin = url.searchParams.get('UIN');
     const link = document.querySelector(`a[href*="user.php?id=${uin}"]`)
+    if (!link) {
+        return [0, 1, 1];
+    }
     const healthBar = link.parentElement.nextSibling;
     const regExp = /(\d+)\((\d+)\)/
     return healthBar.textContent.match(regExp);
