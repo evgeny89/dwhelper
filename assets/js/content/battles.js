@@ -1,23 +1,53 @@
 const form = document.querySelector("form");
 const activeSkills = Object.values(state.skills).filter(skill => skill.value);
 const skillControls = document.querySelectorAll('input[name="skills[]"]');
-
-const getHealthPoints = () => {
+const [, currentHp, fullHp] = (function () {
     const uin = url.searchParams.get('UIN');
     const link = document.querySelector(`a[href*="user.php?id=${uin}"]`)
     const healthBar = link.parentElement.nextSibling;
     const regExp = /(\d+)\((\d+)\)/
-    const [, current, full] = healthBar.textContent.match(regExp);
+    return healthBar.textContent.match(regExp);
+})()
 
-    return Math.floor(current * 100 / full);
+const situationalSkills = ['3', '97', '150'];
+
+const getHealthPoints = () => {
+    return Math.floor(currentHp * 100 / fullHp);
 }
 
-const isUseSkill = (id) => {
+const checkReadySituationSkill = (id) => {
     if (id === '3') {
-        const percents = getHealthPoints();
-        return percents < 95;
+        return getHealthPoints() < 95;
     }
-    return true;
+
+    if (id === '97' || id === '150') {
+        return settings.drawLifePoints < fullHp - currentHp;
+    }
+}
+
+const getGroupedSkills = (skill) => {
+    return activeSkills.filter(el => el.group === skill.group)
+}
+
+const isUseSkill = (skill) => {
+    if (skill.group) {
+        const controls = Object.values(skillControls).map(el => el.value);
+        return getGroupedSkills(skill).every((item, inx, group) => {
+            const readyAll = controls.includes(item.id)
+            const situationInGroup = group.filter(el => situationalSkills.includes(el.id));
+            if (situationInGroup.length) {
+                return situationInGroup.every(el => checkReadySituationSkill(el.id))
+            } else {
+                return readyAll;
+            }
+        })
+    } else {
+        if (situationalSkills.includes(skill.id)) {
+            return checkReadySituationSkill(skill.id)
+        }
+
+        return true;
+    }
 }
 
 const checkDefeat = () => {
@@ -31,8 +61,8 @@ const checkDefeat = () => {
 
 if (form) {
     skillControls.forEach(control => {
-        const index = activeSkills.findIndex(skill => skill.id === control.value)
-        if (index !== -1 && isUseSkill(control.value)) {
+        const skill = activeSkills.find(skill => skill.id === control.value)
+        if (skill && isUseSkill(skill)) {
             control.checked = true;
         }
     })
