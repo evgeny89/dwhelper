@@ -51,6 +51,7 @@ const initialState = {
         attack: false,
         attackAll: false,
         highLair: false,
+        slave: false,
         map: 0,
     },
     move: {
@@ -65,7 +66,10 @@ const state = {};
 const paths = {
     world: {
         url: "/world/world.php",
-        script: "./assets/js/content/world.js",
+        script: {
+            master: "./assets/js/content/world.js",
+            slave: "./assets/js/content/world-slave.js",
+        },
     },
     dungeon: {
         url: "/world/dungeon.php",
@@ -221,9 +225,17 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 break;
             case paths.world.url:
             case paths.dungeon.url:
+                const execPaths = [paths.service];
+
+                if (state.world.slave) {
+                    execPaths.push(paths.world.script.slave);
+                } else {
+                    execPaths.push(paths.world.script.master);
+                }
+
                 chrome.scripting.executeScript({
                     target: {tabId: tabId},
-                    files: [paths.world.script, paths.service],
+                    files: execPaths,
                 });
                 break;
             case paths.extract.url:
