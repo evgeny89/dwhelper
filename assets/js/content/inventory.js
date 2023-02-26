@@ -56,6 +56,9 @@ function actionItems() {
             actionApply(words.outChestText);
             break;
         case '4':
+            actionApply(words.fromFolderTextLink);
+            break;
+        case '5':
             actionApply(words.saleItemText);
             break;
     }
@@ -89,7 +92,7 @@ const fetchSale = async (link) => {
     const url = new URL(link.href);
     url.searchParams.set('yes', '1');
 
-    const response = await fetch(url);
+    const response = await fetch(url, {redirect: 'manual'});
     return response.text();
 
 }
@@ -103,6 +106,7 @@ const toFolders = async (link) => {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
+        redirect: 'manual',
         body: getBody().toString()
     })
     await response.text();
@@ -128,7 +132,7 @@ async function actionApply(text) {
                     break;
 
                 default:
-                    const response = await fetch(link.href);
+                    const response = await fetch(link.href, {redirect: 'manual'});
                     await response.text();
             }
         }
