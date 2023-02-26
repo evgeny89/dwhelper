@@ -105,6 +105,9 @@ const getDungeonsId = (name, lvl) => {
 const getDungeonsLink = (dungeonsName, userLvl) => {
     const dungeonID = getDungeonsId(dungeonsName, userLvl);
     url.searchParams.set('dungeon_id', String(dungeonID));
+    if (state.world.highLair) {
+        url.searchParams.set('hard', '1');
+    }
     return `${url.origin}${pathNames.lairLobby}${url.search}`;
 }
 

@@ -50,6 +50,7 @@ const initialState = {
     world: {
         attack: false,
         attackAll: false,
+        highLair: false,
         map: 0,
     },
     move: {
