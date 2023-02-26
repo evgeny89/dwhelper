@@ -94,8 +94,8 @@ class CaptchaCapMonster extends CaptchaBase {
         const json = await response.json();
         if (json.errorId) {
             hideLoader();
-            console.log(json.errorCode)
-            wait(10);
+            showInformer(json.errorCode)
+            wait(delay.tenSeconds);
         }
 
         if (json.status === "ready") {
@@ -127,8 +127,8 @@ class CaptchaCapMonster extends CaptchaBase {
             }
         } catch (e) {
             hideLoader();
-            console.log(e.message)
-            wait(3);
+            showInformer(e.message)
+            wait(delay.tenSeconds);
         }
     }
 
@@ -192,8 +192,8 @@ class CaptchaRuCaptcha extends CaptchaBase {
             }
         } else if (!json.status) {
             hideLoader();
-            console.log(json.request)
-            wait(10)
+            showInformer(json.request)
+            wait(delay.tenSeconds)
         }
     }
 
@@ -206,13 +206,20 @@ class CaptchaRuCaptcha extends CaptchaBase {
                 this.id = json.request;
                 this._waitResult();
             } else {
-                console.log(json.error_text)
-                wait(5);
+                if (json.request === "ERROR_ZERO_BALANCE") {
+                    hideLoader();
+                    showInformer("Недостаточно средств в сервисе капчи")
+                    state.global.captcha = 0;
+                    updateState({name: 'global', value: state.global});
+                } else {
+                    showInformer(json.error_text)
+                    wait(delay.tenSeconds);
+                }
             }
         } catch (e) {
             hideLoader();
-            console.log(e.message)
-            wait(3);
+            showInformer(e.message)
+            wait(delay.tenSeconds);
         }
     }
 

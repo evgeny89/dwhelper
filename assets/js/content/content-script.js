@@ -24,23 +24,38 @@ const loaderSVG = () => {
 }
 
 (function() {
-    const div = document.createElement('div');
-    div.style.position = "fixed";
-    div.style.top = "0";
-    div.style.width = "100%";
-    div.style.height = "100vh";
-    div.style.backgroundColor = "#0007";
-    div.style.display = "none";
-    div.style.alignItems = "center";
-    div.style.justifyContent = "center";
-    div.id = "bot-loader";
+    const backdrop = document.createElement('div');
+    backdrop.style.position = "fixed";
+    backdrop.style.top = "0";
+    backdrop.style.width = "100%";
+    backdrop.style.height = "100vh";
+    backdrop.style.backgroundColor = "#0007";
+    backdrop.style.display = "none";
+    backdrop.style.alignItems = "center";
+    backdrop.style.justifyContent = "center";
+    backdrop.id = "bot-loader";
 
-    div.insertAdjacentHTML('beforeend', loaderSVG());
+    const informer = document.createElement('div');
+    informer.style.position = "fixed";
+    informer.style.top = "5px";
+    informer.style.right = "0";
+    informer.style.display = "none";
+    informer.style.padding = "10px";
+    informer.style.backgroundColor = "#305e87";
+    informer.style.color = "#eefffd";
+    informer.style.borderRadius = "5px 0 0 5px";
+    informer.style.transform = "translateX(100%)";
+    informer.style.transition = ".5s transform";
+    informer.id = "bot-informer";
 
-    document.body.insertAdjacentElement('beforeend', div);
+    backdrop.insertAdjacentHTML('beforeend', loaderSVG());
+
+    document.body.insertAdjacentElement('beforeend', backdrop);
+    document.body.insertAdjacentElement('beforeend', informer);
 })()
 
 const loader = document.querySelector('#bot-loader');
+const informer = document.querySelector('#bot-informer');
 
 const showLoader = () => {
     if (loader.style.display !== "flex") {
@@ -51,6 +66,28 @@ const showLoader = () => {
 const hideLoader = () => {
     if (loader.style.display !== "none") {
         loader.style.display = "none";
+    }
+}
+
+const hideInformer = () => {
+    if (informer.style.display !== "none") {
+        informer.style.transform = "translateX(100%)";
+        setTimeout(() => {
+            informer.style.display = "none";
+            informer.textContent = "";
+        }, delay.long)
+    }
+}
+
+const showInformer = (text) => {
+    if (informer.style.display !== "block") {
+        informer.style.display = "block";
+        informer.textContent = text;
+        setTimeout(() => {
+            informer.style.transform = "translateX(0)";
+        }, 0)
+
+        setTimeout(hideInformer, delay.tenSeconds)
     }
 }
 
@@ -233,4 +270,3 @@ async function getServiceCaptchaInstance(lvlArg = null) {
 
     return object;
 }
-
