@@ -157,7 +157,7 @@ async function scanSkills() {
         links.forEach(item => {
             const name = item.textContent.trim();
             const id = new URL(item.href).searchParams.get('info');
-            result.push({name, id, value: false});
+            result.push({name, id, value: false, group: '0'});
         })
         return result;
     }

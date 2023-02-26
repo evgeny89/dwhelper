@@ -56,15 +56,7 @@ const setSelectOptions = (folders) => {
     }
 }
 
-const addSkillsControls = (skills) => {
-    const list = popup.querySelector('#skills');
-
-    if (!Object.keys(skills).length) {
-        list.innerText = "Отсканируйте умения";
-        return;
-    }
-
-    list.innerHTML = "";
+const addSkillListUsage = (skills) => {
     const wrapper = document.createElement('div');
     wrapper.classList.add('uk-column-1-3', 'uk-margin');
 
@@ -87,16 +79,98 @@ const addSkillsControls = (skills) => {
         wrapper.insertAdjacentElement('beforeend', el);
     }
 
-    list.insertAdjacentElement('beforeend', wrapper);
+    return wrapper;
+}
 
-    const controls = list.querySelectorAll('[data-state]');
+const getSelectFromGroupSkills = (key) => {
+    const options = [
+        {value: 0, name: 'не задано'},
+        {value: 1, name: '1я группа'},
+        {value: 2, name: '2я группа'},
+    ];
 
-    controls.forEach(item => {
+    const select = document.createElement('select');
+    select.dataset.state = `skills.${key}.group`;
+
+    options.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.value;
+        option.textContent = item.name;
+
+        if (option.value === state.skills[key].group) {
+            option.selected = true;
+        }
+
+        select.insertAdjacentElement('beforeend', option)
+    })
+
+    UIkit.formCustom(select);
+
+    return select;
+}
+
+const addSkillListGroups = (skills) => {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('uk-column-1-2', 'uk-margin');
+
+    for (const item in skills) {
+        const itemElement = document.createElement('div');
+        const customSelectElement = document.createElement('div');
+
+        itemElement.classList.add('uk-flex');
+        customSelectElement.classList.add('uk-margin-small-right');
+        customSelectElement.setAttribute('uk-form-custom', 'target: > * > span:last-child');
+
+        const selectElement = getSelectFromGroupSkills(item);
+
+        customSelectElement.insertAdjacentElement('beforeend', selectElement);
+        customSelectElement.insertAdjacentHTML('beforeend',
+            `<span class="uk-link">
+                    <span uk-icon="icon: pencil"></span>
+                    <span></span>
+                 </span>`);
+
+        itemElement.insertAdjacentElement('beforeend', customSelectElement)
+        itemElement.insertAdjacentHTML('beforeend', `<p class="uk-margin-remove">${state.skills[item].name}</p>`)
+
+        wrapper.insertAdjacentElement('beforeend', itemElement);
+    }
+
+    return wrapper;
+}
+
+const addSkillsControls = (skills) => {
+    const list = popup.querySelector('#skills');
+    const groups = popup.querySelector('#skills-group');
+
+    if (!Object.keys(skills).length) {
+        list.innerText = "Отсканируйте умения";
+        groups.innerText = "Отсканируйте умения";
+        return;
+    }
+
+    list.innerHTML = "";
+    list.insertAdjacentElement('beforeend', addSkillListUsage(skills));
+    const listControls = list.querySelectorAll('[data-state]');
+    listControls.forEach(item => {
         item.addEventListener('change', function (e) {
             const [property, subProperty, field] = e.target.dataset.state.split('.');
             state[property][subProperty][field] = e.target[elementsType[e.target.type]];
             updateState({name: property, value: {...state[property]}});
         });
+    })
+
+    groups.innerHTML = "";
+    groups.insertAdjacentElement('beforeend', addSkillListGroups(skills));
+    const groupsControls = groups.querySelectorAll('[data-state]');
+    groupsControls.forEach(item => {
+        item.addEventListener('change', (e) => {
+            const uiSelect = UIkit.formCustom(e.target);
+            const index = uiSelect.$el.options.selectedIndex;
+            const [property, subProperty, field] = e.target.dataset.state.split('.');
+            state[property][subProperty][field] = e.target.options[index].value;
+            updateState({name: property, value: {...state[property]}});
+        })
     })
 }
 
