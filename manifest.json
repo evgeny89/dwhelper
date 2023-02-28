@@ -2,13 +2,19 @@
   "manifest_version": 3,
   "name": "DreamWar helper",
   "description": "bot from site dreamwar.ru",
-  "version": "1.15.0",
+  "version": "1.15.2",
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "./assets/src/icon16.png",
+    "default_icon": "./assets/src/dw128.png",
     "default_title": "Бот from kas"
   },
-  "permissions": ["storage", "scripting", "tabs"],
+  "icons": {
+    "16": "./assets/src/dw16.png",
+    "32": "./assets/src/dw32.png",
+    "48": "./assets/src/dw48.png",
+    "128": "./assets/src/dw128.png"
+  },
+  "permissions": ["storage", "scripting", "tabs", "notifications"],
   "background": {
     "service_worker": "./assets/js/background.js"
   },
