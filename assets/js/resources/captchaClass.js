@@ -18,6 +18,7 @@ class CaptchaBase {
     }
 
     createTask(fn) {
+        notify("Капча");
         if (typeof fn === "function") fn();
     }
 
