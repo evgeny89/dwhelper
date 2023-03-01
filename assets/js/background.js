@@ -110,7 +110,7 @@ const clearState = () => {
     chrome.storage.local.set({...initialState});
 }
 
-const setBadge = (textBadge, colorBadge) => {
+const setBadge = (textBadge, colorBadge = "blue") => {
     if (textBadge && colorBadge) {
         chrome.action.setBadgeText({text: textBadge});
         chrome.action.setBadgeBackgroundColor({color: colorBadge});

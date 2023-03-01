@@ -321,3 +321,11 @@ if (+state.world.map && !state.move.routes.length) {
         dropMap();
     }
 }
+
+// заглушка, пока не пойму, почему не скидывается карта...
+if (!+state.world.map && state.move.routes.length) {
+    state.move.routes = [];
+    state.move.step = 0;
+    state.move.active = 0;
+    updateState({name: "move", value: {...state.move}});
+}
