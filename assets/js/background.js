@@ -117,6 +117,35 @@ const setBadge = (textBadge, colorBadge) => {
     }
 }
 
+function playSound() {
+    let url = chrome.runtime.getURL('assets/src/audio.html');
+
+    chrome.windows.create({
+        type: 'panel',
+        focused: true,
+        top: 50,
+        left: 1,
+        height: 1,
+        width: 260,
+        url,
+    })
+}
+
+const showMessage = (payload) => {
+    const message = {
+        type: 'basic',
+        iconUrl: './../src/dw128.png',
+        title: "Информация",
+        message: payload.text,
+    }
+
+    chrome.notifications.create("myNotificationID", message, function() {
+        if (payload.warn) {
+            playSound();
+        }
+    })
+}
+
 chrome.runtime.onInstalled.addListener(function (details) {
     /*    if(details.reason === "install"){
             console.log("This is a first install!");
@@ -137,6 +166,10 @@ chrome.storage.local.get(null, function (res) {
             }
             if (request.action === "clear-state") {
                 clearState();
+                sendResponse(true);
+            }
+            if (request.action === "show-message") {
+                showMessage(request.payload);
                 sendResponse(true);
             }
             if (request.action === "set-state") {
