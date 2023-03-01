@@ -45,6 +45,15 @@
                             </span>
                         </label>
                     </div>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="global.sound">
+                            вкл/выкл звук
+                            <span class="popup-tooltip" data-text="?"
+                                  uk-tooltip="если включено, то уведомления будут воспроизводить звук">
+                            </span>
+                        </label>
+                    </div>
                 </li>
                 <li>
                     <div class="uk-margin">
@@ -53,10 +62,8 @@
                             <input class="uk-input uk-form-blank uk-form-width-medium uk-form-small" type="number"
                                    min="0" max="300" placeholder="минуты" id="sleep-time-input"
                                    uk-tooltip="от 1 до 300">
-                            <span class="uk-label uk-label-success uk-flex-top">help</span>
+                            <button class="uk-button uk-button-primary uk-button-small" id="sleep-time-btn">установить</button>
                         </div>
-                        <button class="uk-button uk-button-primary uk-button-small" id="sleep-time-btn">установить
-                        </button>
                     </div>
                 </li>
             </ul>

@@ -1,6 +1,7 @@
 // state
 const initialState = {
     global: {
+        sound: false,
         isRefresh: false,
         run: false,
         sleep: null,
@@ -140,7 +141,7 @@ const showMessage = (payload) => {
     }
 
     chrome.notifications.create("myNotificationID", message, function() {
-        if (payload.warn) {
+        if (payload.warn || state.global.sound) {
             playSound();
         }
     })
