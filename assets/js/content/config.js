@@ -4,6 +4,7 @@ const settings = {
 
 const words = {
     arena: "Вход на Арену",
+    changeEnemy: "Сменить",
     captcha: "Введите код",
     castleName: "Великая Русь",
     defeat: "Поражение",
@@ -13,6 +14,7 @@ const words = {
     fromFolderTextLink: "Из отдела",
     getLinkText: "Добыть",
     gotToLand: "В земли грез",
+    help: "Помочь",
     inBattle: "В бой",
     inChestText: "В рюкзак",
     inventoryLinkText: "Инвентарь",

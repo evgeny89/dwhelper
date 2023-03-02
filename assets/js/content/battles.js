@@ -122,6 +122,9 @@ if (state.world.scrollLife && currentHp < +state.world.scrollLife) {
 }
 
 if (form) {
+    const changeLink = searchLink(words.changeEnemy)
+    const delayTime = changeLink ? delay.fast : delay.long;
+
     if (useSkills) {
         skillControls.forEach(control => {
             const skill = activeSkills.find(skill => skill.id === control.value)
@@ -133,7 +136,7 @@ if (form) {
 
     setTimeout((el) => {
         el.submit();
-    }, delay.fast, form);
+    }, delayTime, form);
 } else {
     setTimeout(() => {
         const toWorld = searchLink(words.gotToLand);

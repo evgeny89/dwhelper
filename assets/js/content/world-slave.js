@@ -1,7 +1,13 @@
-const battleLink = searchLink(words.inBattle);
+const helpLink = searchLink(words.help);
 
-if (battleLink) {
-    battleLink.click();
+if (helpLink) {
+    helpLink.click();
 } else {
-    wait(5);
+     const battleLink = searchLink(words.inBattle);
+
+     if (battleLink) {
+         battleLink.click();
+     } else {
+        setTimeout(refresh, 5000)
+    }
 }
