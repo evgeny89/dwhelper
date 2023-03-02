@@ -18,8 +18,11 @@ class CaptchaBase {
     }
 
     createTask(fn) {
-        notify("Капча");
-        if (typeof fn === "function") fn();
+        if (typeof fn === "function") {
+            fn();
+        } else {
+            notify("Капча");
+        }
     }
 
     getImage(imgElement) {
