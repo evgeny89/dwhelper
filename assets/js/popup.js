@@ -15,6 +15,7 @@ const elementsType = {
     'checkbox': 'checked',
     'radio': 'value',
     'text': 'value',
+    'number': 'value',
     'select': 'selectedIndex'
 }
 

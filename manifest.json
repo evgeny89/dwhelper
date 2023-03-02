@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "DreamWar helper",
   "description": "bot from site dreamwar.ru",
-  "version": "1.16.3",
+  "version": "1.17.0",
   "action": {
     "default_popup": "popup.html",
     "default_icon": "./assets/src/dw128.png",

@@ -1,3 +1,4 @@
+let useSkills = true;
 const form = document.querySelector("form");
 const activeSkills = Object.values(state.skills).filter(skill => skill.value);
 const skillControls = document.querySelectorAll('input[name="skills[]"]');
@@ -11,6 +12,19 @@ const [, currentHp, fullHp] = (function () {
     const regExp = /(\d+)\((\d+)\)/
     return healthBar.textContent.match(regExp);
 })()
+const [, currentMana] = (function () {
+    if (form) {
+        const regExp = /Ваши MP: (\d+)/
+        return document.body.textContent.match(regExp);
+    }
+
+    return [0, 0];
+})()
+
+const scrollTypes = {
+    hp: "полного",
+    mp: "маны",
+}
 
 const situationalSkills = ['3', '97', '150'];
 
@@ -19,10 +33,12 @@ const getHealthPoints = () => {
 }
 
 const checkReadySituationSkill = (id) => {
+    // перевязка
     if (id === '3') {
         return getHealthPoints() < 95;
     }
 
+    // вытянуть жизни
     if (id === '97' || id === '150') {
         return settings.drawLifePoints < fullHp - currentHp;
     }
@@ -33,7 +49,7 @@ const getGroupedSkills = (skill) => {
 }
 
 const isUseSkill = (skill) => {
-    if (skill.group) {
+    if (+skill.group) {
         const controls = Object.values(skillControls).map(el => el.value);
         return getGroupedSkills(skill).every((item, inx, group) => {
             const readyAll = controls.includes(item.id)
@@ -61,14 +77,39 @@ const checkDefeat = () => {
     }
 }
 
+const setScrolls = (type) => {
+    if (!form) return;
+
+    const regEx = new RegExp(type)
+    const select = form.elements.tid
+
+    if (!select) return;
+
+    const option = Array
+        .from(select.options)
+        .find(item => regEx.test(item.textContent))
+
+    if (!option) return;
+
+    useSkills = false
+    option.selected = true
+}
+
+if (state.world.scrollLife && currentHp < +state.world.scrollLife) {
+    setScrolls(scrollTypes.hp);
+} else if (state.world.scrollMana && currentMana < +state.world.scrollMana) {
+    setScrolls(scrollTypes.mp);
+}
 
 if (form) {
-    skillControls.forEach(control => {
-        const skill = activeSkills.find(skill => skill.id === control.value)
-        if (skill && isUseSkill(skill)) {
-            control.checked = true;
-        }
-    })
+    if (useSkills) {
+        skillControls.forEach(control => {
+            const skill = activeSkills.find(skill => skill.id === control.value)
+            if (skill && isUseSkill(skill)) {
+                control.checked = true;
+            }
+        })
+    }
 
     setTimeout((el) => {
         el.submit();

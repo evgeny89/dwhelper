@@ -54,6 +54,8 @@ const initialState = {
         highLair: false,
         slave: false,
         map: 0,
+        scrollLife: null,
+        scrollMana: null,
     },
     move: {
         routes: [],
