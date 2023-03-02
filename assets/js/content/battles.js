@@ -26,21 +26,41 @@ const scrollTypes = {
     mp: "маны",
 }
 
-const situationalSkills = ['3', '97', '150'];
+const situationalSkills = ['3', '97', '150', '133', '136', '180', '125', '124', '13', '12', '11', '10', '9'];
 
 const getHealthPoints = () => {
     return Math.floor(currentHp * 100 / fullHp);
 }
 
 const checkReadySituationSkill = (id) => {
-    // перевязка
-    if (id === '3') {
-        return getHealthPoints() < 95;
-    }
-
-    // вытянуть жизни
-    if (id === '97' || id === '150') {
-        return settings.drawLifePoints < fullHp - currentHp;
+    const needHp =  fullHp - currentHp;
+    // 40+ only
+    switch (id) {
+        case '3': // перевязка
+            return getHealthPoints() < 95;
+        case '97': // Вытянуть жизнь I
+        case '150': // Вытянуть жизнь II
+            return needHp > settings.drawLifePoints;
+        case '133': // Восстановить силы I
+            return needHp > 2500
+        case '136': // Восстановить силы II
+            return needHp > 4000
+        case '180': // Исцеление XII
+            return needHp > 4000
+        case '125': // Исцеление XI
+            return needHp > 2800
+        case '124': // Исцеление X
+            return needHp > 2000
+        case '13': // Исцеление IX
+            return needHp > 1500
+        case '12': // Исцеление VIII
+            return needHp > 1200
+        case '11': // Исцеление VII
+            return needHp > 1050
+        case '10': // Исцеление VI
+            return needHp > 900
+        case '9': // Исцеление V
+            return needHp > 750
     }
 }
 
