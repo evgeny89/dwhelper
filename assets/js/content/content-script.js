@@ -83,6 +83,13 @@ chrome.storage.onChanged.addListener(function (changes) {
         setTimeout(refresh, delay.long);
     }
 
+    if (+changes.global.newValue.captcha && !+changes.global.oldValue.captcha) {
+        setBadge('$', '#ecaa15');
+    }
+    if (!+changes.global.newValue.captcha && +changes.global.oldValue.captcha) {
+        setBadge('');
+    }
+
     if (!state.global.run) {
         // если бот вырублен, то нет смысла обрабатывать изменения ниже...
         return;
@@ -118,6 +125,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 function updateState(payload, type = 'update') {
     chrome.runtime.sendMessage({action: 'set-state', type, payload});
+}
+
+function setBadge(text, color = 'blue') {
+    updateState({text, color}, 'badge')
 }
 
 const notify = (text, warn = false) => {

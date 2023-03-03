@@ -113,11 +113,9 @@ const clearState = () => {
     chrome.storage.local.set({...initialState});
 }
 
-const setBadge = (textBadge, colorBadge = "blue") => {
-    if (textBadge && colorBadge) {
-        chrome.action.setBadgeText({text: textBadge});
-        chrome.action.setBadgeBackgroundColor({color: colorBadge});
-    }
+const setBadge = (textBadge = '', colorBadge = "blue") => {
+    chrome.action.setBadgeText({text: textBadge});
+    chrome.action.setBadgeBackgroundColor({color: colorBadge});
 }
 
 function playSound() {
@@ -177,9 +175,9 @@ chrome.storage.local.get(null, function (res) {
             }
             if (request.action === "set-state") {
                 if (request.type === "badge") {
-                    const count = request.payload.value.textBadge;
-                    const color = request.payload.value.colorBadge;
-                    setBadge(count, color);
+                    const text = request.payload.text;
+                    const color = request.payload.color;
+                    setBadge(text, color);
                 }
                 if (request.type === "sleep") {
                     const time = new Date(request.payload.value.sleep).getTime() - Date.now();
