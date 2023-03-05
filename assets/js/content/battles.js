@@ -33,7 +33,7 @@ const getHealthPoints = () => {
 }
 
 const checkReadySituationSkill = (id) => {
-    const needHp =  fullHp - currentHp;
+    const needHp = fullHp - currentHp;
     // 40+ only
     switch (id) {
         case '3': // перевязка
