@@ -71,15 +71,16 @@ const getGroupedSkills = (skill) => {
 const isUseSkill = (skill) => {
     if (+skill.group) {
         const controls = Object.values(skillControls).map(el => el.value);
-        return getGroupedSkills(skill).every((item, inx, group) => {
-            const readyAll = controls.includes(item.id)
-            const situationInGroup = group.filter(el => situationalSkills.includes(el.id));
-            if (situationInGroup.length) {
-                return situationInGroup.every(el => checkReadySituationSkill(el.id))
-            } else {
-                return readyAll;
-            }
-        })
+        return getGroupedSkills(skill)
+            .every((item, inx, group) => {
+                const readySkill = controls.includes(item.id)
+                const situationInGroup = group.filter(el => situationalSkills.includes(el.id));
+                if (situationInGroup.length) {
+                    return situationInGroup.every(el => checkReadySituationSkill(el.id)) && readySkill
+                } else {
+                    return readySkill;
+                }
+            })
     } else {
         if (situationalSkills.includes(skill.id)) {
             return checkReadySituationSkill(skill.id)
