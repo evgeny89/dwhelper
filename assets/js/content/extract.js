@@ -8,7 +8,7 @@ const waitResources = () => {
     } else {
         state.extract.is_refresh = true;
     }
-    updateState({name: 'extract', value: state.extract});
+    updateState({extract: state.extract});
 
     const link = searchLink(words.refreshLinkText);
     if (link) {
@@ -18,7 +18,7 @@ const waitResources = () => {
 
 const fixEmptyImage = () => {
     state.extract.is_entered_code = false;
-    updateState({name: 'extract', value: state.extract});
+    updateState({extract: state.extract});
     setTimeout(() => {
         window.location.href = window.location.href;
     }, delay.long)
@@ -44,7 +44,7 @@ const usually = (noCaptcha = false) => {
             } else {
                 notify("Капча");
                 state.extract.is_entered_code = true;
-                updateState({name: 'extract', value: state.extract});
+                updateState({extract: state.extract});
             }
         }
     } else {
@@ -64,7 +64,7 @@ const useService = async () => {
 
             if (localAnswer) {
                 state.extract.is_entered_code = true;
-                updateState({name: 'extract', value: state.extract});
+                updateState({extract: state.extract});
                 instance.submitCode(localAnswer);
             } else {
                 await instance.createTask(usually);

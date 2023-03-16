@@ -157,7 +157,7 @@ const addSkillsControls = (skills) => {
         item.addEventListener('change', function (e) {
             const [property, subProperty, field] = e.target.dataset.state.split('.');
             state[property][subProperty][field] = e.target[elementsType[e.target.type]];
-            updateState({name: property, value: {...state[property]}});
+            updateState({[property]: state[property]});
         });
     })
 
@@ -170,7 +170,7 @@ const addSkillsControls = (skills) => {
             const index = uiSelect.$el.options.selectedIndex;
             const [property, subProperty, field] = e.target.dataset.state.split('.');
             state[property][subProperty][field] = e.target.options[index].value;
-            updateState({name: property, value: {...state[property]}});
+            updateState({[property]: state[property]});
         })
     })
 }
@@ -231,7 +231,7 @@ const scanFolders = async () => {
     const res = await sendMessageOnClickButton('scan-folders', 'scan-folders');
     if (res) {
         state.inventory_actions.to_folders = 0;
-        updateState({name: 'inventory_actions', value: {...state.inventory_actions}});
+        updateState({inventory_actions: state.inventory_actions});
         showSuccessMessage('Отделы сканированы')
     } else {
         showErrorMessage('Ошибка сканирования отделов')
@@ -251,7 +251,7 @@ const setSleepTime = () => {
     } else {
         const time = Date.now() + minutes * 60000;
         state.global.sleep = new Date(time).toISOString();
-        updateState({name: 'global', value: {...state.global}}, 'sleep');
+        updateState({global: state.global}, 'sleep');
         sleepInput.value = '';
         showSuccessMessage('Время задано')
     }
@@ -263,7 +263,7 @@ const closeSleepTime = (sleep) => {
     if (sleep) {
         state.global.run = false;
     }
-    updateState({name: 'global', value: {...state.global}}, 'cancel-sleep');
+    updateState({global: state.global}, 'cancel-sleep');
 }
 
 const addListeners = () => {
@@ -274,13 +274,13 @@ const addListeners = () => {
                 const index = uiSelect.$el.options.selectedIndex;
                 const [property, subProperty] = e.target.dataset.state.split('.');
                 state[property][subProperty] = e.target.options[index].value;
-                updateState({name: property, value: {...state[property]}});
+                updateState({[property]: state[property]});
             })
         } else {
             el.addEventListener('change', function (e) {
                 const [property, subProperty] = e.target.dataset.state.split('.');
                 state[property][subProperty] = e.target[elementsType[e.target.type]];
-                updateState({name: property, value: {...state[property]}});
+                updateState({[property]: state[property]});
             });
         }
     });

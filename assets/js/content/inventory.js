@@ -85,7 +85,7 @@ const getBody = () => {
 
 const endAction = () => {
     state.inventory_actions.moved = 0;
-    updateState({name: 'inventory_actions', value: state.inventory_actions})
+    updateState({inventory_actions: state.inventory_actions})
 }
 
 const fetchSale = async (link) => {

@@ -79,7 +79,7 @@ const doStep = (direction) => {
         link.click();
     } else {
         state.move.step -= 1;
-        updateState({name: 'move', value: {...state.move}})
+        updateState({move: state.move})
     }
 }
 
@@ -119,12 +119,12 @@ const goToUrl = (url) => {
 
 const updateStepInState = () => {
     state.move.step += 1;
-    updateState({name: 'move', value: {...state.move}})
+    updateState({move: state.move})
 }
 
 const dropMap = () => {
     state.world.map = 0;
-    updateState({name: 'world', value: {...state.world}});
+    updateState({world: state.world});
 }
 
 const solve = async () => {
@@ -282,7 +282,7 @@ if (+state.world.map && !state.move.routes.length) {
         }
 
         state.move.routes = routes[+state.world.map];
-        updateState({name: 'move', value: {...state.move}});
+        updateState({move: state.move});
         refresh();
     })();
 } else if (+state.world.map && state.move.routes.length && increment) {
@@ -297,7 +297,7 @@ if (+state.world.map && !state.move.routes.length) {
         } else if (routeFunctions.hasOwnProperty(activeRoute)) {
             (async () => {
                 state.move.routes[state.move.active] = await routeFunctions[activeRoute]();
-                updateState({name: 'move', value: {...state.move}});
+                updateState({move: state.move});
                 refresh();
             })()
         } else if (isNaN(currentStep)) {
@@ -315,7 +315,7 @@ if (+state.world.map && !state.move.routes.length) {
     } else if (state.world.map && state.move.routes[state.move.active + 1]) {
         state.move.active += 1;
         state.move.step = 0;
-        updateState({name: 'move', value: {...state.move}});
+        updateState({move: state.move});
         setTimeout(refresh, delay.long);
     } else {
         dropMap();
@@ -327,5 +327,5 @@ if (!+state.world.map && state.move.routes.length) {
     state.move.routes = [];
     state.move.step = 0;
     state.move.active = 0;
-    updateState({name: "move", value: {...state.move}});
+    updateState({move: state.move});
 }

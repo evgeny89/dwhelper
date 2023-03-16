@@ -94,7 +94,7 @@ const checkDefeat = () => {
     const defeat = checkText(words.defeat);
     if (defeat && state.world.map) {
         state.world.map = 0;
-        updateState({name: 'world', value: {...state.world}});
+        updateState({world: state.world});
     }
 }
 

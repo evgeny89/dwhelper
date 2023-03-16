@@ -105,7 +105,7 @@ const paths = {
 };
 
 const setState = (payload) => {
-    chrome.storage.local.set({[payload.name]: {...payload.value}});
+    chrome.storage.local.set(payload);
 }
 
 const clearState = () => {
@@ -200,8 +200,12 @@ chrome.storage.local.get(null, function (res) {
                         state.move.step = 0;
                         state.move.active = 0;
                         setState({name: "move", value: {...state.move}});
+                        console.log(state.world)
+                        console.log(state.move)
+                        console.log(request.payload)
                     }
                 }
+                console.log("set-state", request.payload)
                 setState(request.payload);
             }
             if (request.action === 'scan-folders') {

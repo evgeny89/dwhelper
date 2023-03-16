@@ -21,7 +21,7 @@
         if (result) {
             state.global.textBadge = result;
             state.global.colorBadge = result > 0 ? "#bd1c1c" : "#40963d";
-            updateState({name: 'global', value: state.global}, 'badge');
+            updateState({global: state.global}, 'badge');
         }
     }
 })();

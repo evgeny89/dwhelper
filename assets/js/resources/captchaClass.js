@@ -214,7 +214,7 @@ class CaptchaRuCaptcha extends CaptchaBase {
                     hideLoader();
                     notify("Недостаточно средств в сервисе капчи", true)
                     state.global.captcha = 0;
-                    updateState({name: 'global', value: state.global});
+                    updateState({global: state.global});
                 } else {
                     notify(json.error_text)
                     wait(delay.tenSeconds);

@@ -83,10 +83,10 @@ chrome.storage.onChanged.addListener(function (changes) {
         setTimeout(refresh, delay.long);
     }
 
-    if (+changes.global.newValue.captcha && !+changes.global.oldValue.captcha) {
+    if (changes.global && +changes.global.newValue.captcha && !+changes.global.oldValue.captcha) {
         setBadge('$', '#ecaa15');
     }
-    if (!+changes.global.newValue.captcha && +changes.global.oldValue.captcha) {
+    if (changes.global && !+changes.global.newValue.captcha && +changes.global.oldValue.captcha) {
         setBadge('');
     }
 
@@ -195,7 +195,7 @@ async function getInfo() {
 
 function wait(sec = 0) {
     state.global.isRefresh = true;
-    updateState({name: 'global', value: state.global});
+    updateState({global: state.global});
     setTimeout(refresh, sec * 1000);
 }
 
@@ -219,7 +219,7 @@ function checkText(text) {
 function resetRefresh() {
     if (state.global.isRefresh) {
         state.global.isRefresh = false;
-        updateState({name: 'global', value: state.global});
+        updateState({global: state.global});
     }
 }
 

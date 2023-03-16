@@ -1,7 +1,7 @@
 if (state.no_refresh.link !== null) {
     const link = state.no_refresh.link;
     state.no_refresh.link = null;
-    updateState({name: 'no_refresh', value: {...state.no_refresh}});
+    updateState({no_refresh: state.no_refresh});
     document.location.href = link;
 }
 
@@ -42,5 +42,5 @@ if (url.searchParams.get('write') && state.parcels.fill) {
 
 function setLink() {
     state.no_refresh.link = url.href;
-    updateState({name: 'no_refresh', value: {...state.no_refresh}});
+    updateState({no_refresh: state.no_refresh});
 }
