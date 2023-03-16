@@ -109,13 +109,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         case "scan-folders":
             scanFolders()
                 .then(folders => {
-                    sendResponse({name: 'folders', value: folders})
+                    sendResponse({folders: folders})
                 });
             return true;
         case "scan-skills":
             scanSkills()
                 .then(skillList => {
-                    sendResponse({name: 'skills', value: skillList})
+                    sendResponse({skills: skillList})
                 });
             return true;
         default:
