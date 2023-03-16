@@ -1,5 +1,18 @@
 // state
 const initialState = {
+    battles: {
+        run: false,
+    },
+    castle: {
+        run: false,
+    },
+    extract: {
+        run: false,
+        type: 0,
+        is_refresh: true,
+        is_entered_code: false,
+    },
+    folders: {},
     global: {
         sound: false,
         isRefresh: false,
@@ -10,15 +23,24 @@ const initialState = {
         colorBadge: '',
         captcha: 0,
     },
+    inventory_actions: {
+        moved: 0,
+        to_folders: 0,
+    },
+    inventory_filters: {
+        stones: 0,
+        class: 0,
+        sets: false,
+        mods: false,
+    },
+    move: {
+        routes: [],
+        active: 0,
+        step: 0,
+    },
     no_refresh: {
         link: null,
         sleepId: null,
-    },
-    totems: {
-        run: false,
-    },
-    castle: {
-        run: false,
     },
     parcels: {
         send: false,
@@ -27,25 +49,8 @@ const initialState = {
         theme: '1',
         text: '1',
     },
-    extract: {
-        run: false,
-        type: 0,
-        is_refresh: true,
-        is_entered_code: false,
-    },
-    inventory_filters: {
-        stones: 0,
-        class: 0,
-        sets: false,
-        mods: false,
-    },
-    inventory_actions: {
-        moved: 0,
-        to_folders: 0,
-    },
-    folders: {},
     skills: {},
-    battles: {
+    totems: {
         run: false,
     },
     world: {
@@ -56,11 +61,6 @@ const initialState = {
         map: 0,
         scrollLife: null,
         scrollMana: null,
-    },
-    move: {
-        routes: [],
-        active: 0,
-        step: 0,
     },
 };
 
@@ -162,6 +162,9 @@ chrome.storage.local.get(null, function (res) {
 
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
+
+            let data = {...request.payload}
+
             if (request.action === "get-state") {
                 sendResponse(state);
             }
@@ -170,43 +173,48 @@ chrome.storage.local.get(null, function (res) {
                 sendResponse(true);
             }
             if (request.action === "show-message") {
-                showMessage(request.payload);
+                showMessage(data);
                 sendResponse(true);
             }
             if (request.action === "set-state") {
                 if (request.type === "badge") {
-                    const text = request.payload.text;
-                    const color = request.payload.color;
+                    const text =data.text;
+                    const color = data.color;
                     setBadge(text, color);
                 }
                 if (request.type === "sleep") {
-                    const time = new Date(request.payload.value.sleep).getTime() - Date.now();
+                    const time = new Date(data.global.sleep).getTime() - Date.now();
                     if (state.no_refresh.sleepId) {
                         clearTimeout(state.no_refresh.sleepId);
                     }
                     state.no_refresh.sleepId = setTimeout(() => {
                         state.global.sleep = null;
                         state.global.run = false;
-                        setState({name: 'global', value: {...state.global}});
+                        data = {
+                            global: state.global,
+                            ...data
+                        }
                     }, time);
-                    setState({name: 'no_refresh', value: {...state.no_refresh}});
+                    data = {
+                        no_refresh: state.no_refresh,
+                        ...data
+                    }
                 }
                 if (request.type === "cancel-sleep") {
                     clearTimeout(state.no_refresh.sleepId);
                 }
                 if (request.type === "update") {
-                    if (request.payload.name === "world" && request.payload.value.map === '0') {
+                    if (data.world && data.world.map === '0') {
                         state.move.routes = [];
                         state.move.step = 0;
                         state.move.active = 0;
-                        setState({name: "move", value: {...state.move}});
-                        console.log(state.world)
-                        console.log(state.move)
-                        console.log(request.payload)
+                        data = {
+                            move: state.move,
+                            ...data
+                        }
                     }
                 }
-                console.log("set-state", request.payload)
-                setState(request.payload);
+                setState(data);
             }
             if (request.action === 'scan-folders') {
                 chrome.tabs.query({currentWindow: true}, function (tabs) {

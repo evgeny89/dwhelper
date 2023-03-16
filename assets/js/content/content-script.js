@@ -66,7 +66,7 @@ chrome.storage.onChanged.addListener(function (changes) {
     }
 
     if (
-        (changes.hasOwnProperty('global') && !changes.global.newValue.run && changes.global.oldValue.run) || (
+        (changes.hasOwnProperty('global') && !changes.global.newValue?.run && changes.global.oldValue?.run) || (
             state.global.run &&
             (
                 (changes.hasOwnProperty('global') && !changes.global.newValue.isRefresh)||
@@ -99,7 +99,7 @@ chrome.storage.onChanged.addListener(function (changes) {
         runFilter();
     }
 
-    if (url.pathname !== pathNames.world && changes.hasOwnProperty('world') && changes.world.newValue.map !== 0 && changes.world.oldValue.map === 0) {
+    if (url.pathname !== pathNames.world && changes.hasOwnProperty('world') && +changes.world.newValue.map !== 0 && +changes.world.oldValue.map === 0) {
         window.location.href = `${url.origin}${pathNames.world}${url.search}`;
     }
 });

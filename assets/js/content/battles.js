@@ -92,7 +92,7 @@ const isUseSkill = (skill) => {
 
 const checkDefeat = () => {
     const defeat = checkText(words.defeat);
-    if (defeat && state.world.map) {
+    if (defeat && +state.world.map) {
         state.world.map = 0;
         updateState({world: state.world});
     }

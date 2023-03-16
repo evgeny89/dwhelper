@@ -312,7 +312,7 @@ if (+state.world.map && !state.move.routes.length) {
             updateStepInState();
             setTimeout(doStep, delay.fast, currentStep);
         }
-    } else if (state.world.map && state.move.routes[state.move.active + 1]) {
+    } else if (+state.world.map && state.move.routes[state.move.active + 1]) {
         state.move.active += 1;
         state.move.step = 0;
         updateState({move: state.move});
@@ -320,12 +320,4 @@ if (+state.world.map && !state.move.routes.length) {
     } else {
         dropMap();
     }
-}
-
-// заглушка, пока не пойму, почему не скидывается карта...
-if (!+state.world.map && state.move.routes.length) {
-    state.move.routes = [];
-    state.move.step = 0;
-    state.move.active = 0;
-    updateState({move: state.move});
 }
