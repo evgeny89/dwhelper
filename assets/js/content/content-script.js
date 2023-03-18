@@ -29,7 +29,7 @@ const loaderSVG = () => {
     backdrop.style.top = "0";
     backdrop.style.width = "100%";
     backdrop.style.height = "100vh";
-    backdrop.style.backgroundColor = "#0007";
+    backdrop.style.backgroundColor = "#0003";
     backdrop.style.display = "none";
     backdrop.style.alignItems = "center";
     backdrop.style.justifyContent = "center";
