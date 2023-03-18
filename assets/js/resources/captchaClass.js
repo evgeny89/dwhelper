@@ -4,6 +4,7 @@ class CaptchaBase {
     constructor(lvl) {
         this.loop = 1;
         this.maxLoop = 5;
+        this.warn = false;
         this.validator = new RegExp(/^\d{5,6}$/);
         this.localQuestions = {
             lvl: {
@@ -16,6 +17,8 @@ class CaptchaBase {
             }
         }
     }
+
+    _wait(){}
 
     createTask(fn) {
         if (typeof fn === "function") {
@@ -62,6 +65,15 @@ class CaptchaBase {
         const value = (typeof number === "string") ? number : number.toString();
         return this.validator.test(value);
     }
+
+    _waitResult(timer = 3000) {
+        if (this.loop > this.maxLoop) {
+            hideLoader();
+            this.loop = 1;
+            return null;
+        }
+        setTimeout(this._wait.bind(this), this.loop * timer);
+    }
 }
 
 class CaptchaCapMonster extends CaptchaBase {
@@ -99,7 +111,7 @@ class CaptchaCapMonster extends CaptchaBase {
         if (json.errorId) {
             hideLoader();
             notify(json.errorCode)
-            wait(delay.tenSeconds);
+            wait(10);
         }
 
         if (json.status === "ready") {
@@ -114,7 +126,7 @@ class CaptchaCapMonster extends CaptchaBase {
 
         if (json.status === "processing") {
             this.loop += 1;
-            this._waitResult();
+            this._waitResult(delay.long);
         }
     }
 
@@ -125,24 +137,15 @@ class CaptchaCapMonster extends CaptchaBase {
             const json = await response.json();
             if (json.taskId) {
                 this.id = json.taskId;
-                this._waitResult();
+                this._waitResult(delay.long);
             } else {
                 wait(5);
             }
         } catch (e) {
             hideLoader();
             notify(e.message)
-            wait(delay.tenSeconds);
+            wait(10);
         }
-    }
-
-    _waitResult() {
-        if (this.loop > this.maxLoop) {
-            hideLoader();
-            this.loop = 1;
-            return null;
-        }
-        setTimeout(this._wait.bind(this), this.loop * 1000);
     }
 }
 
@@ -186,7 +189,7 @@ class CaptchaRuCaptcha extends CaptchaBase {
         const json = await response.json();
         if (json.request === "CAPCHA_NOT_READY") {
             this.loop += 1;
-            this._waitResult();
+            this._waitResult(delay.fiveSeconds);
         } else if (json.status) {
             if (this._validation(json.request)) {
                 this.submitCode(json.request);
@@ -196,8 +199,11 @@ class CaptchaRuCaptcha extends CaptchaBase {
             }
         } else if (!json.status) {
             hideLoader();
-            notify(json.request)
-            wait(delay.tenSeconds)
+            if (json.request === "ERROR_ZERO_BALANCE"){
+                this.warn = true;
+            }
+            notify(json.request, this.warn)
+            wait(10)
         }
     }
 
@@ -217,21 +223,91 @@ class CaptchaRuCaptcha extends CaptchaBase {
                     updateState({global: state.global});
                 } else {
                     notify(json.error_text)
-                    wait(delay.tenSeconds);
+                    wait(10);
                 }
             }
         } catch (e) {
             hideLoader();
             notify(e.message)
-            wait(delay.tenSeconds);
+            wait(10);
+        }
+    }
+}
+
+class CaptchaAntiCaptcha extends CaptchaBase {
+    constructor(lvl) {
+        super(lvl);
+        this.token = captcha.antiCaptcha.token;
+        this.urls = api.antiCaptcha;
+        this.delimiter = ',';
+    }
+
+    _getOptions() {
+        return {
+            method: "POST",
+            body: JSON.stringify({
+                "clientKey": this.token,
+                "task":
+                    {
+                        "type": "ImageToTextTask",
+                        "body": this.base64image,
+                        "numeric": 1,
+                        "minLength": 5,
+                        "maxLength": 6,
+                    }
+            })
         }
     }
 
-    _waitResult() {
-        if (this.loop > this.maxLoop) {
-            this.loop = 1;
-            return null;
+    async _wait() {
+        const response = await fetch(this.urls.getResultUrl, {
+            method: "POST",
+            body: JSON.stringify({
+                "clientKey": this.token,
+                "taskId": this.id
+            })
+        });
+        const json = await response.json();
+        if (json.errorId) {
+            hideLoader();
+            if (json.errorCode === "ERROR_ZERO_BALANCE") {
+                this.warn = true
+            }
+            notify(json.errorCode, this.warn)
+            wait(10);
         }
-        setTimeout(this._wait.bind(this), this.loop * 5000);
+
+        if (json.status === "ready") {
+            const num = json.solution.text;
+            if (this._validation(num)) {
+                this.submitCode(num);
+            } else {
+                hideLoader();
+                wait(1)
+            }
+        }
+
+        if (json.status === "processing") {
+            this.loop += 1;
+            this._waitResult();
+        }
+    }
+
+    async createTask() {
+        try {
+            showLoader();
+            const response = await fetch(this.urls.createTaskUrl, this._getOptions());
+            const json = await response.json();
+            if (json.taskId) {
+                this.id = json.taskId;
+                this._waitResult(delay.fiveSeconds);
+            } else {
+                wait(5);
+            }
+        } catch (e) {
+            hideLoader();
+            notify(e.message)
+            wait(10);
+        }
     }
 }

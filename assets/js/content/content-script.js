@@ -241,6 +241,9 @@ async function getServiceCaptchaInstance(lvlArg = null) {
         case "2":
             object = new CaptchaRuCaptcha(lvlArg);
             break;
+        case "3":
+            object = new CaptchaAntiCaptcha(lvlArg);
+            break;
         default:
             object = new CaptchaBase(lvlArg)
     }

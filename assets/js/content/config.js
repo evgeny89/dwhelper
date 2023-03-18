@@ -55,6 +55,7 @@ const pathNames = {
 const delay = {
     fast: 300,
     long: 1000,
+    fiveSeconds: 5000,
     tenSeconds: 10000,
     waitMinutes: 60000,
 }
@@ -67,5 +68,9 @@ const api = {
     ruCaptcha: {
         createTaskUrl: "https://rucaptcha.com/in.php",
         getResultUrl: "https://rucaptcha.com/res.php",
+    },
+    antiCaptcha: {
+        createTaskUrl: "https://api.anti-captcha.com/createTask",
+        getResultUrl: "https://api.anti-captcha.com/getTaskResult",
     },
 }
