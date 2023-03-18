@@ -204,7 +204,7 @@ chrome.storage.local.get(null, function (res) {
                     clearTimeout(state.no_refresh.sleepId);
                 }
                 if (request.type === "update") {
-                    if (data.world && data.world.map === '0') {
+                    if (data.world && +data.world.map === 0) {
                         state.move.routes = [];
                         state.move.step = 0;
                         state.move.active = 0;
