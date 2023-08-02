@@ -1,8 +1,6 @@
 const formEl = document.querySelector("form");
-const selectEl = formEl.querySelector("select[name=item]");
-const values = [...selectEl.options].slice(0, 50).map(item => item.value);
 
-const saleTotems = async () => {
+const saleTotems = async (values) => {
     showLoader();
     for (const value of values) {
         await fetch(formEl.action, {
@@ -18,10 +16,15 @@ const saleTotems = async () => {
     refresh();
 }
 
-if (values.length) {
-    saleTotems()
-        .catch(e => {
-            console.error(e);
-            hideLoader();
-        });
+if (formEl) {
+    const selectEl = formEl.querySelector("select[name=item]");
+    const values = [...selectEl.options].slice(0, 50).map(item => item.value);
+
+    if (values.length) {
+        saleTotems(values)
+            .catch(e => {
+                console.error(e);
+                hideLoader();
+            });
+    }
 }
