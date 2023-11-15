@@ -118,6 +118,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     sendResponse({skills: skillList})
                 });
             return true;
+        case "get-captcha":
+            sendResponse({captcha: captcha});
+            return true;
         default:
             return true;
     }

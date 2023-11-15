@@ -83,6 +83,23 @@ const addSkillListUsage = (skills) => {
     return wrapper;
 }
 
+const addCaptchaElement = ({name, value}) => {
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+
+    label.classList.add('uk-margin-right');
+    label.innerText = name;
+
+    input.classList.add('uk-radio');
+    input.type = 'radio';
+    input.name = 'captcha';
+    input.dataset.state = 'global.captcha';
+    input.value = value;
+
+    label.insertAdjacentElement('afterbegin', input);
+    return label;
+}
+
 const getSelectFromGroupSkills = (key) => {
     const options = [
         {value: 0, name: 'не задано'},
@@ -112,7 +129,7 @@ const getSelectFromGroupSkills = (key) => {
 
 const addSkillListGroups = (skills) => {
     const wrapper = document.createElement('div');
-    wrapper.classList.add('uk-column-1-2', 'uk-margin');
+    wrapper.classList.add('uk-margin');
 
     for (const item in skills) {
         const itemElement = document.createElement('div');
@@ -175,6 +192,34 @@ const addSkillsControls = (skills) => {
     })
 }
 
+const addCaptchaControls = (captcha) => {
+    const wrapper = document.querySelector('#captcha');
+    //wrapper.innerHTML = "";
+    //const defaultValue = {name: 'выкл', value: '0'};
+    //wrapper.insertAdjacentElement('beforeend', addCaptchaElement(defaultValue));
+
+    for (const item in captcha) {
+        if (!captcha[item].token) {
+            wrapper
+                .querySelector(`.uk-margin-right:has(input[value="${captcha[item].value}"])`)
+                .classList.add('uk-hidden');
+        }
+        /*const data = {
+            name: item,
+            value: captcha[item].value,
+        }
+        wrapper.insertAdjacentElement('beforeend',  addCaptchaElement(data));*/
+    }
+   /* wrapper.querySelectorAll('[data-state]')
+        .forEach(item => {
+            item.addEventListener('change', function (e) {
+                const [property, subProperty] = e.target.dataset.state.split('.');
+                state[property][subProperty] = e.target[elementsType[e.target.type]];
+                updateState({[property]: state[property]});
+            });
+        })*/
+}
+
 function checkSleep(global) {
     const el = popup.querySelector("#count-down");
     if (global.sleep) {
@@ -192,6 +237,7 @@ const reCalcPopup = (state) => {
     checkSleep(state.global);
     setSelectOptions(state.folders);
     addSkillsControls(state.skills);
+    addCaptchaControls(state.captcha);
     elements.forEach(item => {
         const [property, subProperty] = item.dataset.state.split('.');
         if (item.type === "radio") {

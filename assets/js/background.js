@@ -166,7 +166,13 @@ chrome.storage.local.get(null, function (res) {
             let data = {...request.payload}
 
             if (request.action === "get-state") {
-                sendResponse(state);
+                chrome.tabs.query({currentWindow: true}, function (tabs) {
+                    const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+                    chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
+                        sendResponse({...state, ...response});
+                    });
+                });
+                return true;
             }
             if (request.action === "clear-state") {
                 clearState();
