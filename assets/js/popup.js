@@ -194,9 +194,6 @@ const addSkillsControls = (skills) => {
 
 const addCaptchaControls = (captcha) => {
     const wrapper = document.querySelector('#captcha');
-    //wrapper.innerHTML = "";
-    //const defaultValue = {name: 'выкл', value: '0'};
-    //wrapper.insertAdjacentElement('beforeend', addCaptchaElement(defaultValue));
 
     for (const item in captcha) {
         if (!captcha[item].token) {
@@ -204,20 +201,7 @@ const addCaptchaControls = (captcha) => {
                 .querySelector(`.uk-margin-right:has(input[value="${captcha[item].value}"])`)
                 .classList.add('uk-hidden');
         }
-        /*const data = {
-            name: item,
-            value: captcha[item].value,
-        }
-        wrapper.insertAdjacentElement('beforeend',  addCaptchaElement(data));*/
     }
-   /* wrapper.querySelectorAll('[data-state]')
-        .forEach(item => {
-            item.addEventListener('change', function (e) {
-                const [property, subProperty] = e.target.dataset.state.split('.');
-                state[property][subProperty] = e.target[elementsType[e.target.type]];
-                updateState({[property]: state[property]});
-            });
-        })*/
 }
 
 function checkSleep(global) {
