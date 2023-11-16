@@ -156,7 +156,13 @@ class UserInfo {
     }
 
     getForward = (type) => {
-        if (type === "lair" && (checkText(words.toLairsLobby) || checkText(words.lairForsworn) || pathNames.world)) {
+        if (type === "lair"
+            && (
+                checkText(words.toLairsLobby)
+                || checkText(words.lairForsworn)
+                || (pathNames.world && !searchLink(words.toCity))
+            )
+        ) {
             return maps.empty;
         }
         if (type === "castle" && checkText(words.castleName)) {
@@ -197,7 +203,7 @@ const pathBack = (user) => {
 }
 
 const checkInLair = (type, user) => {
-    if (searchLink(words.toLairsLobby) || checkText(words.toCity)) {
+    if (searchLink(words.toLairsLobby) && url.pathname === pathNames.world) {
         return [words.toLairsLobby, getDungeonsLink(type, user.lvl)];
     }
 
@@ -323,7 +329,7 @@ if (state?.world && state?.move) {
                 updateStepInState();
                 setTimeout(doStep, delay.fast, currentStep);
             }
-        } else if (+state.world.map && state.move.routes[state.move.active + 1]) {
+        } else if (+state.world.map && state.move.routes[state.move.active + 1] !== undefined) {
             state.move.active += 1;
             state.move.step = 0;
             updateState({move: state.move});
