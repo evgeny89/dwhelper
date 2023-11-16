@@ -54,7 +54,7 @@ const hideLoader = () => {
     }
 }
 
-chrome.runtime.sendMessage({action: 'get-state'}, function (res) {
+chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
     Object.assign(state, res);
     resetRefresh();
 });

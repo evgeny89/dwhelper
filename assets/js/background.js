@@ -166,12 +166,16 @@ chrome.storage.local.get(null, function (res) {
             let data = {...request.payload}
 
             if (request.action === "get-state") {
-                chrome.tabs.query({currentWindow: true}, function (tabs) {
-                    const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                    chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
-                        sendResponse({...state, ...response});
+                if (request.payload === 'content') {
+                    sendResponse(state);
+                } else {
+                    chrome.tabs.query({currentWindow: true}, function (tabs) {
+                        const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+                        chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
+                            sendResponse({...state, ...response});
+                        });
                     });
-                });
+                }
                 return true;
             }
             if (request.action === "clear-state") {
@@ -184,7 +188,7 @@ chrome.storage.local.get(null, function (res) {
             }
             if (request.action === "set-state") {
                 if (request.type === "badge") {
-                    const text =data.text;
+                    const text = data.text;
                     const color = data.color;
                     setBadge(text, color);
                 }
