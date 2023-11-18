@@ -1,7 +1,3 @@
-const settings = {
-    drawLifePoints: 10000, // юзать вытяжку если не хватает указанного количества HP
-}
-
 const words = {
     arena: "Вход на Арену",
     changeEnemy: "Сменить",
