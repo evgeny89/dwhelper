@@ -37,16 +37,17 @@ const words = {
 
 const pathNames = {
     battles: "/battle_group.php",
+    battlefield: "/battleground.php",
     castle: "/world/castle.php",
     events: "/service_events.php",
     inventory: "/inventory.php",
+    index: "/index.php",
     lairLobby: "/world/dungeon.php",
     parcels: "/parcels.php",
     resources: "/world/resource.php",
     skills: "/skill_learn.php",
     user: "/user.php",
     world: "/world/world.php",
-    index: "/index.php",
 }
 
 const delay = {

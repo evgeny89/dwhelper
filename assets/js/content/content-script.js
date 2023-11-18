@@ -54,10 +54,13 @@ const hideLoader = () => {
     }
 }
 
-chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
-    Object.assign(state, res);
-    resetRefresh();
-});
+const getState = async () => {
+    chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
+        Object.assign(state, res);
+        resetRefresh();
+        return true;
+    });
+}
 
 chrome.storage.onChanged.addListener(function (changes) {
 
@@ -253,3 +256,5 @@ async function getServiceCaptchaInstance(lvlArg = null) {
 
     return object;
 }
+
+getState();
