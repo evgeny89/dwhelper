@@ -158,9 +158,11 @@ class UserInfo {
     getForward = (type) => {
         if (type === "lair"
             && (
-                checkText(words.toLairsLobby)
-                || checkText(words.lairForsworn)
-                || (pathNames.world && !searchLink(words.toCity))
+                (
+                    url.pathname === pathNames.world
+                    && (searchLink(words.toLairsLobby) || !searchLink(words.toCity))
+                )
+                || (searchLink(words.lairForsworn) && url.pathname === pathNames.lairLobby)
             )
         ) {
             return maps.empty;
@@ -203,11 +205,17 @@ const pathBack = (user) => {
 }
 
 const checkInLair = (type, user) => {
-    if (searchLink(words.toLairsLobby) && url.pathname === pathNames.world) {
+    if (
+        url.pathname === pathNames.index
+        || (
+            url.pathname === pathNames.world
+            && (searchLink(words.toLairsLobby) || searchLink(words.toCity))
+        )
+    ) {
         return [words.toLairsLobby, getDungeonsLink(type, user.lvl)];
     }
 
-    if (checkText(words.lairForsworn) && url.pathname === pathNames.lairLobby) {
+    if (searchLink(words.lairForsworn) && url.pathname === pathNames.lairLobby) {
         return [getDungeonsLink(type, user.lvl)];
     }
 

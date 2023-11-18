@@ -50,6 +50,7 @@ const pathNames = {
     skills: "/skill_learn.php",
     user: "/user.php",
     world: "/world/world.php",
+    index: "/index.php",
 }
 
 const delay = {
