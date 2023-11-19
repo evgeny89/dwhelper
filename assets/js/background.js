@@ -105,6 +105,8 @@ const paths = {
         script: "./assets/js/content/castle.js",
     },
     service: "./assets/js/resources/captchaClass.js",
+    main: "./assets/js/content/content-script.js",
+    config: "./assets/js/content/config.js",
 };
 
 const setState = (payload) => {
@@ -158,15 +160,34 @@ chrome.runtime.onInstalled.addListener(function (details) {
             console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
         }*/
     chrome.storage.local.set({...initialState});
+    chrome.tabs.query({currentWindow: true}, function (tabs) {
+        const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+        if (!tab) {
+            return;
+        }
+        chrome.scripting.executeScript({
+            target: {tabId: tab.id},
+            files: [paths.config, paths.main],
+        })
+            .then(() => {
+                chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
+                    setState(response);
+                    chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
+                        setState(response);
+                        chrome.tabs.sendMessage(tab.id, {action: "refresh"}, function (response) {
+                            showMessage(response);
+                        });
+                    });
+                });
+            });
+    });
 });
 
 chrome.storage.local.get(null, function (res) {
     Object.assign(state, res);
 })
 
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         let data = {...request.payload}
 
         if (request.action === "get-state") {
@@ -175,6 +196,9 @@ chrome.runtime.onMessage.addListener(
             } else {
                 chrome.tabs.query({currentWindow: true}, function (tabs) {
                     const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+                    if (!tab) {
+                        sendResponse(false);
+                    }
                     chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
                         sendResponse({...state, ...response});
                     });
@@ -233,6 +257,9 @@ chrome.runtime.onMessage.addListener(
         if (request.action === 'scan-folders') {
             chrome.tabs.query({currentWindow: true}, function (tabs) {
                 const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+                if (!tab) {
+                    sendResponse(false);
+                }
                 chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
                     setState(response);
                     sendResponse(true);
@@ -243,14 +270,13 @@ chrome.runtime.onMessage.addListener(
         if (request.action === 'scan-skills') {
             chrome.tabs.query({currentWindow: true}, function (tabs) {
                 const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                if (tab) {
-                    chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
-                        setState(response);
-                        sendResponse(true);
-                    });
-                } else {
+                if (!tab) {
                     sendResponse(false);
                 }
+                chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
+                    setState(response);
+                    sendResponse(true);
+                });
             });
             return true;
         }

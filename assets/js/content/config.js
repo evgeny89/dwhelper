@@ -72,3 +72,9 @@ const api = {
         getResultUrl: "https://api.anti-captcha.com/getTaskResult",
     },
 }
+
+const messages = {
+    captcha: "Пожалуйста, введите код",
+    notMoney: "У Вас недостаточно средств",
+    installed: "Расширение успешно обновлено",
+}

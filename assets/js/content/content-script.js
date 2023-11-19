@@ -124,6 +124,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         case "get-captcha":
             sendResponse({captcha: captcha});
             return true;
+        case "refresh":
+            refresh();
+            sendResponse({text: messages.installed});
+            return true;
         default:
             return true;
     }
