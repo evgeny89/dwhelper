@@ -196,12 +196,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             } else {
                 chrome.tabs.query({currentWindow: true}, function (tabs) {
                     const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                    if (!tab) {
-                        sendResponse(false);
+                    if (tab) {
+                        chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
+                            sendResponse({...state, ...response});
+                        });
                     }
-                    chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
-                        sendResponse({...state, ...response});
-                    });
+                    sendResponse(false);
                 });
             }
             return true;
@@ -257,26 +257,26 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         if (request.action === 'scan-folders') {
             chrome.tabs.query({currentWindow: true}, function (tabs) {
                 const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                if (!tab) {
-                    sendResponse(false);
+                if (tab) {
+                    chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
+                        setState(response);
+                        sendResponse(true);
+                    });
                 }
-                chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
-                    setState(response);
-                    sendResponse(true);
-                });
+                sendResponse(false);
             });
             return true;
         }
         if (request.action === 'scan-skills') {
             chrome.tabs.query({currentWindow: true}, function (tabs) {
                 const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                if (!tab) {
-                    sendResponse(false);
+                if (tab) {
+                    chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
+                        setState(response);
+                        sendResponse(true);
+                    });
                 }
-                chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
-                    setState(response);
-                    sendResponse(true);
-                });
+                sendResponse(false);
             });
             return true;
         }
