@@ -13,7 +13,7 @@
     <ul uk-tab class="uk-margin-small-bottom">
         <li class="uk-active"><a href="#"><span uk-icon="icon: home"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bag"></span></a></li>
-        <li><a href="#"><span uk-icon="icon: users"></span></a></li>
+        <li><a href="#"><span uk-icon="icon: mail"></span></a></li>
         <li><a href="#"><span uk-icon="icon: location"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bookmark"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bolt"></span></a></li>
@@ -289,6 +289,30 @@
                     </div>
                 </li>
             </ul>
+            <ul class="uk-list uk-margin">
+                <li>
+                    <h5 class="uk-text-primary uk-margin-small-bottom">Прочее</h5>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="totems.run">
+                            Продавать тотемы
+                        </label>
+                        <span class="uk-label">auto</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="castle.run">
+                            Точить вещи
+                        </label>
+                        <span class="uk-label">auto</span>
+                    </div>
+                </li>
+            </ul>
         </li>
         <li class="uk-list-divider">
             <ul class="uk-list uk-margin">
@@ -329,53 +353,24 @@
                 </li>
                 <hr class="uk-divider-small">
                 <li>
-                    <div class="uk-margin">
-                        <h6 class="uk-margin-remove">Тема посылок:</h6>
-                        <div class=" uk-flex uk-flex-between uk-flex-top">
-                            <input class="uk-input uk-form-blank uk-form-width-medium uk-form-small" type="text"
-                                   data-state="parcels.theme" placeholder="Тема посылок">
-                            <span class="uk-label uk-label-success uk-flex-top">help</span>
+                    <div class="uk-margin uk-flex uk-flex-between uk-flex-top">
+                        <div class="uk-flex">
+                            <div>
+                                <h6 class="uk-margin-remove">Тема посылок:</h6>
+                                <div class=" uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small" type="text"
+                                           data-state="parcels.theme" placeholder="Тема посылок">
+                                </div>
+                            </div>
+                            <div class="uk-margin-small-left">
+                                <h6 class="uk-margin-remove">Текст посылок:</h6>
+                                <div class=" uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small" type="text"
+                                           data-state="parcels.text" placeholder="Текст посылок">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin">
-                        <h6 class="uk-margin-remove">Текст посылок:</h6>
-                        <div class=" uk-flex uk-flex-between uk-flex-top">
-                            <input class="uk-input uk-form-blank uk-form-width-medium uk-form-small" type="text"
-                                   data-state="parcels.text" placeholder="Текст посылок">
-                            <span class="uk-label uk-label-success uk-flex-top">help</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <ul class="uk-list uk-margin">
-                <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Тотемы</h5>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="totems.run">
-                            Продавать
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-            </ul>
-            <ul class="uk-list uk-margin">
-                <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Кузница</h5>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="castle.run">
-                            точить
-                        </label>
-                        <span class="uk-label">auto</span>
+                        <span class="uk-label uk-label-success uk-flex-top">help</span>
                     </div>
                 </li>
             </ul>
@@ -527,56 +522,58 @@
         <li class="uk-list-divider">
             <ul class="uk-list">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Бои</h5>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Бои</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
-                <li>
+                <li class="uk-column-1-2">
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
                         <label>
                             <input class="uk-checkbox" type="checkbox" data-state="battles.run">
                             авто-бой
                         </label>
-                        <span class="uk-label">auto</span>
                     </div>
-                </li>
-                <li>
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
                         <label>
                             <input class="uk-checkbox" type="checkbox" data-state="world.attack">
                             авто-нападение
                         </label>
-                        <span class="uk-label">auto</span>
                     </div>
-                </li>
-                <li>
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
                         <label>
                             <input class="uk-checkbox" type="checkbox" data-state="world.attackAll">
                             нападать на всех
                         </label>
+                    </div>
+                </li>
+                <hr>
+                <li>
+                    <div class="uk-margin uk-flex uk-flex-between uk-flex-top">
+                        <div class="uk-flex">
+                            <div>
+                                <h6 class="uk-margin-remove">Пить полные:</h6>
+                                <div class=" uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
+                                           type="number"
+                                           data-state="world.scrollLife"
+                                           placeholder="если меньше"
+                                    >
+                                </div>
+                            </div>
+                            <div class="uk-margin-small-left">
+                                <h6 class="uk-margin-remove">Пить маны:</h6>
+                                <div class=" uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
+                                           type="number"
+                                           data-state="world.scrollMana"
+                                           placeholder="если меньше"
+                                    >
+                                </div>
+                            </div>
+                        </div>
                         <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin">
-                        <h6 class="uk-margin-remove">Пить полные свитки если меньше:</h6>
-                        <div class=" uk-flex uk-flex-between uk-flex-top">
-                            <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
-                                   type="number"
-                                   data-state="world.scrollLife" placeholder="Введите число">
-                            <span class="uk-label">auto</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin">
-                        <h6 class="uk-margin-remove">Пить маны свитки если меньше:</h6>
-                        <div class=" uk-flex uk-flex-between uk-flex-top">
-                            <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
-                                   type="number"
-                                   data-state="world.scrollMana" placeholder="Введите число">
-                            <span class="uk-label">auto</span>
-                        </div>
                     </div>
                 </li>
             </ul>
