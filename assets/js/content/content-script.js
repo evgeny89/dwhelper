@@ -239,26 +239,40 @@ function refresh() {
 
 async function getServiceCaptchaInstance(lvlArg = null) {
     let object;
+
     if (!lvlArg) {
         const {lvl} = await getInfo();
         lvlArg = lvl;
     }
 
+    const localCaptcha = getLocalCaptcha(lvlArg);
+
     switch (state.global.captcha) {
         case "1":
-            object = new CaptchaCapMonster(lvlArg);
+            object = new CaptchaCapMonster(localCaptcha);
             break;
         case "2":
-            object = new CaptchaRuCaptcha(lvlArg);
+            object = new CaptchaRuCaptcha(localCaptcha);
             break;
         case "3":
-            object = new CaptchaAntiCaptcha(lvlArg);
+            object = new CaptchaAntiCaptcha(localCaptcha);
             break;
         default:
-            object = new CaptchaBase(lvlArg)
+            object = new CaptchaBase(localCaptcha)
     }
 
     return object;
 }
 
-getState();
+async function waitToReadyState() {
+    let iteration = 1;
+
+    while (!state.onLoad) {
+        if (iteration > 10) {
+            refresh();
+        }
+        await function () {
+            return new Promise((resolve) => setTimeout(resolve, 100))
+        }();
+    }
+}
