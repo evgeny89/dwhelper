@@ -237,6 +237,7 @@ const reCalcPopup = (state) => {
             item[elementsType[item.type]] = state[property][subProperty];
         }
     })
+    popup.querySelector("#version").textContent = `v. ${chrome.runtime.getManifest().version}`;
 }
 
 const sendMessageOnClickButton = async (selector, action) => {
