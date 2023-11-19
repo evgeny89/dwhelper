@@ -1,3 +1,5 @@
+waitToReadyState();
+
 const waitResources = () => {
     const is_refresh = state.extract.is_refresh;
     state.extract.is_entered_code = false;

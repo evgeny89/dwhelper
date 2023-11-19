@@ -1,3 +1,5 @@
+waitToReadyState();
+
 if (state.no_refresh.link !== null) {
     const link = state.no_refresh.link;
     state.no_refresh.link = null;

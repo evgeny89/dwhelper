@@ -1,3 +1,5 @@
+waitToReadyState();
+
 const maps = {
     empty: "",
     lair: { // к логову и обратно

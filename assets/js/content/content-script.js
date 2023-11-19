@@ -1,4 +1,6 @@
-let state = {}
+const state = {
+    onLoad: false,
+}
 
 const url = new URL(location.href)
 
@@ -54,13 +56,11 @@ const hideLoader = () => {
     }
 }
 
-const getState = async () => {
-    chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
-        Object.assign(state, res);
-        resetRefresh();
-        return true;
-    });
-}
+chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
+    Object.assign(state, res);
+    state.onLoad = true;
+    resetRefresh();
+});
 
 chrome.storage.onChanged.addListener(function (changes) {
 

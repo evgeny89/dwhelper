@@ -1,3 +1,5 @@
+waitToReadyState();
+
 const params = {
     stones: 'stones',
     sets: 'set_new',

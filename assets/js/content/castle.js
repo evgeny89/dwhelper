@@ -1,3 +1,5 @@
+waitToReadyState();
+
 const forgeLink = searchLink(words.toForge);
 
 if (forgeLink) {

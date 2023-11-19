@@ -1,3 +1,5 @@
+waitToReadyState();
+
 const helpLink = searchLink(words.help);
 
 if (helpLink) {

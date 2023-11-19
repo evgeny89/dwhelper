@@ -1,3 +1,5 @@
+waitToReadyState();
+
 let useSkills = true;
 const form = document.querySelector("form");
 const activeSkills = Object.values(state.skills).filter(skill => skill.value);

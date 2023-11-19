@@ -1,3 +1,5 @@
+waitToReadyState();
+
 const formEl = document.querySelector("form");
 
 const saleTotems = async (values) => {
