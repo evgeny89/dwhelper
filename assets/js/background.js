@@ -56,6 +56,7 @@ const initialState = {
     world: {
         attack: false,
         attackAll: false,
+        highArena: false,
         highLair: false,
         slave: false,
         map: 0,
@@ -200,8 +201,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                         chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
                             sendResponse({...state, ...response});
                         });
+                    } else {
+                        sendResponse(false);
                     }
-                    sendResponse(false);
                 });
             }
             return true;
@@ -262,8 +264,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                         setState(response);
                         sendResponse(true);
                     });
+                } else {
+                    sendResponse(false);
                 }
-                sendResponse(false);
             });
             return true;
         }
@@ -275,8 +278,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                         setState(response);
                         sendResponse(true);
                     });
+                } else {
+                    sendResponse(false);
                 }
-                sendResponse(false);
             });
             return true;
         }

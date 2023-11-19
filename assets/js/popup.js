@@ -325,6 +325,7 @@ const addListeners = () => {
 function getState() {
     return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({action: 'get-state'}, function (res) {
+            console.log(res)
             if (chrome.runtime.lastError) {
                 return reject(chrome.runtime.lastError);
             }

@@ -1,5 +1,6 @@
 const words = {
     arena: "Вход на Арену",
+    arenaLvl: "Вы на Арене Грез, уровень:",
     changeEnemy: "Сменить",
     captcha: "Введите код",
     castleName: "Великая Русь",
@@ -11,6 +12,7 @@ const words = {
     getLinkText: "Добыть",
     gotToLand: "В земли грез",
     help: "Помочь",
+    inArena: "Вы на Арене Грез",
     inBattle: "В бой",
     inChestText: "В рюкзак",
     inventoryLinkText: "Инвентарь",
