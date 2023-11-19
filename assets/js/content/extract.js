@@ -42,7 +42,7 @@ const usually = (noCaptcha = false) => {
             if (noCaptcha) {
                 document.querySelector("form").submit();
             } else {
-                notify("Капча");
+                notify(messages.captcha);
                 state.extract.is_entered_code = true;
                 updateState({extract: state.extract});
             }

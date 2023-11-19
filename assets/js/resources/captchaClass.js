@@ -24,7 +24,7 @@ class CaptchaBase {
         if (typeof fn === "function") {
             fn();
         } else {
-            notify("Капча");
+            notify(messages.captcha);
         }
     }
 
@@ -218,7 +218,7 @@ class CaptchaRuCaptcha extends CaptchaBase {
             } else {
                 if (json.request === "ERROR_ZERO_BALANCE") {
                     hideLoader();
-                    notify("Недостаточно средств в сервисе капчи", true)
+                    notify(messages.notMoney, true)
                     state.global.captcha = 0;
                     updateState({global: state.global});
                 } else {
