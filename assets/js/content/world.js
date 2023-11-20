@@ -1,4 +1,4 @@
-waitToReadyState().then(() => {
+waitToReadyState().then(async () => {
     const maps = {
         empty: "",
         lair: { // к логову и обратно
@@ -255,7 +255,7 @@ waitToReadyState().then(() => {
     const isArena = checkText(words.arenaLvl) && +state.world.map === 7;
 
     if (checkText(words.captcha)) {
-        solve();
+        await solve();
     }
 
     if (isArena) {
@@ -266,128 +266,128 @@ waitToReadyState().then(() => {
         dropMap();
     }
 
-    if (state?.world && state?.move && !isArena) {
-        if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
-            const link = searchLink(words.toAttack) || searchLink(words.inBattle);
-            if (link) {
-                increment = false;
-                link.click();
-            }
-        }
-
-        if (+state.world.map && !state.move.routes.length) {
-            (async () => {
-                const info = await UserInfo.fetchCity();
-
-                const routes = {
-                    1: [
-                        info.getForward("lair"),
-                        checkInLair(words.lairForsworn, info),
-                        maps.fallen,
-                        ...pathBack(info),
-                    ],
-                    2: [
-                        info.getForward("lair"),
-                        checkInLair(words.lairFallen, info),
-                        maps.fallen,
-                        ...pathBack(info),
-                    ],
-                    3: [
-                        info.getForward("lair"),
-                        checkInLair(words.lairDragon, info),
-                        maps.dragons.entry,
-                        'chooseDragonPath',
-                        ...pathBack(info),
-                    ],
-                    4: [
-                        info.getForward("lair"),
-                        checkInLair(words.lairMysterious, info),
-                        maps.mysterious,
-                        ...pathBack(info),
-                    ],
-                    5: [
-                        info.getForward("lair"),
-                        checkInLair(words.lairFallen, info),
-                        maps.fallen,
-                        [words.leaveLairsLobby, words.yes],
-                        checkInLair(words.lairDragon, info),
-                        maps.dragons.entry,
-                        'chooseDragonPath',
-                        [words.leaveLairsLobby, words.yes],
-                        checkInLair(words.lairMysterious, info),
-                        maps.mysterious,
-                        ...pathBack(info),
-                    ],
-                    6: [
-                        info.getForward("castle"),
-                        [words.castleName],
-                        maps.castle[info.getBack()],
-                        [words.toCity]
-                    ],
-                    7: [
-                        info.getForward("arena"),
-                        [words.arena],
-                        [words.yes],
-                        maps.lair[info.getBack()],
-                        [words.toCity]
-                    ],
-                    8: [
-                        info.getForward("lair"),
-                        checkInLair(words.lairFallen, info),
-                        maps.fallen,
-                        [words.leaveLairsLobby, words.yes],
-                        checkInLair(words.lairDragon, info),
-                        maps.dragons.entry,
-                        'chooseDragonPath',
-                        ...pathBack(info),
-                    ],
-                }
-
-                state.move.routes = routes[+state.world.map];
-                updateState({move: state.move});
-                refresh();
-            })();
-        } else if (+state.world.map && state.move.routes.length && increment) {
-            const step = state.move.step;
-            const activeRoute = state.move.routes[state.move.active];
-            const currentStep = activeRoute[step];
-
-            if (step < activeRoute.length) {
-                if (/^http(s?):\/\/.+$/.test(currentStep)) {
-                    updateStepInState();
-                    goToUrl(currentStep);
-                } else if (routeFunctions.hasOwnProperty(activeRoute)) {
-                    (async () => {
-                        state.move.routes[state.move.active] = await routeFunctions[activeRoute]();
-                        updateState({move: state.move});
-                        refresh();
-                    })()
-                } else if (isNaN(currentStep)) {
-                    updateStepInState();
-                    setTimeout(() => {
-                        if (currentStep === words.toCity) {
-                            dropMap();
-                        }
-                        searchLink(currentStep).click();
-                    }, delay.fast)
-                } else if (checkText("Север:")) {
-                    updateStepInState();
-                    setTimeout(doStep, delay.fast, currentStep);
+    if (!isArena) {
+        if (state?.world && state?.move) {
+            if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
+                const link = searchLink(words.toAttack) || searchLink(words.inBattle);
+                if (link) {
+                    increment = false;
+                    link.click();
                 }
             }
-            else if (+state.world.map && state.move.routes[state.move.active + 1] !== undefined) {
-                state.move.active += 1;
-                state.move.step = 0;
-                updateState({move: state.move});
-                setTimeout(refresh, delay.long);
+
+            if (+state.world.map && !state.move.routes.length) {
+                await (async () => {
+                    const info = await UserInfo.fetchCity();
+
+                    const routes = {
+                        1: [
+                            info.getForward("lair"),
+                            checkInLair(words.lairForsworn, info),
+                            maps.fallen,
+                            ...pathBack(info),
+                        ],
+                        2: [
+                            info.getForward("lair"),
+                            checkInLair(words.lairFallen, info),
+                            maps.fallen,
+                            ...pathBack(info),
+                        ],
+                        3: [
+                            info.getForward("lair"),
+                            checkInLair(words.lairDragon, info),
+                            maps.dragons.entry,
+                            'chooseDragonPath',
+                            ...pathBack(info),
+                        ],
+                        4: [
+                            info.getForward("lair"),
+                            checkInLair(words.lairMysterious, info),
+                            maps.mysterious,
+                            ...pathBack(info),
+                        ],
+                        5: [
+                            info.getForward("lair"),
+                            checkInLair(words.lairFallen, info),
+                            maps.fallen,
+                            [words.leaveLairsLobby, words.yes],
+                            checkInLair(words.lairDragon, info),
+                            maps.dragons.entry,
+                            'chooseDragonPath',
+                            [words.leaveLairsLobby, words.yes],
+                            checkInLair(words.lairMysterious, info),
+                            maps.mysterious,
+                            ...pathBack(info),
+                        ],
+                        6: [
+                            info.getForward("castle"),
+                            [words.castleName],
+                            maps.castle[info.getBack()],
+                            [words.toCity]
+                        ],
+                        7: [
+                            info.getForward("arena"),
+                            [words.arena],
+                            [words.yes],
+                            maps.lair[info.getBack()],
+                            [words.toCity]
+                        ],
+                        8: [
+                            info.getForward("lair"),
+                            checkInLair(words.lairFallen, info),
+                            maps.fallen,
+                            [words.leaveLairsLobby, words.yes],
+                            checkInLair(words.lairDragon, info),
+                            maps.dragons.entry,
+                            'chooseDragonPath',
+                            ...pathBack(info),
+                        ],
+                    }
+
+                    state.move.routes = routes[+state.world.map];
+                    updateState({move: state.move});
+                    refresh();
+                })();
+            } else if (+state.world.map && state.move.routes.length && increment) {
+                const step = state.move.step;
+                const activeRoute = state.move.routes[state.move.active];
+                const currentStep = activeRoute[step];
+
+                if (step < activeRoute.length) {
+                    if (/^http(s?):\/\/.+$/.test(currentStep)) {
+                        updateStepInState();
+                        goToUrl(currentStep);
+                    } else if (routeFunctions.hasOwnProperty(activeRoute)) {
+                        await (async () => {
+                            state.move.routes[state.move.active] = await routeFunctions[activeRoute]();
+                            updateState({move: state.move});
+                            refresh();
+                        })()
+                    } else if (isNaN(currentStep)) {
+                        updateStepInState();
+                        setTimeout(() => {
+                            if (currentStep === words.toCity) {
+                                dropMap();
+                            }
+                            searchLink(currentStep).click();
+                        }, delay.fast)
+                    } else if (checkText("Север:")) {
+                        updateStepInState();
+                        setTimeout(doStep, delay.fast, currentStep);
+                    }
+                } else if (+state.world.map && state.move.routes[state.move.active + 1] !== undefined) {
+                    state.move.active += 1;
+                    state.move.step = 0;
+                    updateState({move: state.move});
+                    setTimeout(refresh, delay.long);
+                } else {
+                    dropMap();
+                }
             }
-            else {
-                dropMap();
+        } else {
+            if (!isArena) {
+                wait();
             }
-        }
-    } else {
-        if (!isArena) {
-            wait();
         }
     }
 });
