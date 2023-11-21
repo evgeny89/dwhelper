@@ -1,5 +1,6 @@
 const words = {
     arena: "Вход на Арену",
+    clanArena: "Вход на Клановую Арену",
     arenaLvl: "Вы на Арене Грез, уровень:",
     changeEnemy: "Сменить",
     captcha: "Введите код",

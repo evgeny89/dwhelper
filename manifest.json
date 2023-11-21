@@ -2,11 +2,11 @@
   "manifest_version": 3,
   "name": "DreamWar helper",
   "description": "bot from site dreamwar.ru",
-  "version": "1.20.2",
+  "version": "1.20.3",
   "action": {
     "default_popup": "popup.html",
     "default_icon": "./assets/src/dw128.png",
-    "default_title": "Бот from kas"
+    "default_title": "DW helper"
   },
   "icons": {
     "16": "./assets/src/dw16.png",

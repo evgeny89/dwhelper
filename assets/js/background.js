@@ -290,7 +290,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     const currentUrl = new URL(tab.url);
-    if (changeInfo.status === 'complete' && currentUrl.host === "dreamwar.ru" && state.global.run) {
+    if (changeInfo.status === 'complete' && currentUrl.host === "dreamwar.ru" && state.global?.run) {
         /* chrome.scripting.executeScript({
             target: {tabId: tabId },
             files: ['./assets/js/content/flasks.js'],
