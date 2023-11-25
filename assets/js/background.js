@@ -49,6 +49,20 @@ const initialState = {
         theme: '1',
         text: '1',
     },
+    quests: {
+        sulfurCollection: false,
+        helpInBattles: false,
+        assistanceInSieges: false,
+        secretMission: false,
+        enemySupplies: false,
+        importantSupplies: false,
+        attackTheEnemy: false,
+        defenceOfTerritories: false,
+        clearingTheLaboratory: false,
+        arenaBattle: false,
+        difficultArenaBattle: false,
+        colosseumQuest: false,
+    },
     skills: {},
     totems: {
         run: false,
@@ -110,6 +124,21 @@ const paths = {
     config: "./assets/js/content/config.js",
 };
 
+const questsIds = {
+    sulfurCollection: 4,
+    helpInBattles: 6,
+    assistanceInSieges: 7,
+    secretMission: 8,
+    enemySupplies: 10,
+    importantSupplies: 11,
+    attackTheEnemy: 14,
+    defenceOfTerritories: 13,
+    clearingTheLaboratory: 15,
+    arenaBattle: 16,
+    difficultArenaBattle: 17,
+    colosseumQuest: 26,
+}
+
 const setState = (payload) => {
     chrome.storage.local.set(payload);
 }
@@ -151,6 +180,16 @@ const showMessage = (payload) => {
             playSound();
         }
     })
+}
+
+const getQuestsIds = () => {
+    const result = [];
+    for (const key in state.quests) {
+        if (state.quests[key]) {
+            result.push(questsIds[key]);
+        }
+    }
+    return result;
 }
 
 chrome.runtime.onInstalled.addListener(function (details) {
@@ -277,6 +316,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
                         setState(response);
                         sendResponse(true);
+                    });
+                } else {
+                    sendResponse(false);
+                }
+            });
+            return true;
+        }
+        if (request.action === 'take-quests' || request.action === 'pass-quests') {
+            chrome.tabs.query({currentWindow: true}, function (tabs) {
+                const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+                if (tab) {
+                    const payload = {
+                        ids: getQuestsIds(),
+                        key: request.action === 'pass-quests' ? 'end' : 'get',
+                    };
+                    chrome.tabs.sendMessage(tab.id, {action: request.action, payload}, function (response) {
+                        setState({quests: initialState.quests});
+                        sendResponse(response);
                     });
                 } else {
                     sendResponse(false);

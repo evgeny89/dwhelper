@@ -288,6 +288,16 @@ const setSleepTime = () => {
     }
 }
 
+const takeQuests = () => {
+    const res = sendMessageOnClickButton('take', 'take-quests');
+    res ? showSuccessMessage('Квесты собраны') : showErrorMessage('Ошибка сбора квестов')
+}
+
+const passQuests = () => {
+    const res = sendMessageOnClickButton('pass', 'pass-quests');
+    res ? showSuccessMessage('Квесты сданы') : showErrorMessage('Ошибка сдачи квестов')
+}
+
 const closeSleepTime = (sleep) => {
     popup.querySelector("#count-down-wrapper").classList.add('uk-hidden');
     state.global.sleep = '';
@@ -320,6 +330,8 @@ const addListeners = () => {
     popup.querySelector("#scan-skills").addEventListener("click", scanSkills);
     popup.querySelector("#sleep-time-btn").addEventListener("click", setSleepTime);
     popup.querySelector("#sleep-time-close").addEventListener("click", closeSleepTime);
+    popup.querySelector("#take").addEventListener("click", takeQuests);
+    popup.querySelector("#pass").addEventListener("click", passQuests);
 }
 
 function getState() {

@@ -121,6 +121,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     sendResponse({skills: skillList})
                 });
             return true;
+        case "take-quests":
+        case "pass-quests":
+            queryQuests(request.payload)
+                .then(() => {
+                    sendResponse(true)
+                });
+            return true;
         case "get-captcha":
             sendResponse({captcha: captcha});
             return true;
@@ -191,6 +198,18 @@ async function scanSkills() {
         })
         return result;
     }
+}
+
+async function queryQuests({ids, key}) {
+    const searchParams = new URLSearchParams(url.search);
+    searchParams.set(key, '1');
+    searchParams.set('use', '16');
+
+    for (const id of ids) {
+        searchParams.set('quest', id);
+        await fetch(`${url.origin}${pathNames.quest}?${searchParams.toString()}`);
+    }
+    return true;
 }
 
 async function getInfo() {

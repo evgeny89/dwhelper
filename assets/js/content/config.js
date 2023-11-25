@@ -47,6 +47,7 @@ const pathNames = {
     index: "/index.php",
     lairLobby: "/world/dungeon.php",
     parcels: "/parcels.php",
+    quest: "/leader.php",
     resources: "/world/resource.php",
     skills: "/skill_learn.php",
     user: "/user.php",
