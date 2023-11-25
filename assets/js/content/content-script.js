@@ -245,20 +245,18 @@ async function getServiceCaptchaInstance(lvlArg = null) {
         lvlArg = lvl;
     }
 
-    const localCaptcha = getLocalCaptcha(lvlArg);
-
     switch (state.global.captcha) {
         case "1":
-            object = new CaptchaCapMonster(localCaptcha);
+            object = new CaptchaCapMonster(lvlArg);
             break;
         case "2":
-            object = new CaptchaRuCaptcha(localCaptcha);
+            object = new CaptchaRuCaptcha(lvlArg);
             break;
         case "3":
-            object = new CaptchaAntiCaptcha(localCaptcha);
+            object = new CaptchaAntiCaptcha(lvlArg);
             break;
         default:
-            object = new CaptchaBase(localCaptcha)
+            object = new CaptchaBase(lvlArg)
     }
 
     return object;
