@@ -197,9 +197,8 @@ const addCaptchaControls = (captcha) => {
 
     for (const item in captcha) {
         if (!captcha[item].token) {
-            wrapper
-                .querySelector(`.uk-margin-right:has(input[value="${captcha[item].value}"])`)
-                .classList.add('uk-hidden');
+            wrapper.querySelector(`input[value="${captcha[item].value}"]`)
+                .parentElement.classList.add('uk-hidden');
         }
     }
 }
