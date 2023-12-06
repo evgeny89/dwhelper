@@ -228,122 +228,121 @@ chrome.storage.local.get(null, function (res) {
 })
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-        let data = {...request.payload}
+    let data = {...request.payload}
 
-        if (request.action === "get-state") {
-            if (request.payload === 'content') {
-                sendResponse(state);
-            } else {
-                chrome.tabs.query({currentWindow: true}, function (tabs) {
-                    const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                    if (tab) {
-                        chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
-                            sendResponse({...state, ...response});
-                        });
-                    } else {
-                        sendResponse(false);
-                    }
-                });
-            }
-            return true;
-        }
-        if (request.action === "clear-state") {
-            clearState();
-            sendResponse(true);
-        }
-        if (request.action === "show-message") {
-            showMessage(data);
-            sendResponse(true);
-        }
-        if (request.action === "set-state") {
-            if (request.type === "badge") {
-                const text = data.text;
-                const color = data.color;
-                setBadge(text, color);
-            }
-            if (request.type === "sleep") {
-                const time = new Date(data.global.sleep).getTime() - Date.now();
-                if (state.no_refresh.sleepId) {
-                    clearTimeout(state.no_refresh.sleepId);
+    if (request.action === "get-state") {
+        if (request.payload === 'content') {
+            sendResponse(state);
+        } else {
+            chrome.tabs.query({currentWindow: true}, function (tabs) {
+                const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+                if (tab) {
+                    chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
+                        sendResponse({...state, ...response});
+                    });
+                } else {
+                    sendResponse(false);
                 }
-                state.no_refresh.sleepId = setTimeout(() => {
-                    state.global.sleep = null;
-                    state.global.run = false;
-                    data = {
-                        global: state.global,
-                        ...data
-                    }
-                }, time);
+            });
+        }
+        return true;
+    }
+    if (request.action === "clear-state") {
+        clearState();
+        sendResponse(true);
+    }
+    if (request.action === "show-message") {
+        showMessage(data);
+        sendResponse(true);
+    }
+    if (request.action === "set-state") {
+        if (request.type === "badge") {
+            const text = data.text;
+            const color = data.color;
+            setBadge(text, color);
+        }
+        if (request.type === "sleep") {
+            const time = new Date(data.global.sleep).getTime() - Date.now();
+            if (state.no_refresh.sleepId) {
+                clearTimeout(state.no_refresh.sleepId);
+            }
+            state.no_refresh.sleepId = setTimeout(() => {
+                state.global.sleep = null;
+                state.global.run = false;
                 data = {
-                    no_refresh: state.no_refresh,
+                    global: state.global,
+                    ...data
+                }
+            }, time);
+            data = {
+                no_refresh: state.no_refresh,
+                ...data
+            }
+        }
+        if (request.type === "cancel-sleep") {
+            clearTimeout(state.no_refresh.sleepId);
+        }
+        if (request.type === "update") {
+            if (data.world && +data.world.map === 0) {
+                state.move.routes = [];
+                state.move.step = 0;
+                state.move.active = 0;
+                data = {
+                    move: state.move,
                     ...data
                 }
             }
-            if (request.type === "cancel-sleep") {
-                clearTimeout(state.no_refresh.sleepId);
-            }
-            if (request.type === "update") {
-                if (data.world && +data.world.map === 0) {
-                    state.move.routes = [];
-                    state.move.step = 0;
-                    state.move.active = 0;
-                    data = {
-                        move: state.move,
-                        ...data
-                    }
-                }
-            }
-            setState(data);
         }
-        if (request.action === 'scan-folders') {
-            chrome.tabs.query({currentWindow: true}, function (tabs) {
-                const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                if (tab) {
-                    chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
-                        setState(response);
-                        sendResponse(true);
-                    });
-                } else {
-                    sendResponse(false);
-                }
-            });
-            return true;
-        }
-        if (request.action === 'scan-skills') {
-            chrome.tabs.query({currentWindow: true}, function (tabs) {
-                const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                if (tab) {
-                    chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
-                        setState(response);
-                        sendResponse(true);
-                    });
-                } else {
-                    sendResponse(false);
-                }
-            });
-            return true;
-        }
-        if (request.action === 'take-quests' || request.action === 'pass-quests') {
-            chrome.tabs.query({currentWindow: true}, function (tabs) {
-                const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                if (tab) {
-                    const payload = {
-                        ids: getQuestsIds(),
-                        key: request.action === 'pass-quests' ? 'end' : 'get',
-                    };
-                    chrome.tabs.sendMessage(tab.id, {action: request.action, payload}, function (response) {
-                        setState({quests: initialState.quests});
-                        sendResponse(response);
-                    });
-                } else {
-                    sendResponse(false);
-                }
-            });
-            return true;
-        }
-        sendResponse(false);
+        setState(data);
     }
-);
+    if (request.action === 'scan-folders') {
+        chrome.tabs.query({currentWindow: true}, function (tabs) {
+            const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+            if (tab) {
+                chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
+                    setState(response);
+                    sendResponse(true);
+                });
+            } else {
+                sendResponse(false);
+            }
+        });
+        return true;
+    }
+    if (request.action === 'scan-skills') {
+        chrome.tabs.query({currentWindow: true}, function (tabs) {
+            const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+            if (tab) {
+                chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
+                    setState(response);
+                    sendResponse(true);
+                });
+            } else {
+                sendResponse(false);
+            }
+        });
+        return true;
+    }
+    if (request.action === 'take-quests' || request.action === 'pass-quests') {
+        chrome.tabs.query({currentWindow: true}, function (tabs) {
+            const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+            if (tab) {
+                const payload = {
+                    ids: getQuestsIds(),
+                    key: request.action === 'pass-quests' ? 'end' : 'get',
+                };
+                chrome.tabs.sendMessage(tab.id, {action: request.action, payload}, function (response) {
+                    setState({quests: initialState.quests});
+                    sendResponse(response);
+                });
+            } else {
+                sendResponse(false);
+            }
+        });
+        return true;
+    }
+    sendResponse(false);
+});
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     const currentUrl = new URL(tab.url);
