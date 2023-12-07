@@ -6,7 +6,6 @@ const url = new URL(location.href)
 
 const loaderSVG = () => {
     return `
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="100px" height="100px" viewBox="0 0 128 128" xml:space="preserve">
         <g>
             <linearGradient id="linear-gradient">

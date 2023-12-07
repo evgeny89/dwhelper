@@ -209,16 +209,15 @@ chrome.runtime.onInstalled.addListener(function (details) {
             target: {tabId: tab.id},
             files: [paths.config, paths.main],
         })
-            .then(() => {
-                chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
-                    setState(response);
-                    chrome.tabs.sendMessage(tab.id, {action: "scan-skills"}, function (response) {
-                        setState(response);
-                        chrome.tabs.sendMessage(tab.id, {action: "refresh"}, function (response) {
-                            showMessage(response);
-                        });
-                    });
-                });
+            .then(async () => {
+                const folders = await chrome.tabs.sendMessage(tab.id, {action: "scan-folders"});
+                setState(folders);
+
+                const skills = await chrome.tabs.sendMessage(tab.id, {action: "scan-skills"});
+                setState(skills);
+
+                const response = await chrome.tabs.sendMessage(tab.id, {action: "refresh"});
+                showMessage(response);
             });
     });
 });
@@ -294,6 +293,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             }
         }
         setState(data);
+        sendResponse(true);
     }
     if (request.action === 'scan-folders') {
         chrome.tabs.query({currentWindow: true}, function (tabs) {

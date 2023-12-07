@@ -240,16 +240,13 @@ const reCalcPopup = (state) => {
 }
 
 const sendMessageOnClickButton = async (selector, action) => {
-    return new Promise((resolve, reject) => {
-        popup.querySelector(`#${selector}`).disabled = true;
-        chrome.runtime.sendMessage({action: action}, function (res) {
-            if (chrome.runtime.lastError) {
-                return reject(chrome.runtime.lastError);
-            }
-            popup.querySelector(`#${selector}`).disabled = false;
-            resolve(res)
-        });
-    })
+    popup.querySelector(`#${selector}`).disabled = true;
+    const response = await chrome.runtime.sendMessage({action: action});
+    if (chrome.runtime.lastError) {
+        showErrorMessage(chrome.runtime.lastError);
+    }
+    popup.querySelector(`#${selector}`).disabled = false;
+    return response;
 }
 
 const clearState = async () => {
