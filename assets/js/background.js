@@ -85,8 +85,8 @@ const paths = {
     world: {
         url: "/world/world.php",
         script: {
-            master: "./assets/js/content/world.js",
-            slave: "./assets/js/content/world-slave.js",
+            master: "assets/js/content/world.js",
+            slave: "assets/js/content/world-slave.js",
         },
     },
     dungeon: {
@@ -97,31 +97,31 @@ const paths = {
     },
     battles: {
         url: "/battle_group.php",
-        script: "./assets/js/content/battles.js",
+        script: "assets/js/content/battles.js",
     },
     inventory: {
         url: "/inventory.php",
-        script: "./assets/js/content/inventory.js",
+        script: "assets/js/content/inventory.js",
     },
     parcels: {
         url: "/parcels.php",
-        script: "./assets/js/content/parcels.js",
+        script: "assets/js/content/parcels.js",
     },
     totems: {
         url: "/points.php",
-        script: "./assets/js/content/totems.js",
+        script: "assets/js/content/totems.js",
     },
     extract: {
         url: "/world/resource.php",
-        script: "./assets/js/content/extract.js",
+        script: "assets/js/content/extract.js",
     },
     castle: {
         url: "/world/castle.php",
-        script: "./assets/js/content/castle.js",
+        script: "assets/js/content/castle.js",
     },
-    service: "./assets/js/resources/captchaClass.js",
-    main: "./assets/js/content/content-script.js",
-    config: "./assets/js/content/config.js",
+    service: "assets/js/resources/captchaClass.js",
+    main: "assets/js/content/content-script.js",
+    config: "assets/js/content/config.js",
 };
 
 const questsIds = {
