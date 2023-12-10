@@ -56,9 +56,13 @@ const hideLoader = () => {
 }
 
 chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
-    Object.assign(state, res);
-    state.onLoad = true;
-    resetRefresh();
+    if (res) {
+        Object.assign(state, res);
+        state.onLoad = true;
+        resetRefresh();
+    } else {
+        refresh();
+    }
 });
 
 chrome.storage.onChanged.addListener(function (changes) {
@@ -287,8 +291,9 @@ async function waitToReadyState() {
         if (iteration > 10) {
             refresh();
         }
-        await function () {
-            return new Promise((resolve) => setTimeout(resolve, 100))
-        }();
+        await new Promise((resolve) => setTimeout(() => {
+            iteration++;
+            resolve();
+        }, 100));
     }
 }
