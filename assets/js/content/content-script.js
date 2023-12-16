@@ -269,16 +269,19 @@ async function getServiceCaptchaInstance(lvlArg = null) {
 
     switch (state.global.captcha) {
         case "1":
-            object = new CaptchaCapMonster(lvlArg);
+            object = new CaptchaBase(lvlArg)
             break;
         case "2":
-            object = new CaptchaRuCaptcha(lvlArg);
+            object = new CaptchaCapMonster(lvlArg);
             break;
         case "3":
+            object = new CaptchaRuCaptcha(lvlArg);
+            break;
+        case "4":
             object = new CaptchaAntiCaptcha(lvlArg);
             break;
         default:
-            object = new CaptchaBase(lvlArg)
+            object = null
     }
 
     return object;

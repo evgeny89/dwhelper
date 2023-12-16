@@ -15,11 +15,7 @@ waitToReadyState().then(() => {
         if (form) {
             form.submit()
         } else {
-            if (ok) {
-                ok.click();
-            } else {
-                wait(1);
-            }
+            ok ? ok.click() : wait(1);
         }
     }
 });

@@ -131,6 +131,9 @@ waitToReadyState().then(async () => {
     const solve = async () => {
         increment = false;
         const instance = await getServiceCaptchaInstance();
+        if (!instance) {
+            return;
+        }
         const img = document.querySelector('img[src*="../caramba.php"]')
         instance.getImage(img);
         const localAnswer = instance.checkLocalAnswer();
@@ -256,6 +259,7 @@ waitToReadyState().then(async () => {
 
     if (checkText(words.captcha)) {
         await solve();
+        return;
     }
 
     if (isArena) {
