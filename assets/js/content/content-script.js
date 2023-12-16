@@ -204,6 +204,7 @@ async function scanSkills() {
 }
 
 async function queryQuests({ids, key}) {
+    showLoader();
     const searchParams = new URLSearchParams(url.search);
     searchParams.set(key, '1');
     searchParams.set('use', '16');
@@ -212,6 +213,7 @@ async function queryQuests({ids, key}) {
         searchParams.set('quest', id);
         await fetch(`${url.origin}${pathNames.quest}?${searchParams.toString()}`);
     }
+    hideLoader();
     return true;
 }
 

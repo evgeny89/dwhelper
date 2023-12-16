@@ -26,6 +26,7 @@ waitToReadyState().then(async () => {
         },
         mysterious: '6688662266666666824444444488442244888866884488666622666666226666668844448844448866888866668866226682448844222266222268844228868866662266224422666622668888668888448866886884426222662', // тайны
     }
+    const arenaQuestsData = {ids: [16, 17], key: 'get'}
     let increment = true;
 
     const getDragonsKey = async (iteration = 1) => {
@@ -154,7 +155,7 @@ waitToReadyState().then(async () => {
             this.lvl = info.lvl;
         }
 
-        static async fetchCity() {
+        static async getUserData() {
             const info = await getInfo();
             return new UserInfo(info);
         }
@@ -283,7 +284,7 @@ waitToReadyState().then(async () => {
 
             if (+state.world.map && !state.move.routes.length) {
                 await (async () => {
-                    const info = await UserInfo.fetchCity();
+                    const info = await UserInfo.getUserData();
 
                     const routes = {
                         1: [
@@ -331,6 +332,7 @@ waitToReadyState().then(async () => {
                             [words.toCity]
                         ],
                         7: [
+                            await queryQuests(arenaQuestsData),
                             info.getForward("arena"),
                             [words.arena],
                             [words.yes],
