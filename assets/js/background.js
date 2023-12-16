@@ -256,9 +256,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
     if (request.action === "set-state") {
         if (request.type === "badge") {
-            const text = data.text;
-            const color = data.color;
-            setBadge(text, color);
+            setBadge(data.text, data.color);
         }
         if (request.type === "sleep") {
             const time = new Date(data.global.sleep).getTime() - Date.now();

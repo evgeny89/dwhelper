@@ -259,6 +259,7 @@ waitToReadyState().then(async () => {
 
     if (checkText(words.captcha)) {
         await solve();
+        notify(messages.captcha);
         return;
     }
 

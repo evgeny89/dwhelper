@@ -89,10 +89,10 @@ chrome.storage.onChanged.addListener(function (changes) {
         setTimeout(refresh, delay.long);
     }
 
-    if (changes.global && +changes.global.newValue.captcha && !+changes.global.oldValue.captcha) {
+    if (changes.global && (+changes.global.newValue.captcha >= captcha.capMonster.value)) {
         setBadge('$', '#ecaa15');
     }
-    if (changes.global && !+changes.global.newValue.captcha && +changes.global.oldValue.captcha) {
+    if (changes.global && (+changes.global.newValue.captcha < captcha.capMonster.value)) {
         setBadge('');
     }
 

@@ -83,23 +83,6 @@ const addSkillListUsage = (skills) => {
     return wrapper;
 }
 
-const addCaptchaElement = ({name, value}) => {
-    const label = document.createElement('label');
-    const input = document.createElement('input');
-
-    label.classList.add('uk-margin-right');
-    label.innerText = name;
-
-    input.classList.add('uk-radio');
-    input.type = 'radio';
-    input.name = 'captcha';
-    input.dataset.state = 'global.captcha';
-    input.value = value;
-
-    label.insertAdjacentElement('afterbegin', input);
-    return label;
-}
-
 const getSelectFromGroupSkills = (key) => {
     const options = [
         {value: 0, name: 'не задано'},
