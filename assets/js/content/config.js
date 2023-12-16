@@ -41,6 +41,7 @@ const words = {
 const pathNames = {
     battles: "/battle_group.php",
     battlefield: "/battleground.php",
+    buff: "/buff.php",
     castle: "/world/castle.php",
     events: "/service_events.php",
     inventory: "/inventory.php",

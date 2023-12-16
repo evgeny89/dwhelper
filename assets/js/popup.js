@@ -277,6 +277,16 @@ const passQuests = () => {
     res ? showSuccessMessage('Квесты сданы') : showErrorMessage('Ошибка сдачи квестов')
 }
 
+const defaultBuffs = () => {
+    const res = sendMessageOnClickButton('buff', 'default-buffs');
+    res ? showSuccessMessage('Простые бафы применены') : showErrorMessage('Ошибка получения бафов')
+}
+
+const advancedBuffs = () => {
+    const res = sendMessageOnClickButton('od-buff', 'advanced-buffs');
+    res ? showSuccessMessage('Улучшенные бафы применены') : showErrorMessage('Ошибка получения бафов')
+}
+
 const closeSleepTime = (sleep) => {
     popup.querySelector("#count-down-wrapper").classList.add('uk-hidden');
     state.global.sleep = '';
@@ -311,6 +321,8 @@ const addListeners = () => {
     popup.querySelector("#sleep-time-close").addEventListener("click", closeSleepTime);
     popup.querySelector("#take").addEventListener("click", takeQuests);
     popup.querySelector("#pass").addEventListener("click", passQuests);
+    popup.querySelector("#buff").addEventListener("click", defaultBuffs);
+    popup.querySelector("#od-buff").addEventListener("click", advancedBuffs);
 }
 
 function getState() {

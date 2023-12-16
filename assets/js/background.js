@@ -22,6 +22,7 @@ const initialState = {
         textBadge: '',
         colorBadge: '',
         captcha: 0,
+        withRage: false,
     },
     inventory_actions: {
         moved: 0,
@@ -139,6 +140,13 @@ const questsIds = {
     colosseumQuest: 26,
 }
 
+const buffs = {
+    default: [-1, -2, -3, -4, -5, -7, -8, -9],
+    defaultRage: [-6],
+    advanced: [-101, -102, -103, -104, -105, -107, -108, -109],
+    advancedRage: [-106],
+}
+
 const setState = (payload) => {
     chrome.storage.local.set(payload);
 }
@@ -190,6 +198,16 @@ const getQuestsIds = () => {
         }
     }
     return result;
+}
+
+const getBuffsIds = (type) => {
+    const buffsIds = buffs[type];
+
+    if (state.global.withRage) {
+        buffsIds.push(...buffs[type + 'Rage']);
+    }
+
+    return buffsIds;
 }
 
 chrome.runtime.onInstalled.addListener(function (details) {
@@ -331,6 +349,23 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 };
                 chrome.tabs.sendMessage(tab.id, {action: request.action, payload}, function (response) {
                     setState({quests: initialState.quests});
+                    sendResponse(response);
+                });
+            } else {
+                sendResponse(false);
+            }
+        });
+        return true;
+    }
+    if (request.action === 'default-buffs' || request.action === 'advanced-buffs') {
+        chrome.tabs.query({currentWindow: true}, function (tabs) {
+            const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+            if (tab) {
+                const type = request.action === 'default-buffs' ? 'default' : 'advanced'
+                const payload = {
+                    ids: getBuffsIds(type),
+                };
+                chrome.tabs.sendMessage(tab.id, {action: 'take-buffs', payload}, function (response) {
                     sendResponse(response);
                 });
             } else {

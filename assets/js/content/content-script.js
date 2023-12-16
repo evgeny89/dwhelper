@@ -131,6 +131,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     sendResponse(true)
                 });
             return true;
+        case "take-buffs":
+            takeBuffs(request.payload)
+                .then(() => {
+                    sendResponse(true)
+                });
+            return true;
         case "get-captcha":
             sendResponse({captcha: captcha});
             return true;
@@ -212,6 +218,18 @@ async function queryQuests({ids, key}) {
     for (const id of ids) {
         searchParams.set('quest', id);
         await fetch(`${url.origin}${pathNames.quest}?${searchParams.toString()}`);
+    }
+    hideLoader();
+    return true;
+}
+
+const takeBuffs = async ({ids}) => {
+    showLoader();
+    const searchParams = new URLSearchParams(url.search);
+
+    for (const id of ids) {
+        searchParams.set('buff', id);
+        await fetch(`${url.origin}${pathNames.buff}?${searchParams.toString()}`);
     }
     hideLoader();
     return true;

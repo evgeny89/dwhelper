@@ -533,6 +533,8 @@
                             <label>
                                 <input class="uk-radio" type="radio" name="world" data-state="world.map" value="7">
                                 арена
+                                <span class="popup-tooltip" data-text="?" uk-tooltip="Квесты берутся автоматически">
+                            </span>
                             </label>
                         </p>
                         <p class="uk-margin-small">
@@ -753,6 +755,30 @@
                 </li>
                 <li id="skills-group">
                     Отсканируйте умения
+                </li>
+            </ul>
+            <ul class="uk-list">
+                <li>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Бафы</h5>
+                        <span class="uk-label uk-label-success uk-flex-top">help</span>
+                    </div>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="global.withRage">
+                            Брать ярость
+                        </label>
+                        <span class="uk-label">auto</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-flex uk-flex-between uk-margin-small-left uk-margin-small-right">
+                        <button id="buff" class="uk-button-small uk-button-primary">Простые</button>
+                        <button id="od-buff" class="uk-button-small uk-button-primary">Улучшенные</button>
+                    </div>
                 </li>
             </ul>
         </li>
