@@ -319,4 +319,5 @@ async function waitToReadyState() {
             resolve();
         }, 100));
     }
+    return true;
 }
