@@ -321,3 +321,19 @@ async function waitToReadyState() {
     }
     return true;
 }
+
+function debug(type = null, data) {
+    if (state.global.debug) {
+        switch (type) {
+            case debugTypes.show:
+                alert(data);
+                break;
+            case debugTypes.copy:
+                prompt('Информация:', data);
+                break;
+            default:
+                console.log(data);
+                break;
+        }
+    }
+}

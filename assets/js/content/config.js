@@ -83,3 +83,8 @@ const messages = {
     notMoney: "У Вас недостаточно средств",
     installed: "Расширение успешно обновлено",
 }
+
+const debugTypes = {
+    show: "show",
+    copy: "copy",
+}

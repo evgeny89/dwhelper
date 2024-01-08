@@ -23,6 +23,7 @@ const initialState = {
         colorBadge: '',
         captcha: 0,
         withRage: false,
+        debug: false,
     },
     inventory_actions: {
         moved: 0,

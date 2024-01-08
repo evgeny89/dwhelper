@@ -39,6 +39,8 @@ class CaptchaBase {
     }
 
     checkLocalAnswer() {
+        debug(debugTypes.copy, this.base64image);
+
         if (this.base64image === this._getBase64Image(this.localQuestions.lvl.image)) {
             return this.localQuestions.lvl.answer
         }
