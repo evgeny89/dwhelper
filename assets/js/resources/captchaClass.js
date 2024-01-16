@@ -137,6 +137,7 @@ class CaptchaCapMonster extends CaptchaBase {
             showLoader();
             const response = await fetch(this.urls.createTaskUrl, this._getOptions());
             const json = await response.json();
+            debug( debugTypes.show, 'Отладка. Таск создан, проверьте запрос, затем нажмите "ok"');
             if (json.taskId) {
                 this.id = json.taskId;
                 this._waitResult(delay.long);
@@ -214,6 +215,7 @@ class CaptchaRuCaptcha extends CaptchaBase {
             showLoader();
             const response = await fetch(this.urls.createTaskUrl, this._getOptions());
             const json = await response.json();
+            debug( debugTypes.show, 'Отладка. Таск создан, проверьте запрос, затем нажмите "ok"');
             if (json.status) {
                 this.id = json.request;
                 this._waitResult();
@@ -300,6 +302,7 @@ class CaptchaAntiCaptcha extends CaptchaBase {
             showLoader();
             const response = await fetch(this.urls.createTaskUrl, this._getOptions());
             const json = await response.json();
+            debug( debugTypes.show, 'Отладка. Таск создан, проверьте запрос, затем нажмите "ok"');
             if (json.taskId) {
                 this.id = json.taskId;
                 this._waitResult(delay.fiveSeconds);
