@@ -313,13 +313,14 @@ async function waitToReadyState() {
     while (!state.onLoad) {
         if (iteration > 10) {
             refresh();
+        } else {
+            await new Promise((resolve) => setTimeout(() => {
+                iteration++;
+                resolve();
+            }, 100));
         }
-        await new Promise((resolve) => setTimeout(() => {
-            iteration++;
-            resolve();
-        }, 100));
     }
-    return true;
+    return state.onLoad;
 }
 
 function debug(type = null, data) {
