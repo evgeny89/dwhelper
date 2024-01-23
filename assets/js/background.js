@@ -1,6 +1,8 @@
 // state
 const initialState = {
     battles: {
+        attack: 1,
+        defence: 1,
         run: false,
     },
     castle: {

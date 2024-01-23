@@ -99,6 +99,22 @@ waitToReadyState().then(() => {
         }
     }
 
+    const setValues = (type) => {
+        if (!form) return;
+
+        const select = form.elements[type]
+
+        if (!select) return;
+
+        const option = Array
+            .from(select.options)
+            .find(item => item.value === state.battles[type])
+
+        if (!option) return;
+
+        option.selected = true;
+    }
+
     const setScrolls = (type) => {
         if (!form) return;
 
@@ -128,6 +144,9 @@ waitToReadyState().then(() => {
         const delayTime = changeLink ? delay.fast : delay.long;
 
         if (useSkills) {
+            setValues('attack');
+            setValues('defence');
+
             skillControls.forEach(control => {
                 const skill = activeSkills.find(skill => skill.id === control.value)
                 if (skill && isUseSkill(skill)) {

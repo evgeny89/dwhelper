@@ -556,7 +556,7 @@
                     </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
-                <li class="uk-column-1-2">
+                <li class="uk-column-1-3">
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
                         <label>
                             <input class="uk-checkbox" type="checkbox" data-state="battles.run">
@@ -604,6 +604,31 @@
                         <span class="uk-label">auto</span>
                     </div>
                 </li>
+                <hr>
+                <ul class="uk-list">
+                    <li>
+                        <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                            <h5 class="uk-text-primary">Бафы</h5>
+                            <span class="uk-label uk-label-success uk-flex-top">help</span>
+                        </div>
+                        <hr class="uk-divider-small uk-margin-remove">
+                    </li>
+                    <li>
+                        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                            <label>
+                                <input class="uk-checkbox" type="checkbox" data-state="global.withRage">
+                                Брать ярость
+                            </label>
+                            <span class="uk-label">auto</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="uk-flex uk-flex-between uk-margin-small-left uk-margin-small-right">
+                            <button id="buff" class="uk-button-small uk-button-primary">Простые</button>
+                            <button id="od-buff" class="uk-button-small uk-button-primary">Улучшенные</button>
+                        </div>
+                    </li>
+                </ul>
                 <hr>
                 <li>
                     <h5 class="uk-text-primary uk-margin-small-bottom">Квесты</h5>
@@ -731,6 +756,49 @@
             <ul class="uk-list">
                 <li>
                     <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">В бою</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li id="battle">
+                    <div class="uk-column-1-2">
+                        <div class="uk-flex">
+                            <h6 class="uk-margin-remove">атака:</h6>
+                            <div class="uk-margin-small-left" uk-form-custom="target: > * > span:last-child">
+                                <select data-state="battles.attack">
+                                    <option value="1">В голову</option>
+                                    <option value="2">В грудь</option>
+                                    <option value="3">В пах</option>
+                                    <option value="4">В ноги</option>
+                                </select>
+                                <span class="uk-link">
+                                <span uk-icon="icon: pencil"></span>
+                                <span></span>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="uk-flex">
+                            <h6 class="uk-margin-remove">защита:</h6>
+                            <div class="uk-margin-small-left" uk-form-custom="target: > * > span:last-child">
+                                <select data-state="battles.defence">
+                                    <option value="1">Голова и грудь</option>
+                                    <option value="2">Грудь и пах</option>
+                                    <option value="3">Пах и ноги</option>
+                                    <option value="4">Голова и ноги</option>
+                                </select>
+                                <span class="uk-link">
+                                <span uk-icon="icon: pencil"></span>
+                                <span></span>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="uk-list">
+                <li>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
                         <h5 class="uk-text-primary">Умения</h5>
                         <span class="uk-label">auto</span>
                     </div>
@@ -755,30 +823,6 @@
                 </li>
                 <li id="skills-group">
                     Отсканируйте умения
-                </li>
-            </ul>
-            <ul class="uk-list">
-                <li>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Бафы</h5>
-                        <span class="uk-label uk-label-success uk-flex-top">help</span>
-                    </div>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="global.withRage">
-                            Брать ярость
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-flex uk-flex-between uk-margin-small-left uk-margin-small-right">
-                        <button id="buff" class="uk-button-small uk-button-primary">Простые</button>
-                        <button id="od-buff" class="uk-button-small uk-button-primary">Улучшенные</button>
-                    </div>
                 </li>
             </ul>
         </li>
