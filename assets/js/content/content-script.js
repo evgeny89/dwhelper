@@ -137,6 +137,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     sendResponse(true)
                 });
             return true;
+        case "flasks":
+            flasksAction(request.payload)
+                .then(() => {
+                    sendResponse(true)
+                });
+            return true;
         case "get-captcha":
             sendResponse({captcha: captcha});
             return true;
@@ -160,6 +166,27 @@ function setBadge(text, color = 'blue') {
 const notify = (text, warn = false) => {
     const payload = {text, warn}
     chrome.runtime.sendMessage({action: 'show-message', payload});
+}
+
+async function getDressItems() {
+    const url = new URL(document.location.href);
+    const response = await fetch(`${url.origin}${pathNames.user}${url.search}`);
+    if (response.ok) {
+        const userPageText = await response.text();
+        const userPageBody = userPageText.replace(/\n/mg, '').match(/.*<body>(.+)<\/body>.*/)[1];
+        const el = document.createElement('DIV');
+        el.innerHTML = userPageBody;
+        const div = el.querySelector(".mmain").nextElementSibling;
+        const spans = div.querySelectorAll(".block span[class], .block .pad");
+        return Array.from(spans)
+            .filter(item => /drop_*|art_*/.test(item.className))
+            .map(item => {
+                const itemUrl = new URL(item.querySelector('a[href*="&i=1&"]').href);
+                return itemUrl.searchParams.get('id');
+            });
+    }
+    notify(messages.parseFlasksError, true);
+    return [];
 }
 
 const toHtml = (text) => {
@@ -232,6 +259,20 @@ const takeBuffs = async ({ids}) => {
         await fetch(`${url.origin}${pathNames.buff}?${searchParams.toString()}`);
     }
     hideLoader();
+    return true;
+}
+
+async function flasksAction({type}) {
+    showLoader();
+    const itemsIds = await getDressItems();
+    const searchParams = new URLSearchParams(url.search);
+    searchParams.set(type, '1');
+    for (const id of itemsIds) {
+        searchParams.set('id', id);
+        await fetch(`${url.origin}${pathNames.item}?${searchParams.toString()}`);
+    }
+    hideLoader();
+
     return true;
 }
 

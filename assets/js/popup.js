@@ -287,6 +287,16 @@ const advancedBuffs = () => {
     res ? showSuccessMessage('Улучшенные бафы применены') : showErrorMessage('Ошибка получения бафов')
 }
 
+const activateFlasks = () => {
+    const res = sendMessageOnClickButton('on-flasks', 'gradeon');
+    res ? showSuccessMessage('Внимание! Колбы включены') : showErrorMessage('Ошибка включения колб')
+}
+
+const deactivateFlasks = () => {
+    const res = sendMessageOnClickButton('off-flasks', 'gradeoff');
+    res ? showSuccessMessage('Внимание! Колбы выключены') : showErrorMessage('Ошибка выключения колб')
+}
+
 const closeSleepTime = (sleep) => {
     popup.querySelector("#count-down-wrapper").classList.add('uk-hidden');
     state.global.sleep = '';
@@ -323,6 +333,8 @@ const addListeners = () => {
     popup.querySelector("#pass").addEventListener("click", passQuests);
     popup.querySelector("#buff").addEventListener("click", defaultBuffs);
     popup.querySelector("#od-buff").addEventListener("click", advancedBuffs);
+    popup.querySelector("#on-flasks").addEventListener("click", activateFlasks);
+    popup.querySelector("#off-flasks").addEventListener("click", deactivateFlasks);
 }
 
 function getState() {

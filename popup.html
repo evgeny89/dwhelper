@@ -549,62 +549,23 @@
         </li>
         <li class="uk-list-divider">
             <ul class="uk-list">
-                <li>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Бои</h5>
-                        <span class="uk-label">auto</span>
-                    </div>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li class="uk-column-1-3">
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="battles.run">
-                            авто-бой
-                        </label>
-                    </div>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.attack">
-                            авто-нападение
-                        </label>
-                    </div>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.attackAll">
-                            нападать на всех
-                        </label>
-                    </div>
-                </li>
-                <hr>
-                <li>
-                    <div class="uk-margin uk-flex uk-flex-between uk-flex-top">
-                        <div class="uk-flex">
-                            <div>
-                                <h6 class="uk-margin-remove">Пить полные:</h6>
-                                <div class=" uk-flex uk-flex-between uk-flex-top">
-                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
-                                           type="number"
-                                           data-state="world.scrollLife"
-                                           placeholder="если меньше"
-                                    >
-                                </div>
-                            </div>
-                            <div class="uk-margin-small-left">
-                                <h6 class="uk-margin-remove">Пить маны:</h6>
-                                <div class=" uk-flex uk-flex-between uk-flex-top">
-                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
-                                           type="number"
-                                           data-state="world.scrollMana"
-                                           placeholder="если меньше"
-                                    >
-                                </div>
-                            </div>
+                <ul class="uk-list">
+                    <li>
+                        <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                            <h5 class="uk-text-primary">Колбы</h5>
+                            <span class="uk-label uk-label-success uk-flex-top">help</span>
                         </div>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <hr>
+                        <hr class="uk-divider-small uk-margin-remove">
+                    </li>
+                    <li>
+                        <div class="uk-flex uk-flex-between uk-margin-small-left uk-margin-small-right">
+                            <button id="on-flasks" class="uk-button-small uk-button-primary">Включить</button>
+                            <button id="off-flasks" class="uk-button-small uk-button-primary">Выключить</button>
+                        </div>
+                    </li>
+                </ul>
+            </ul>
+            <ul class="uk-list">
                 <ul class="uk-list">
                     <li>
                         <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
@@ -629,7 +590,44 @@
                         </div>
                     </li>
                 </ul>
-                <hr>
+            </ul>
+            <ul class="uk-list">
+                <li>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Пить свитки</h5>
+                        <span class="uk-label uk-label-success uk-flex-top">help</span>
+                    </div>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li>
+                    <div class="uk-margin uk-flex uk-flex-between uk-flex-top">
+                        <div class="uk-flex">
+                            <div class="uk-flex uk-flex-middle">
+                                <h6 class="uk-margin-remove">Полные:</h6>
+                                <div class="uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
+                                           type="number"
+                                           data-state="world.scrollLife"
+                                           placeholder="если меньше"
+                                    >
+                                </div>
+                            </div>
+                            <div class="uk-margin-small-left uk-flex uk-flex-middle">
+                                <h6 class="uk-margin-remove">Маны:</h6>
+                                <div class="uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
+                                           type="number"
+                                           data-state="world.scrollMana"
+                                           placeholder="если меньше"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <span class="uk-label">auto</span>
+                    </div>
+                </li>
+            </ul>
+            <ul class="uk-list">
                 <li>
                     <h5 class="uk-text-primary uk-margin-small-bottom">Квесты</h5>
                     <hr class="uk-divider-small uk-margin-remove">
@@ -756,7 +754,36 @@
             <ul class="uk-list">
                 <li>
                     <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">В бою</h5>
+                        <h5 class="uk-text-primary">Бои</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li class="uk-column-1-3">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="battles.run">
+                            авто-бой
+                        </label>
+                    </div>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="world.attack">
+                            авто-нападение
+                        </label>
+                    </div>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="world.attackAll">
+                            нападать на всех
+                        </label>
+                    </div>
+                </li>
+            </ul>
+            <ul class="uk-list">
+                <li>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Тактика</h5>
                         <span class="uk-label">auto</span>
                     </div>
                     <hr class="uk-divider-small uk-margin-remove">

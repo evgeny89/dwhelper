@@ -53,6 +53,7 @@ const pathNames = {
     skills: "/skill_learn.php",
     user: "/user.php",
     world: "/world/world.php",
+    item: "/item.php",
 }
 
 const delay = {
@@ -82,6 +83,7 @@ const messages = {
     captcha: "Пожалуйста, введите код",
     notMoney: "У Вас недостаточно средств",
     installed: "Расширение успешно обновлено",
+    parseFlasksError: "Ошибка сканирования одетых вещей",
 }
 
 const debugTypes = {
