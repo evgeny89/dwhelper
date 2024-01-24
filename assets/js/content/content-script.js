@@ -65,7 +65,7 @@ chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (
     }
 });
 
-chrome.storage.onChanged.addListener(function (changes) {
+chrome.storage.onChanged.addListener(async function (changes) {
 
     for (const prop in changes) {
         state[prop] = {...changes[prop].newValue};
@@ -106,7 +106,12 @@ chrome.storage.onChanged.addListener(function (changes) {
     }
 
     if (url.pathname !== pathNames.world && changes.hasOwnProperty('world') && +changes.world.newValue.map !== 0 && +changes.world.oldValue.map === 0) {
+        await beforeMapAction(+changes.world.newValue.map);
         window.location.href = `${url.origin}${pathNames.world}${url.search}`;
+    }
+
+    if (+changes.world.newValue.map === 0 && +changes.world.oldValue.map !== 0) {
+        await afterMapAction(+changes.world.oldValue.map);
     }
 });
 
@@ -154,6 +159,20 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             return true;
     }
 });
+
+async function beforeMapAction(map) {
+    if (map === 7) {
+        return await queryQuests({ids: quests.arena, key: 'get'});
+    }
+    return await Promise.resolve();
+}
+
+async function afterMapAction(map) {
+    if (map === 7) {
+        return await queryQuests({ids: quests.arena, key: 'end'});
+    }
+    return await Promise.resolve();
+}
 
 function updateState(payload, type = 'update') {
     chrome.runtime.sendMessage({action: 'set-state', type, payload});

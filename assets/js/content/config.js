@@ -90,3 +90,7 @@ const debugTypes = {
     show: "show",
     copy: "copy",
 }
+
+const quests = {
+    arena: [16, 17]
+}
