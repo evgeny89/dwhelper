@@ -81,7 +81,7 @@ class CaptchaBase {
 class CaptchaCapMonster extends CaptchaBase {
     constructor(lvl) {
         super(lvl);
-        this.token = captcha.capMonster.token;
+        this.token = state.global.captcha.capMonster.token;
         this.urls = api.capMonster;
         this.delimiter = ':';
     }
@@ -156,7 +156,7 @@ class CaptchaRuCaptcha extends CaptchaBase {
 
     constructor(lvl) {
         super(lvl);
-        this.token = captcha.ruCaptcha.token;
+        this.token = state.global.captcha.ruCaptcha.token;
         this.urls = api.ruCaptcha;
         this.delimiter = ',';
     }
@@ -241,7 +241,7 @@ class CaptchaRuCaptcha extends CaptchaBase {
 class CaptchaAntiCaptcha extends CaptchaBase {
     constructor(lvl) {
         super(lvl);
-        this.token = captcha.antiCaptcha.token;
+        this.token = state.global.captcha.antiCaptcha.token;
         this.urls = api.antiCaptcha;
         this.delimiter = ',';
     }
