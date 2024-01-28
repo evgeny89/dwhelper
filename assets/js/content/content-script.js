@@ -89,10 +89,10 @@ chrome.storage.onChanged.addListener(async function (changes) {
         setTimeout(refresh, delay.long);
     }
 
-    if (changes.global && (+changes.global.newValue.captcha >= state.global.captcha.capMonster.value)) {
+    if (changes.global && (+changes.global.newValue.captcha >= state.captcha.capMonster.value)) {
         setBadge('$', '#ecaa15');
     }
-    if (changes.global && (+changes.global.newValue.captcha < state.global.captcha.capMonster.value)) {
+    if (changes.global && (+changes.global.newValue.captcha < state.captcha.capMonster.value)) {
         setBadge('');
     }
 
