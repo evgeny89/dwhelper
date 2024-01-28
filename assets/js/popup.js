@@ -205,7 +205,7 @@ const reCalcPopup = (state) => {
     addSkillsControls(state.skills);
     addCaptchaControls(state.captcha);
     elements.forEach(item => {
-        const [property, subProperty] = item.dataset.state.split('.');
+        const [property, subProperty, field = null] = item.dataset.state.split('.');
         if (item.type === "radio") {
             item.checked = +state[property][subProperty] === +item[elementsType[item.type]];
         } else if (item.type === "select-one") {
@@ -216,7 +216,11 @@ const reCalcPopup = (state) => {
                 item.querySelector('option').selected = true;
             }
         } else {
-            item[elementsType[item.type]] = state[property][subProperty];
+            if (field) {
+                item[elementsType[item.type]] = state[property][subProperty][field];
+            } else {
+                item[elementsType[item.type]] = state[property][subProperty];
+            }
         }
     })
     popup.querySelector("#version").textContent = `v. ${chrome.runtime.getManifest().version}`;
@@ -230,6 +234,11 @@ const sendMessageOnClickButton = async (element) => {
     }
     element.disabled = false;
     response ? showSuccessMessage('Действие успешно выполнено') : showErrorMessage('Ошибка выполнения команды');
+
+    if (element.dataset.action === 'scan-folders') {
+        state.inventory_actions.to_folders = 0;
+        updateState({inventory_actions: state.inventory_actions});
+    }
 }
 
 const setSleepTime = () => {
@@ -267,8 +276,12 @@ const addListeners = () => {
             })
         } else {
             el.addEventListener('change', function (e) {
-                const [property, subProperty] = e.target.dataset.state.split('.');
-                state[property][subProperty] = e.target[elementsType[e.target.type]];
+                const [property, subProperty, field = null] = e.target.dataset.state.split('.');
+                if (field) {
+                    state[property][subProperty][field] = e.target[elementsType[e.target.type]];
+                } else {
+                    state[property][subProperty] = e.target[elementsType[e.target.type]];
+                }
                 updateState({[property]: state[property]});
             });
         }

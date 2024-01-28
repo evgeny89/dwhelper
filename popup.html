@@ -11,13 +11,13 @@
 <body>
 <div class="uk-container main-popup" id="popup">
     <ul uk-tab class="uk-margin-small-bottom">
-        <li class="uk-active"><a href="#"><span uk-icon="icon: home"></span></a></li>
+        <li><a href="#"><span uk-icon="icon: home"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bag"></span></a></li>
         <li><a href="#"><span uk-icon="icon: mail"></span></a></li>
         <li><a href="#"><span uk-icon="icon: location"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bookmark"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bolt"></span></a></li>
-        <li><a href="#"><span uk-icon="icon: info"></span></a></li>
+        <li><a href="#"><span uk-icon="icon: cog"></span></a></li>
     </ul>
     <ul class="uk-switcher">
         <li class="uk-list-divider">
@@ -308,25 +308,28 @@
             </ul>
             <ul class="uk-list uk-margin">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Прочее</h5>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Прочее</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="totems.run">
-                            Продавать тотемы
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="castle.run">
-                            Точить вещи
-                        </label>
-                        <span class="uk-label">auto</span>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
+                        <div class="uk-column-1-2">
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="totems.run">
+                                    Продавать тотемы
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="castle.run">
+                                    Точить вещи
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -334,38 +337,38 @@
         <li class="uk-list-divider">
             <ul class="uk-list uk-margin">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Посылки</h5>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Посылки</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="parcels.receive">
-                            принимать посылки
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="parcels.fill">
-                            заполнять посылки
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="parcels.send">
-                            отправлять посылки
-                            <span class="popup-tooltip" data-text="?"
-                                  uk-tooltip='Работает только при включении опции "заполнять посылки".
-                            Отправляет все что есть в инвентаре.'>
-                            </span>
-                        </label>
-                        <span class="uk-label">auto</span>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
+                        <div class="uk-column-1-3">
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="parcels.receive">
+                                    принимать
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="parcels.fill">
+                                    заполнять
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="parcels.send">
+                                    отправлять
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip='Работает только при включении опции "заполнять посылки".
+                                    Отправляет все что есть в инвентаре.'>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </li>
                 <hr class="uk-divider-small">
@@ -393,7 +396,7 @@
             </ul>
         </li>
         <li class="uk-list-divider">
-            <ul class="uk-list">
+            <ul class="uk-list uk-margin">
                 <li>
                     <h5 class="uk-text-primary uk-margin-small-bottom">Добыча ресурсов</h5>
                     <hr class="uk-divider-small uk-margin-remove">
@@ -416,22 +419,34 @@
                     </div>
                 </li>
                 <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <div>
-                            <label class="uk-margin-right"><input class="uk-radio" type="radio" name="type-captcha"
-                                                                  data-state="extract.type"
-                                                                  value="0"> выкл</label>
-                            <label class="uk-margin-right"><input class="uk-radio" type="radio" name="type-captcha"
-                                                                  data-state="extract.type"
-                                                                  value="1"> без капчи</label>
-                            <label class="uk-margin-right">
-                                <input class="uk-radio" type="radio" name="type-captcha"
-                                       data-state="extract.type"
-                                       value="2"> сервис распознавания
-                                <span class="popup-tooltip" data-text="?"
-                                      uk-tooltip="На главной выбирается активный сервис. Не забудьте установить токен в файле secret.js">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
+                        <div class="uk-column-1-3">
+                            <div>
+                                <label>
+                                    <input class="uk-radio" type="radio" name="type-captcha"
+                                           data-state="extract.type"
+                                           value="0">
+                                    выкл
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-radio" type="radio" name="type-captcha" data-state="extract.type"
+                                           value="1">
+                                    без капчи
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-radio" type="radio" name="type-captcha"
+                                           data-state="extract.type"
+                                           value="2">
+                                    сервис капчи
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="На главной выбирается активный сервис. Не забудьте установить токен в файле secret.js">
                                 </span>
-                            </label>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -856,7 +871,10 @@
         <li class="uk-list-divider">
             <ul class="uk-list uk-text-meta">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Основные настройки</h5>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Основные настройки</h5>
+                        <span id="version" class="uk-flex uk-flex-right uk-text-small uk-text-warning"></span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
@@ -865,6 +883,31 @@
                             <input class="uk-checkbox" type="checkbox" data-state="global.debug">
                             вкл/выкл режим отладки
                         </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-margin">
+                        <div class="uk-margin-small-bottom">
+                            <h6 class="uk-margin-remove">capMonster:</h6>
+                            <div class=" uk-flex uk-flex-between uk-flex-top">
+                                <input class="uk-input uk-form-blank uk-form-small" type="text"
+                                       data-state="captcha.capMonster.token" placeholder="Тема посылок">
+                            </div>
+                        </div>
+                        <div class="uk-margin-small-bottom">
+                            <h6 class="uk-margin-remove">ruCaptcha:</h6>
+                            <div class=" uk-flex uk-flex-between uk-flex-top">
+                                <input class="uk-input uk-form-blank uk-form-small" type="text"
+                                       data-state="captcha.ruCaptcha.token" placeholder="Текст посылок">
+                            </div>
+                        </div>
+                        <div class="uk-margin-small-bottom">
+                            <h6 class="uk-margin-remove">antiCaptcha:</h6>
+                            <div class=" uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-small" type="text"
+                                           data-state="captcha.antiCaptcha.token" placeholder="Текст посылок">
+                                </div>
+                        </div>
                     </div>
                 </li>
                 <li>
@@ -900,11 +943,6 @@
                         <span class="uk-text-primary uk-margin-small-left">2202 2023 0460 9203</span>
                     </p>
                     <span>МИР</span>
-                </li>
-            </ul>
-            <ul class="uk-list uk-text-meta">
-                <li>
-                    <span id="version" class="uk-flex uk-flex-right uk-text-small uk-text-warning"></span>
                 </li>
             </ul>
         </li>

@@ -3,13 +3,10 @@
     const response = await fetch(`${url.origin}${pathNames.user}${url.search}`);
     if (response.ok) {
         const userPageText = await response.text();
-        const userPageBody = userPageText.replace(/\n/mg, '').match(/.*<body>(.+)<\/body>.*/)[1];
-        const el = document.createElement('DIV');
-        el.innerHTML = userPageBody;
+        const el = toHtml(userPageText)
         const div = el.querySelector(".mmain").nextElementSibling;
         const spans = div.querySelectorAll(".block span[class], .block .pad");
         const items = Array.from(spans).filter(item => /drop_*|art_*/.test(item.className));
-        console.log(items);
         let result = 0;
         for (const item of items) {
             const response = await fetch(item.querySelector('a[href*="&i=1&"]').href);

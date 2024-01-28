@@ -110,7 +110,7 @@ chrome.storage.onChanged.addListener(async function (changes) {
         window.location.href = `${url.origin}${pathNames.world}${url.search}`;
     }
 
-    if (+changes.world.newValue.map === 0 && +changes.world.oldValue.map !== 0) {
+    if (changes.hasOwnProperty('world') && +changes.world.newValue.map === 0 && +changes.world.oldValue.map !== 0) {
         await afterMapAction(+changes.world.oldValue.map);
     }
 });
@@ -192,9 +192,7 @@ async function getDressItems() {
     const response = await fetch(`${url.origin}${pathNames.user}${url.search}`);
     if (response.ok) {
         const userPageText = await response.text();
-        const userPageBody = userPageText.replace(/\n/mg, '').match(/.*<body>(.+)<\/body>.*/)[1];
-        const el = document.createElement('DIV');
-        el.innerHTML = userPageBody;
+        const el = toHtml(userPageText)
         const div = el.querySelector(".mmain").nextElementSibling;
         const spans = div.querySelectorAll(".block span[class], .block .pad");
         return Array.from(spans)

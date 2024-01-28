@@ -5,6 +5,7 @@ const initialState = {
         defence: 1,
         run: false,
     },
+    captcha: {},
     castle: {
         run: false,
     },
@@ -126,6 +127,7 @@ const paths = {
     service: "assets/js/resources/captchaClass.js",
     main: "assets/js/content/content-script.js",
     config: "assets/js/content/config.js",
+    secret: "secret.js",
 };
 
 const questsIds = {
@@ -228,7 +230,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
         }
         chrome.scripting.executeScript({
             target: {tabId: tab.id},
-            files: [paths.config, paths.main],
+            files: [paths.secret, paths.config, paths.main],
         })
             .then(async () => {
                 const folders = await chrome.tabs.sendMessage(tab.id, {action: "scan-folders"});
@@ -236,6 +238,9 @@ chrome.runtime.onInstalled.addListener(function (details) {
 
                 const skills = await chrome.tabs.sendMessage(tab.id, {action: "scan-skills"});
                 setState(skills);
+
+                const captcha = await chrome.tabs.sendMessage(tab.id, {action: "get-captcha"});
+                setState(captcha);
 
                 const response = await chrome.tabs.sendMessage(tab.id, {action: "refresh"});
                 showMessage(response);
@@ -255,14 +260,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             sendResponse(state);
         } else {
             chrome.tabs.query({currentWindow: true}, function (tabs) {
-                const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-                if (tab) {
-                    chrome.tabs.sendMessage(tab.id, {action: "get-captcha"}, function (response) {
-                        sendResponse({...state, ...response});
-                    });
-                } else {
-                    sendResponse(false);
-                }
+                sendResponse(state);
             });
         }
         return true;
