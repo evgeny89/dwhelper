@@ -147,21 +147,21 @@
             <ul class="uk-list uk-margin">
                 <li>
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <button class="uk-margin-left uk-button-small uk-button-primary" id="scan-folders">
+                        <button class="uk-margin-left uk-button-small uk-button-primary" data-action="scan-folders">
                             сканировать отделы рюкзака
                         </button>
                     </div>
                 </li>
                 <li>
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                        <button class="uk-margin-left uk-button-small uk-button-primary" id="scan-skills">
+                        <button class="uk-margin-left uk-button-small uk-button-primary" data-action="scan-skills">
                             сканировать умения
                         </button>
                     </div>
                 </li>
                 <li>
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                        <button class="uk-margin-left uk-button-small uk-button-danger" id="clear">
+                        <button class="uk-margin-left uk-button-small uk-button-danger" data-action="clear-state">
                             сброс настроек
                         </button>
                     </div>
@@ -559,8 +559,8 @@
                     </li>
                     <li>
                         <div class="uk-flex uk-flex-between uk-margin-small-left uk-margin-small-right">
-                            <button id="on-flasks" class="uk-button-small uk-button-primary">Включить</button>
-                            <button id="off-flasks" class="uk-button-small uk-button-primary">Выключить</button>
+                            <button class="uk-button-small uk-button-primary" data-action="gradeon">Включить</button>
+                            <button class="uk-button-small uk-button-primary" data-action="gradeoff">Выключить</button>
                         </div>
                     </li>
                 </ul>
@@ -585,8 +585,8 @@
                     </li>
                     <li>
                         <div class="uk-flex uk-flex-between uk-margin-small-left uk-margin-small-right">
-                            <button id="buff" class="uk-button-small uk-button-primary">Простые</button>
-                            <button id="od-buff" class="uk-button-small uk-button-primary">Улучшенные</button>
+                            <button class="uk-button-small uk-button-primary" data-action="default-buffs">Простые</button>
+                            <button class="uk-button-small uk-button-primary" data-action="advanced-buffs">Улучшенные</button>
                         </div>
                     </li>
                 </ul>
@@ -744,8 +744,8 @@
                 </li>
                 <li>
                     <div class="uk-flex uk-flex-between uk-margin-small-left uk-margin-small-right">
-                        <button id="take" class="uk-button-small uk-button-primary">взять выбранные</button>
-                        <button id="pass" class="uk-button-small uk-button-primary">сдать выбранные</button>
+                        <button class="uk-button-small uk-button-primary" data-action="take-quests">взять выбранные</button>
+                        <button class="uk-button-small uk-button-primary" data-action="pass-quests">сдать выбранные</button>
                     </div>
                 </li>
             </ul>

@@ -222,35 +222,14 @@ const reCalcPopup = (state) => {
     popup.querySelector("#version").textContent = `v. ${chrome.runtime.getManifest().version}`;
 }
 
-const sendMessageOnClickButton = async (selector, action) => {
-    popup.querySelector(`#${selector}`).disabled = true;
-    const response = await chrome.runtime.sendMessage({action: action});
+const sendMessageOnClickButton = async (element) => {
+    element.disabled = true;
+    const response = await chrome.runtime.sendMessage({action: element.dataset.action});
     if (chrome.runtime.lastError) {
         showErrorMessage(chrome.runtime.lastError);
     }
-    popup.querySelector(`#${selector}`).disabled = false;
-    return response;
-}
-
-const clearState = async () => {
-    const res = await sendMessageOnClickButton('clear', 'clear-state');
-    res ? showSuccessMessage('Настройки сброшены') : showErrorMessage('Ошибка сброса настроек')
-}
-
-const scanFolders = async () => {
-    const res = await sendMessageOnClickButton('scan-folders', 'scan-folders');
-    if (res) {
-        state.inventory_actions.to_folders = 0;
-        updateState({inventory_actions: state.inventory_actions});
-        showSuccessMessage('Отделы сканированы')
-    } else {
-        showErrorMessage('Ошибка сканирования отделов')
-    }
-}
-
-const scanSkills = async () => {
-    const res = await sendMessageOnClickButton('scan-skills', 'scan-skills');
-    res ? showSuccessMessage('Умения сканированы') : showErrorMessage('Ошибка сканирования умений')
+    element.disabled = false;
+    response ? showSuccessMessage('Действие успешно выполнено') : showErrorMessage('Ошибка выполнения команды');
 }
 
 const setSleepTime = () => {
@@ -265,36 +244,6 @@ const setSleepTime = () => {
         sleepInput.value = '';
         showSuccessMessage('Время задано')
     }
-}
-
-const takeQuests = () => {
-    const res = sendMessageOnClickButton('take', 'take-quests');
-    res ? showSuccessMessage('Квесты собраны') : showErrorMessage('Ошибка сбора квестов')
-}
-
-const passQuests = () => {
-    const res = sendMessageOnClickButton('pass', 'pass-quests');
-    res ? showSuccessMessage('Квесты сданы') : showErrorMessage('Ошибка сдачи квестов')
-}
-
-const defaultBuffs = () => {
-    const res = sendMessageOnClickButton('buff', 'default-buffs');
-    res ? showSuccessMessage('Простые бафы применены') : showErrorMessage('Ошибка получения бафов')
-}
-
-const advancedBuffs = () => {
-    const res = sendMessageOnClickButton('od-buff', 'advanced-buffs');
-    res ? showSuccessMessage('Улучшенные бафы применены') : showErrorMessage('Ошибка получения бафов')
-}
-
-const activateFlasks = () => {
-    const res = sendMessageOnClickButton('on-flasks', 'gradeon');
-    res ? showSuccessMessage('Внимание! Колбы включены') : showErrorMessage('Ошибка включения колб')
-}
-
-const deactivateFlasks = () => {
-    const res = sendMessageOnClickButton('off-flasks', 'gradeoff');
-    res ? showSuccessMessage('Внимание! Колбы выключены') : showErrorMessage('Ошибка выключения колб')
 }
 
 const closeSleepTime = (sleep) => {
@@ -324,17 +273,16 @@ const addListeners = () => {
             });
         }
     });
-    popup.querySelector("#clear").addEventListener("click", clearState);
-    popup.querySelector("#scan-folders").addEventListener("click", scanFolders);
-    popup.querySelector("#scan-skills").addEventListener("click", scanSkills);
+
     popup.querySelector("#sleep-time-btn").addEventListener("click", setSleepTime);
     popup.querySelector("#sleep-time-close").addEventListener("click", closeSleepTime);
-    popup.querySelector("#take").addEventListener("click", takeQuests);
-    popup.querySelector("#pass").addEventListener("click", passQuests);
-    popup.querySelector("#buff").addEventListener("click", defaultBuffs);
-    popup.querySelector("#od-buff").addEventListener("click", advancedBuffs);
-    popup.querySelector("#on-flasks").addEventListener("click", activateFlasks);
-    popup.querySelector("#off-flasks").addEventListener("click", deactivateFlasks);
+
+    document.querySelectorAll('button[data-action]')
+        .forEach((el) => {
+            el.addEventListener('click', async (e) => {
+                await sendMessageOnClickButton(e.target)
+            })
+        });
 }
 
 function getState() {
