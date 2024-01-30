@@ -6,7 +6,7 @@ const url = new URL(location.href)
 
 const loaderSVG = () => {
     return `
-    <svg width="100px" height="100px" viewBox="0 0 128 128">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" viewBox="0 0 128 128">
         <g>
             <linearGradient id="linear-gradient">
                 <stop offset="0%" stop-color="#000"/>
