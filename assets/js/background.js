@@ -2,6 +2,7 @@
 const initialState = {
     battles: {
         attack: 1,
+        check_enemy: false,
         defence: 1,
         run: false,
     },

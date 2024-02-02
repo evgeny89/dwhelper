@@ -112,7 +112,7 @@ const getSelectFromGroupSkills = (key) => {
 
 const addSkillListGroups = (skills) => {
     const wrapper = document.createElement('div');
-    wrapper.classList.add('uk-margin');
+    wrapper.classList.add('uk-column-1-2', 'uk-margin');
 
     for (const item in skills) {
         const itemElement = document.createElement('div');

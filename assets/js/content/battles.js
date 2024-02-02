@@ -132,6 +132,26 @@ waitToReadyState().then(() => {
         useSkills = false
         option.selected = true
     }
+    const checkEnemy = () => {
+        const block = document.querySelector('.block_center')
+        if  (block) {
+            const enemiesText = block.innerHTML.split("<b>VS</b>")[1]
+            if (enemiesText) {
+                const wrapper =  document.createElement('div')
+                wrapper.innerHTML = enemiesText
+                return wrapper.querySelectorAll('a[href*="user.php?id="]').length > 0
+            }
+        }
+        return false
+    }
+
+    const getDelayTime = () => {
+        if  (state.bubbles.check_enemy && checkEnemy()) {
+            return delay.waitTwoMinutes
+        }
+        const changeLink = searchLink(words.changeEnemy)
+        return  changeLink ? delay.fast : delay.long;
+    }
 
     if (state.world.scrollLife && currentHp < +state.world.scrollLife) {
         setScrolls(scrollTypes.hp);
@@ -140,8 +160,7 @@ waitToReadyState().then(() => {
     }
 
     if (form) {
-        const changeLink = searchLink(words.changeEnemy)
-        const delayTime = changeLink ? delay.fast : delay.long;
+        const delayTime = getDelayTime()
 
         if (useSkills) {
             setValues('attack');
