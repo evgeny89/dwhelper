@@ -21,3 +21,7 @@ label {
 .uk-tab>.uk-active>a {
     color: #1e87f0;
 }
+
+.space {
+    margin-bottom: 10px;
+}

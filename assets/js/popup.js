@@ -57,16 +57,24 @@ const setSelectOptions = (folders) => {
     }
 }
 
+const createTooltip = (text) => {
+    const tooltip = document.createElement('span');
+    tooltip.classList.add('popup-tooltip');
+    tooltip.setAttribute('data-text', '?');
+    tooltip.setAttribute('uk-tooltip', text);
+    return tooltip;
+}
+
 const addSkillListUsage = (skills) => {
     const wrapper = document.createElement('div');
-    wrapper.classList.add('uk-column-1-2', 'uk-margin');
+    wrapper.classList.add('uk-column-1-2');
 
     for (const item in skills) {
         const label = document.createElement('label');
         const input = document.createElement('input');
         const el = document.createElement('p')
 
-        el.classList.add('uk-margin-small')
+        el.classList.add('uk-margin-remove')
 
         input.classList.add('uk-checkbox', 'uk-margin-small-right');
         input.type = 'checkbox';
@@ -76,6 +84,10 @@ const addSkillListUsage = (skills) => {
         label.innerText = skills[item].name
 
         label.insertAdjacentElement('afterbegin', input)
+        if (skills[item].tooltip) {
+            label.insertAdjacentText('beforeend', ' ')
+            label.insertAdjacentElement('beforeend', createTooltip(skills[item].tooltip))
+        }
         el.insertAdjacentElement('beforeend', label)
         wrapper.insertAdjacentElement('beforeend', el);
     }
@@ -112,7 +124,7 @@ const getSelectFromGroupSkills = (key) => {
 
 const addSkillListGroups = (skills) => {
     const wrapper = document.createElement('div');
-    wrapper.classList.add('uk-column-1-2', 'uk-margin');
+    wrapper.classList.add('space');
 
     for (const item in skills) {
         const itemElement = document.createElement('div');

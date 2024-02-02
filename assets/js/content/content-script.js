@@ -238,6 +238,11 @@ async function scanFolders() {
 }
 
 async function scanSkills() {
+    const rankSkills = [
+        {name: 'Призыв Рыцаря', id: 184, value: false, group: '0', tooltip: 'Если есть - будет работать'},
+        {name: 'Призыв Командора', id: 185, value: false, group: '0', tooltip: 'Если есть - будет работать'},
+    ]
+
     url.searchParams.set('myskills', '1');
     const response = await fetch(`${url.origin}${pathNames.skills}${url.search}`);
     if (response.ok) {
@@ -255,7 +260,7 @@ async function scanSkills() {
             const id = new URL(item.href).searchParams.get('info');
             result.push({name, id, value: false, group: '0'});
         })
-        return result;
+        return [...result, ...rankSkills];
     }
 }
 
