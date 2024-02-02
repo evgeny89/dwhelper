@@ -13,7 +13,7 @@
     <ul uk-tab class="uk-margin-small-bottom">
         <li><a href="#"><span uk-icon="icon: home"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bag"></span></a></li>
-        <li><a href="#"><span uk-icon="icon: mail"></span></a></li>
+        <li><a href="#"><span uk-icon="icon: world"></span></a></li>
         <li><a href="#"><span uk-icon="icon: location"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bookmark"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bolt"></span></a></li>
@@ -192,19 +192,20 @@
                 </li>
                 <li>
                     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="inventory_filters.sets">
-                            Сеты
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="inventory_filters.mods">
-                            Точеные вещи
-                        </label>
+                        <div class="uk-column-1-2">
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="inventory_filters.sets">
+                                    Сеты
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="inventory_filters.mods">
+                                    Точеные вещи
+                                </label>
+                            </div>
+                        </div>
                         <span class="uk-label">auto</span>
                     </div>
                 </li>
@@ -333,8 +334,6 @@
                     </div>
                 </li>
             </ul>
-        </li>
-        <li class="uk-list-divider">
             <ul class="uk-list uk-margin">
                 <li>
                     <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
@@ -375,24 +374,50 @@
                 <li>
                     <div class="uk-margin uk-flex uk-flex-between uk-flex-top">
                         <div class="uk-flex">
-                            <div>
-                                <h6 class="uk-margin-remove">Тема посылок:</h6>
-                                <div class=" uk-flex uk-flex-between uk-flex-top">
-                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small" type="text"
-                                           data-state="parcels.theme" placeholder="Тема посылок">
+                            <div class="uk-flex uk-flex-middle">
+                                <h6 class="uk-margin-remove">Тема:</h6>
+                                <div class="uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
+                                           data-state="parcels.theme"
+                                           placeholder="тема посылок"
+                                    >
                                 </div>
                             </div>
-                            <div class="uk-margin-small-left">
-                                <h6 class="uk-margin-remove">Текст посылок:</h6>
-                                <div class=" uk-flex uk-flex-between uk-flex-top">
-                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small" type="text"
-                                           data-state="parcels.text" placeholder="Текст посылок">
+                            <div class="uk-margin-small-left uk-flex uk-flex-middle">
+                                <h6 class="uk-margin-remove">Текст:</h6>
+                                <div class="uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
+                                           data-state="parcels.text"
+                                           placeholder="текст посылок"
+                                    >
                                 </div>
                             </div>
                         </div>
-                        <span class="uk-label uk-label-success uk-flex-top">help</span>
+                        <span class="uk-label">auto</span>
                     </div>
                 </li>
+            </ul>
+        </li>
+        <li class="uk-list-divider">
+            <ul class="uk-list uk-margin">
+                <li>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Поле битв</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li>
+                    <div class="uk-margin uk-flex uk-flex-between">
+                        <button class="uk-button-small uk-button-primary" data-action="create-battleground">
+                            создать команду
+                        </button>
+                        <button class="uk-button-small uk-button-primary" data-action="ready-battleground" disabled>
+                            подать готовность
+                        </button>
+                    </div>
+                </li>
+                <hr class="uk-divider-small">
             </ul>
         </li>
         <li class="uk-list-divider">

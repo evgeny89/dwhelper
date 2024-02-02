@@ -393,6 +393,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         });
         return true;
     }
+    if (request.action === 'create-battleground' || request.action === 'ready-battleground') {
+        chrome.tabs.query({currentWindow: true}, function (tabs) {
+            const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+            if (tab) {
+                const [type, action] = request.action.split('-');
+                console.log(type, action)
+                chrome.tabs.sendMessage(tab.id, {action: action, type}, function (response) {
+                    sendResponse(response);
+                });
+            } else {
+                sendResponse(false);
+            }
+        });
+        return true;
+    }
     sendResponse(false);
 });
 

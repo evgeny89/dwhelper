@@ -148,6 +148,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     sendResponse(true)
                 });
             return true;
+        case "battleground":
+            battlegroundActions(request)
+                .then(() => {
+                    sendResponse(true)
+                });
+            return true;
         case "get-captcha":
             sendResponse({captcha: captcha});
             return true;
@@ -277,6 +283,26 @@ const takeBuffs = async ({ids}) => {
     }
     hideLoader();
     return true;
+}
+
+const battlegroundActions = async ({type}) => {
+    showLoader();
+    const actions = {
+        create: 'add_group',
+        ready: 'invite',
+    }
+
+    const searchParams = new URLSearchParams(url.search);
+    searchParams.set(actions[type], '1');
+
+    await fetch(`${url.origin}${pathNames.battleground}?${searchParams.toString()}`);
+    hideLoader();
+
+    if (url.pathname !== pathNames.battleground) {
+        window.location.href = `${url.origin}${pathNames.battleground}${url.search}`;
+    }
+
+    return true
 }
 
 async function flasksAction({type}) {
