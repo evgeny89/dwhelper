@@ -300,11 +300,11 @@ const battlegroundActions = async ({type}) => {
     const searchParams = new URLSearchParams(url.search);
     searchParams.set(actions[type], '1');
 
-    await fetch(`${url.origin}${pathNames.battleground}?${searchParams.toString()}`);
+    await fetch(`${url.origin}${pathNames.battlefield}?${searchParams.toString()}`);
     hideLoader();
 
-    if (url.pathname !== pathNames.battleground) {
-        window.location.href = `${url.origin}${pathNames.battleground}${url.search}`;
+    if (url.pathname !== pathNames.battlefield) {
+        window.location.href = `${url.origin}${pathNames.battlefield}${url.search}`;
     }
 
     return true
