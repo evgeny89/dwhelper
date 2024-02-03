@@ -325,6 +325,9 @@ async function flasksAction({type}) {
         await fetch(`${url.origin}${pathNames.item}?${searchParams.toString()}`);
     }
     hideLoader();
+    if (url.pathname === pathNames.user) {
+        wait();
+    }
 
     return true;
 }
