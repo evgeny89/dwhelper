@@ -82,7 +82,8 @@ chrome.storage.onChanged.addListener(async function (changes) {
                 (url.pathname === pathNames.world && changes.hasOwnProperty('world')) ||
                 (url.pathname === pathNames.castle && changes.hasOwnProperty('castle')) ||
                 (url.pathname === pathNames.resources && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
-                (url.pathname === pathNames.resources && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type)
+                (url.pathname === pathNames.resources && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type) ||
+                (changes.hasOwnProperty('battlefield'))
             )
         )
     ) {
@@ -294,7 +295,7 @@ const battlegroundActions = async ({type}) => {
     showLoader();
     const actions = {
         create: 'add_group',
-        ready: 'invite',
+        ready: 'done',
     }
 
     const searchParams = new URLSearchParams(url.search);
@@ -303,9 +304,13 @@ const battlegroundActions = async ({type}) => {
     await fetch(`${url.origin}${pathNames.battlefield}?${searchParams.toString()}`);
     hideLoader();
 
-    if (url.pathname !== pathNames.battlefield) {
-        window.location.href = `${url.origin}${pathNames.battlefield}${url.search}`;
-    }
+    setTimeout(() => {
+        if (url.pathname !== pathNames.battlefield) {
+            window.location.href = `${url.origin}${pathNames.battlefield}${url.search}`;
+        } else {
+            refresh()
+        }
+    }, delay.fast)
 
     return true
 }

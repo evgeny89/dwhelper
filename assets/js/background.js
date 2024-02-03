@@ -6,6 +6,9 @@ const initialState = {
         defence: 1,
         run: false,
     },
+    battlefield: {
+        run: false,
+    },
     captcha: {},
     castle: {
         run: false,
@@ -100,6 +103,10 @@ const paths = {
     },
     battlefield: {
         url: "/battleground.php",
+        script: {
+            date: "assets/js/resources/battlefieldDate.js",
+            main: "assets/js/content/battlefield.js",
+        },
     },
     battles: {
         url: "/battle_group.php",
@@ -128,6 +135,7 @@ const paths = {
     service: "assets/js/resources/captchaClass.js",
     main: "assets/js/content/content-script.js",
     config: "assets/js/content/config.js",
+    dayjs: "assets/js/vendor/dayjs.min.js",
     secret: "secret.js",
 };
 
@@ -231,7 +239,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
         }
         chrome.scripting.executeScript({
             target: {tabId: tab.id},
-            files: [paths.secret, paths.config, paths.main],
+            files: [paths.secret, paths.dayjs, paths.config, paths.main],
         })
             .then(async () => {
                 const folders = await chrome.tabs.sendMessage(tab.id, {action: "scan-folders"});
@@ -440,7 +448,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 });
                 break;
             case paths.dungeon.url:
-            case paths.battlefield.url:
             case paths.world.url:
                 const execPaths = [paths.service];
 
@@ -485,6 +492,21 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                     });
                 }
                 break;
+            case paths.battlefield.url:
+                if (state.battlefield.run) {
+                    chrome.scripting.executeScript({
+                        target: {tabId: tabId},
+                        files: [paths.battlefield.script.date, paths.battlefield.script.main],
+                    });
+                }
+                break;
+        }
+
+        if (currentUrl.pathname !== paths.battlefield.url && state.battlefield.run) {
+            chrome.scripting.executeScript({
+                target: {tabId: tabId},
+                files: [paths.battlefield.script.date, paths.battlefield.script.main],
+            });
         }
     }
 })

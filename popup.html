@@ -408,11 +408,23 @@
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="battlefield.run">
+                            активировать
+                            <span class="popup-tooltip" data-text="?"
+                                  uk-tooltip="будет следить за началом, перемещаться по карте и бить мобов">
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                <hr class="uk-divider-small">
+                <li>
                     <div class="uk-margin uk-flex uk-flex-between">
                         <button class="uk-button-small uk-button-primary" data-action="create-battleground">
                             создать команду
                         </button>
-                        <button class="uk-button-small uk-button-primary" data-action="ready-battleground" disabled>
+                        <button class="uk-button-small uk-button-primary" data-action="ready-battleground">
                             подать готовность
                         </button>
                     </div>
