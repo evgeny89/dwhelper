@@ -61,9 +61,11 @@ const delay = {
     long: 1000,
     fiveSeconds: 5000,
     tenSeconds: 10000,
-    waitHalfMinutes: 30000,
-    waitMinutes: 60000,
-    waitTwoMinutes: 120000,
+    halfMinute: 30000,
+    minute: 60000,
+    twoMinutes: 120000,
+    fiveMinutes: 300000,
+    tenMinutes: 600000,
 }
 
 const api = {

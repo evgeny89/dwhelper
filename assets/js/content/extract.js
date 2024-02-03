@@ -4,7 +4,7 @@ waitToReadyState().then(() => {
         state.extract.is_entered_code = false;
         let timer = delay.long;
         if (is_refresh) {
-            timer = delay.waitMinutes
+            timer = delay.minute
             state.extract.is_refresh = false;
         } else {
             state.extract.is_refresh = true;

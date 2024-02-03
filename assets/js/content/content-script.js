@@ -75,7 +75,7 @@ chrome.storage.onChanged.addListener(async function (changes) {
         (changes.hasOwnProperty('global') && !changes.global.newValue?.run && changes.global.oldValue?.run) || (
             state.global.run &&
             (
-                (changes.hasOwnProperty('global') && !changes.global.newValue.isRefresh)||
+                (changes.hasOwnProperty('global') && !changes.global.newValue.isRefresh) ||
                 (url.pathname === pathNames.inventory && changes.hasOwnProperty('inventory_actions')) ||
                 (url.pathname === pathNames.parcels && changes.hasOwnProperty('parcels')) ||
                 (url.pathname === pathNames.battles && changes.hasOwnProperty('battles')) ||

@@ -147,7 +147,7 @@ waitToReadyState().then(() => {
 
     const getDelayTime = () => {
         if  (state.battles.check_enemy && checkEnemy()) {
-            return delay.waitTwoMinutes
+            return delay.twoMinutes
         }
         const changeLink = searchLink(words.changeEnemy)
         return  changeLink ? delay.fast : delay.long;

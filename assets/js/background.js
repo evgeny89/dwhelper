@@ -406,7 +406,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
             if (tab) {
                 const [type, action] = request.action.split('-');
-                console.log(type, action)
                 chrome.tabs.sendMessage(tab.id, {action: action, type}, function (response) {
                     sendResponse(response);
                 });
