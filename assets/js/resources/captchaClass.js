@@ -15,7 +15,7 @@ class CaptchaBase {
                 answer: lvl,
             },
             count: {
-                image: [
+                images: [
                     "data:image/png;base64,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"
                     ],
                 answer: 3,
@@ -46,11 +46,11 @@ class CaptchaBase {
     checkLocalAnswer() {
         debug(this.base64image);
 
-        if (this.localQuestions.lvl.images.map(this._getBase64Image).includes(this.base64image)) {
+        if (this.localQuestions.lvl.images.map((image) => this._getBase64Image(image)).includes(this.base64image)) {
             return this.localQuestions.lvl.answer
         }
 
-        if (this.localQuestions.count.images.map(this._getBase64Image).includes(this.base64image)) {
+        if (this.localQuestions.count.images.map((image) => this._getBase64Image(image)).includes(this.base64image)) {
             return this.localQuestions.count.answer
         }
 
