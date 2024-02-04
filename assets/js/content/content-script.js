@@ -240,8 +240,8 @@ async function scanFolders() {
 
 async function scanSkills() {
     const rankSkills = [
-        {name: 'Призыв Рыцаря', id: 184, value: false, group: '0', tooltip: 'Если есть - будет работать'},
-        {name: 'Призыв Командора', id: 185, value: false, group: '0', tooltip: 'Если есть - будет работать'},
+        {name: 'Призыв Рыцаря', id: '184', value: false, group: '0', tooltip: 'Если есть - будет работать'},
+        {name: 'Призыв Командора', id: '185', value: false, group: '0', tooltip: 'Если есть - будет работать'},
     ]
 
     url.searchParams.set('myskills', '1');
@@ -420,7 +420,7 @@ async function waitToReadyState() {
     return state.onLoad;
 }
 
-function debug(type = null, data) {
+function debug(data, type = null) {
     if (state.global.debug) {
         switch (type) {
             case debugTypes.show:
@@ -431,6 +431,7 @@ function debug(type = null, data) {
                 break;
             default:
                 console.log(data);
+                alert('Проверьте консоль, затем нажмите "ОК" и скрипт продолжит работу');
                 break;
         }
     }
