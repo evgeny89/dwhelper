@@ -146,6 +146,13 @@ waitToReadyState().then(async () => {
         }
     }
 
+    const teleportToLair = () => {
+        const tpUrl = new URL(`${url.origin}${pathNames.lairLobby}${url.search}`);
+        tpUrl.searchParams.set('exit', '1');
+        tpUrl.searchParams.set('yes', '1');
+        return tpUrl.href;
+    }
+
     class UserInfo {
         city = "";
         lvl = "";
@@ -161,16 +168,20 @@ waitToReadyState().then(async () => {
         }
 
         getForward = (type) => {
-            if (type === "lair"
-                && (
+            if (type === "lair") {
+                if (url.pathname === pathNames.index || searchLink(words.toCity)) {
+                    return [teleportToLair()]
+                }
+
+                if (
                     (
                         url.pathname === pathNames.world
                         && (searchLink(words.toLairsLobby) || !searchLink(words.toCity))
                     )
                     || (searchLink(words.lairForsworn) && url.pathname === pathNames.lairLobby)
-                )
-            ) {
-                return maps.empty;
+                ) {
+                    return maps.empty;
+                }
             }
             if (type === "castle" && checkText(words.castleName)) {
                 return maps.empty;
