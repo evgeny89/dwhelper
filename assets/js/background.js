@@ -326,6 +326,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
             if (tab) {
                 chrome.tabs.sendMessage(tab.id, {action: "scan-folders"}, function (response) {
+                    setState({folders: {}});
                     setState(response);
                     sendResponse(true);
                 });
