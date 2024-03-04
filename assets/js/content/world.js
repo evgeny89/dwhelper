@@ -131,11 +131,20 @@ waitToReadyState().then(async () => {
     const solve = async () => {
         increment = false;
         const instance = await getServiceCaptchaInstance();
+
         if (!instance) {
             notify(messages.captcha);
             return;
         }
+
         const img = document.querySelector('img[src*="../caramba.php"]')
+        const is_valid = await instance.isBase64UrlImage(img.src)
+
+        if (!is_valid) {
+            notify(messages.captcha);
+            return;
+        }
+
         instance.getImage(img);
         const localAnswer = instance.checkLocalAnswer();
 

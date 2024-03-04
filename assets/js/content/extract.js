@@ -61,15 +61,20 @@ waitToReadyState().then(() => {
                 const instance = await getServiceCaptchaInstance();
                 if (instance) {
                     const img = document.querySelector('img[src*="../caramba.php"]')
-                    instance.getImage(img);
-                    const localAnswer = instance.checkLocalAnswer();
-
-                    if (localAnswer) {
-                        state.extract.is_entered_code = true;
-                        updateState({extract: state.extract});
-                        instance.submitCode(localAnswer);
+                    const is_valid = await instance.isBase64UrlImage(img.src)
+                    if (is_valid) {
+                        usually();
                     } else {
-                        await instance.createTask(usually);
+                        instance.getImage(img);
+                        const localAnswer = instance.checkLocalAnswer();
+
+                        if (localAnswer) {
+                            state.extract.is_entered_code = true;
+                            updateState({extract: state.extract});
+                            instance.submitCode(localAnswer);
+                        } else {
+                            await instance.createTask(usually);
+                        }
                     }
                 } else {
                     usually();
