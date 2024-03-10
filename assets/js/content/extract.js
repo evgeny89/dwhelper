@@ -63,8 +63,6 @@ waitToReadyState().then(() => {
                     const img = document.querySelector('img[src*="../caramba.php"]')
                     const is_valid = await instance.isBase64UrlImage(img.src)
                     if (is_valid) {
-                        usually();
-                    } else {
                         instance.getImage(img);
                         const localAnswer = instance.checkLocalAnswer();
 
@@ -75,6 +73,8 @@ waitToReadyState().then(() => {
                         } else {
                             await instance.createTask(usually);
                         }
+                    } else {
+                        usually();
                     }
                 } else {
                     usually();

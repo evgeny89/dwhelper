@@ -29,12 +29,15 @@ const words = {
     refreshLinkText: "Обновить",
     saleItemText: "продать за",
     saleSuccessText: "Вы успешно продали",
+    teamVictoryText: "Победила команда номер \\d",
     toAttack: "Битва",
+    toBattleField: "На Поле Битвы",
     toCity: "В город",
     toFolderLinkText: "В отдел",
     toFolderText: "Выберите отдел",
     toForge: "Точить вещь",
     toLairsLobby: "Вход в Логова",
+    toMainLinkText: "На главную",
     yes: "Да",
 }
 

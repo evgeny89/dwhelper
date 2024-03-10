@@ -69,7 +69,7 @@ waitToReadyState().then(async () => {
         }
     }
 
-// после инициализации методов
+    // после инициализации методов
     const routeFunctions = {
         chooseDragonPath: getDragonsPath,
     }

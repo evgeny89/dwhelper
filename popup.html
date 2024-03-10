@@ -191,8 +191,29 @@
                     </div>
                 </li>
                 <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <div class="uk-column-1-2">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
+                        <div class="uk-column-1-3">
+                            <div class="uk-flex">
+                                <h6 class="uk-margin-remove">дроп:</h6>
+                                <div class="uk-margin-small-left" uk-form-custom="target: > * > span:last-child">
+                                    <select data-state="inventory_filters.class">
+                                        <option value="0">все</option>
+                                        <option value="1">10%</option>
+                                        <option value="2">20%</option>
+                                        <option value="3">30%</option>
+                                        <option value="4">40%</option>
+                                        <option value="5">50%</option>
+                                        <option value="6">60%</option>
+                                        <option value="7">70%</option>
+                                        <option value="8">80%</option>
+                                        <option value="100">арты</option>
+                                    </select>
+                                    <span class="uk-link">
+                                        <span uk-icon="icon: pencil"></span>
+                                        <span></span>
+                                    </span>
+                                </div>
+                            </div>
                             <div>
                                 <label>
                                     <input class="uk-checkbox" type="checkbox" data-state="inventory_filters.sets">
@@ -202,34 +223,8 @@
                             <div>
                                 <label>
                                     <input class="uk-checkbox" type="checkbox" data-state="inventory_filters.mods">
-                                    Точеные вещи
+                                    Заточенные
                                 </label>
-                            </div>
-                        </div>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <div class="uk-flex uk-flex-between">
-                            <h6 class="uk-margin-remove">тип дропа:</h6>
-                            <div class="uk-margin-small-left" uk-form-custom="target: > * > span:last-child">
-                                <select data-state="inventory_filters.class">
-                                    <option value="0">все</option>
-                                    <option value="1">10%</option>
-                                    <option value="2">20%</option>
-                                    <option value="3">30%</option>
-                                    <option value="4">40%</option>
-                                    <option value="5">50%</option>
-                                    <option value="6">60%</option>
-                                    <option value="7">70%</option>
-                                    <option value="8">80%</option>
-                                    <option value="100">арты</option>
-                                </select>
-                                <span class="uk-link">
-                                <span uk-icon="icon: pencil"></span>
-                                <span></span>
-                            </span>
                             </div>
                         </div>
                         <span class="uk-label">auto</span>
@@ -855,6 +850,7 @@
                             <h6 class="uk-margin-remove">атака:</h6>
                             <div class="uk-margin-small-left" uk-form-custom="target: > * > span:last-child">
                                 <select data-state="battles.attack">
+                                    <option value="0">Случайно</option>
                                     <option value="1">В голову</option>
                                     <option value="2">В грудь</option>
                                     <option value="3">В пах</option>
@@ -870,6 +866,7 @@
                             <h6 class="uk-margin-remove">защита:</h6>
                             <div class="uk-margin-small-left" uk-form-custom="target: > * > span:last-child">
                                 <select data-state="battles.defence">
+                                    <option value="0">Случайно</option>
                                     <option value="1">Голова и грудь</option>
                                     <option value="2">Грудь и пах</option>
                                     <option value="3">Пах и ноги</option>

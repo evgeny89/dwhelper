@@ -99,6 +99,17 @@ waitToReadyState().then(() => {
         }
     }
 
+    const getToWorldLink = () => {
+        switch (true) {
+            case !!searchLink(words.gotToLand):
+                return searchLink(words.gotToLand)
+            case !!searchLink(words.toBattleField):
+                return searchLink(words.toBattleField)
+            default:
+                return searchLink(words.toMainLinkText);
+        }
+    }
+
     const setValues = (type) => {
         if (!form) return;
 
@@ -110,9 +121,12 @@ waitToReadyState().then(() => {
             .from(select.options)
             .find(item => item.value === state.battles[type])
 
-        if (!option) return;
-
-        option.selected = true;
+        if (!option) {
+            const random = Math.random() * (select.options.length - 1);
+            select.selectedIndex = Math.floor(random);
+        } else {
+            option.selected = true;
+        }
     }
 
     const setScrolls = (type) => {
@@ -179,11 +193,12 @@ waitToReadyState().then(() => {
         }, delayTime, form);
     } else {
         setTimeout(() => {
-            const toWorld = searchLink(words.gotToLand);
+            const endBattle = checkText(words.teamVictoryText);
             const toBattle = searchLink(words.inBattle);
-            if (toWorld) {
+            if (endBattle) {
                 checkDefeat();
-                toWorld.click()
+                const toWorldLink = getToWorldLink();
+                toWorldLink?.click()
             } else {
                 toBattle ? toBattle.click() : refresh();
             }
