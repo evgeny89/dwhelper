@@ -4,8 +4,7 @@ const state = {
 
 const url = new URL(location.href)
 
-const loaderSVG = () => {
-    return `
+const loaderSVG = () => `
     <svg xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" viewBox="0 0 128 128">
         <g>
             <linearGradient id="linear-gradient">
@@ -22,9 +21,18 @@ const loaderSVG = () => {
         </g>
     </svg>
 `;
-}
 
-(function() {
+const progressBar = () => `
+        <div style="position: fixed;height: 30px;width: 100%;top: 0;display: flex;justify-content: center;align-items: center">
+            <div
+                id="progressbar"
+                style="height: 12px;width: 90%;border-radius: 12px;display: none;align-items: center;background-color: #3495c5;padding: 0 2px"
+            >
+                <div id="progress-line" style="background-color: #1f4b60;transition: 0.3s width;width: 60%;height: 8px;border-radius: 8px"></div>
+            </div>
+        </div>`;
+
+const backdrop = () => {
     const backdrop = document.createElement('div');
     backdrop.style.position = "fixed";
     backdrop.style.top = "0";
@@ -34,14 +42,15 @@ const loaderSVG = () => {
     backdrop.style.display = "none";
     backdrop.style.alignItems = "center";
     backdrop.style.justifyContent = "center";
-    backdrop.id = "bot-loader";
+    document.body.insertAdjacentElement('beforeend', backdrop);
 
     backdrop.insertAdjacentHTML('beforeend', loaderSVG());
+    backdrop.insertAdjacentHTML('beforeend', progressBar());
 
-    document.body.insertAdjacentElement('beforeend', backdrop);
-})()
+    return backdrop;
+}
 
-const loader = document.querySelector('#bot-loader');
+const loader = backdrop();
 
 const showLoader = () => {
     if (loader.style.display !== "flex") {
@@ -53,6 +62,17 @@ const hideLoader = () => {
     if (loader.style.display !== "none") {
         loader.style.display = "none";
     }
+}
+
+const showProgressbar = (progress) => {
+    const progressbar = loader.querySelector('#progressbar')
+    progressbar.querySelector('#progress-line').style.width = progress + '%'
+
+    if (progressbar.style.display !== "flex") {
+        progressbar.style.display = "flex";
+    }
+
+    showLoader()
 }
 
 chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
@@ -320,7 +340,15 @@ async function flasksAction({type}) {
     const itemsIds = await getDressItems();
     const searchParams = new URLSearchParams(url.search);
     searchParams.set(type, '1');
+
+    let counter = 0;
+    const total = itemsIds.length;
+
     for (const id of itemsIds) {
+        const progress = counter / total * 100
+        showProgressbar(progress)
+        counter++
+
         searchParams.set('id', id);
         await fetch(`${url.origin}${pathNames.item}?${searchParams.toString()}`);
     }
