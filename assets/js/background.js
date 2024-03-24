@@ -8,6 +8,8 @@ const initialState = {
     },
     battlefield: {
         run: false,
+        map: null,
+        step: 0,
     },
     captcha: {},
     castle: {

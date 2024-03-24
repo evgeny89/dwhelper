@@ -420,6 +420,32 @@ async function waitToReadyState() {
     return state.onLoad;
 }
 
+const solve = async () => {
+    const instance = await getServiceCaptchaInstance();
+
+    if (!instance) {
+        notify(messages.captcha);
+        return;
+    }
+
+    const img = document.querySelector('img[src*="../caramba.php"]')
+    const is_valid = await instance.isBase64UrlImage(img.src)
+
+    if (!is_valid) {
+        notify(messages.captcha);
+        return;
+    }
+
+    instance.getImage(img);
+    const localAnswer = instance.checkLocalAnswer();
+
+    if (localAnswer) {
+        instance.submitCode(localAnswer);
+    } else {
+        await instance.createTask();
+    }
+}
+
 function debug(data, type = null) {
     if (state.global.debug) {
         switch (type) {

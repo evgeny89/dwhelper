@@ -93,9 +93,25 @@ waitToReadyState().then(() => {
 
     const checkDefeat = () => {
         const defeat = checkText(words.defeat);
-        if (defeat && +state.world.map) {
-            state.world.map = 0;
-            updateState({world: state.world});
+        if (defeat) {
+            if (+state.world.map) {
+                state.world.map = 0;
+                updateState({world: state.world});
+            }
+
+            if (state.battlefield.map) {
+                switch (true) {
+                    case state.battlefield.map = "solo" && state.battlefield.step < 66:
+                        state.battlefield.map = "short";
+                        break;
+                    case state.battlefield.map = "solo" && state.battlefield.step >= 66:
+                        state.battlefield.map = "chemist";
+                        break;
+                    default:
+                        state.battlefield.map = "loose";
+                }
+                updateState({battlefield: state.battlefield});
+            }
         }
     }
 
