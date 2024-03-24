@@ -21,7 +21,7 @@ waitToReadyState().then(() => {
         state.extract.is_entered_code = false;
         updateState({extract: state.extract});
         setTimeout(() => {
-            window.location.href = window.location.href;
+            window.location.href = document.location.href;
         }, delay.long)
     }
 
@@ -37,11 +37,16 @@ waitToReadyState().then(() => {
         }
 
         if(document.querySelector("form")) {
-            if (state.extract.is_entered_code) {
+            if (state.extract.is_entered_code && !noCaptcha) {
                 fixEmptyImage();
             } else {
                 if (noCaptcha) {
-                    document.querySelector("form").submit();
+                    const form = document.querySelector("form");
+                    if (form) {
+                        form.submit()
+                    } else {
+                        wait()
+                    }
                 } else {
                     notify(messages.captcha);
                     state.extract.is_entered_code = true;
