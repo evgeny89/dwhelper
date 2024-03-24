@@ -46,9 +46,13 @@ waitToReadyState().then(async () => {
                         doStep(currentStep)
                     }, delay.fiveSeconds);
                 } else {
-                    if (state.battlefield.map === 'solo') {
-
+                    step.battlefield = {
+                        run: false,
+                        map: null,
+                        step: 0,
                     }
+                    updateState({battlefield: state.battlefield});
+                    notify(messages.battlefieldComplete)
                 }
             }
         }

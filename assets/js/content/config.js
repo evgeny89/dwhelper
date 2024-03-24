@@ -93,6 +93,7 @@ const messages = {
     notMoney: "У Вас недостаточно средств",
     installed: "Расширение успешно обновлено",
     parseFlasksError: "Ошибка сканирования одетых вещей",
+    battlefieldComplete: "Карта поля битв завершена.",
 }
 
 const debugTypes = {
