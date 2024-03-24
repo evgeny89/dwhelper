@@ -35,6 +35,12 @@ waitToReadyState().then(async () => {
             updateState({battlefield: state.battlefield});
             wait()
         } else {
+            if (checkText(words.errorBattlefieldText)) {
+                state.battlefield.step -= 1;
+                updateState({battlefield: state.battlefield})
+                return;
+            }
+
             if ((state.world.attack && !checkText("Север:")) || state.world.attackAll || searchLink(words.inBattle)) {
                 attack();
             } else {
