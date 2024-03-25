@@ -5,8 +5,13 @@ waitToReadyState().then(() => {
         forgeLink.click();
     } else {
         const complete = checkText(words.notForgeItemsText);
+        const forged = checkText(words.forgedItem);
         const ok = searchLink(words.yes);
         const form = document.querySelector('form');
+
+        if (forged) {
+            wait(1);
+        }
 
         if (complete) {
             window.location = `${url.origin}${pathNames.world}${url.search}`;
@@ -14,8 +19,12 @@ waitToReadyState().then(() => {
 
         if (form) {
             form.submit()
-        } else {
-            ok ? ok.click() : wait(1);
         }
+
+        if (ok) {
+            ok.click()
+        }
+
+        wait(1);
     }
 });

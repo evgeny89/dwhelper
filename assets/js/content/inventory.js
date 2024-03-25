@@ -105,9 +105,13 @@ async function actionApply(text) {
     }
 
     const links = allLinks(text);
-    if (links.length) {
+    const total = links.length;
+    let counter = 0;
+    if (total) {
         showLoader();
         for (const link of links) {
+            const progress = counter / total * 100
+            showProgressbar(progress)
             switch (text) {
                 case words.saleItemText:
                     await fetchSale(link);
@@ -121,8 +125,9 @@ async function actionApply(text) {
                     const response = await fetch(link.href, {redirect: 'manual'});
                     await response.text();
             }
+            counter++
         }
-        hideLoader();
+        hideProgressbar();
         refresh();
     } else {
         endAction();

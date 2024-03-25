@@ -13,7 +13,7 @@ const initialState = {
     },
     captcha: {},
     castle: {
-        run: false,
+        run: true,
     },
     extract: {
         run: false,
@@ -55,7 +55,7 @@ const initialState = {
     },
     parcels: {
         send: false,
-        fill: false,
+        fill: true,
         receive: false,
         theme: '1',
         text: '1',
@@ -76,7 +76,7 @@ const initialState = {
     },
     skills: {},
     totems: {
-        run: false,
+        run: true,
     },
     world: {
         attack: false,
