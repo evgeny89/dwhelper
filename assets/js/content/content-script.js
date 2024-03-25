@@ -75,6 +75,16 @@ const showProgressbar = (progress) => {
     showLoader()
 }
 
+const hideProgressbar = () => {
+    const progressbar = loader.querySelector('#progressbar')
+    progressbar.querySelector('#progress-line').style.width = 0 + '%'
+    if (progressbar.style.display !== "none") {
+        progressbar.style.display = "none";
+    }
+
+    hideLoader()
+}
+
 chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
     if (res) {
         Object.assign(state, res);
@@ -164,8 +174,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 });
             return true;
         case "flasks":
-            flasksAction(request.payload)
-                .then(() => {
+            flasksAction(request.payload).then(() => {
                     sendResponse(true)
                 });
             return true;
@@ -177,6 +186,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             return true;
         case "get-captcha":
             sendResponse({captcha: captcha});
+            return true;
+        case "break-items":
+            breakItems(request.payload).then(() => {
+                sendResponse(true)
+            });
             return true;
         case "refresh":
             refresh();
@@ -228,6 +242,20 @@ async function getDressItems() {
                 const itemUrl = new URL(item.querySelector('a[href*="&i=1&"]').href);
                 return itemUrl.searchParams.get('id');
             });
+    }
+    notify(messages.parseFlasksError, true);
+    return [];
+}
+
+async function getBreakItems(href) {
+    const response = await fetch(href);
+    if (response.ok) {
+        const forgePageText = await response.text();
+        const el = toHtml(forgePageText)
+        const form = el.querySelector('form[action^="/forge"]');
+        const options = form.querySelectorAll("option");
+        return Array.from(options)
+            .map(option => option.value)
     }
     notify(messages.parseFlasksError, true);
     return [];
@@ -335,6 +363,39 @@ const battlegroundActions = async ({type}) => {
     return true
 }
 
+async function breakItems() {
+    if (!confirming("Вы уверены, что хотите разбить все предметы?")) {
+        return false;
+    }
+
+    showLoader()
+
+    const breakUrl = new URL(`${url.origin}${pathNames.forge}`);
+    breakUrl.searchParams.set('ex', '1');
+    breakUrl.searchParams.set('UIN', url.searchParams.get('UIN'));
+    breakUrl.searchParams.set('pass', url.searchParams.get('pass'));
+
+    const ids =  await getBreakItems(breakUrl.href)
+
+    breakUrl.searchParams.set('yes', '1');
+
+    let counter = 0;
+    const total = ids.length;
+
+    for (const id of ids) {
+        const progress = counter / total * 100
+        showProgressbar(progress)
+        counter++;
+
+        breakUrl.searchParams.set('id', id);
+        await fetch(breakUrl.href);
+    }
+    hideProgressbar()
+    wait()
+
+    return true;
+}
+
 async function flasksAction({type}) {
     showLoader();
     const itemsIds = await getDressItems();
@@ -352,7 +413,7 @@ async function flasksAction({type}) {
         searchParams.set('id', id);
         await fetch(`${url.origin}${pathNames.item}?${searchParams.toString()}`);
     }
-    hideLoader();
+    hideProgressbar();
     if (url.pathname === pathNames.user) {
         wait();
     }
@@ -489,4 +550,8 @@ function debug(data, type = null) {
                 break;
         }
     }
+}
+
+function confirming(text) {
+    return window.confirm(text);
 }

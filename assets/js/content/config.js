@@ -50,6 +50,7 @@ const pathNames = {
     buff: "/buff.php",
     castle: "/world/castle.php",
     events: "/service_events.php",
+    forge: "/forge.php",
     inventory: "/inventory.php",
     index: "/index.php",
     lairLobby: "/world/dungeon.php",
@@ -94,6 +95,7 @@ const messages = {
     notMoney: "У Вас недостаточно средств",
     installed: "Расширение успешно обновлено",
     parseFlasksError: "Ошибка сканирования одетых вещей",
+    parseForgeError: "Ошибка сканирования доступных вещей",
     battlefieldComplete: "Карта поля битв завершена.",
 }
 

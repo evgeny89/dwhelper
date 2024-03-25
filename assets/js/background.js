@@ -418,6 +418,19 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         });
         return true;
     }
+    if (request.action === 'break-items') {
+        chrome.tabs.query({currentWindow: true}, function (tabs) {
+            const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+            if (tab) {
+                chrome.tabs.sendMessage(tab.id, {action: request.action}, function (response) {
+                    sendResponse(response);
+                });
+            } else {
+                sendResponse(false);
+            }
+        });
+        return true;
+    }
     sendResponse(false);
 });
 
