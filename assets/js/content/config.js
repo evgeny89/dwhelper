@@ -66,6 +66,7 @@ const pathNames = {
 
 const delay = {
     fast: 0,
+    third: 300,
     long: 1000,
     fiveSeconds: 5000,
     tenSeconds: 10000,

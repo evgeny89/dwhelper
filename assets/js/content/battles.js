@@ -179,8 +179,9 @@ waitToReadyState().then(() => {
         if  (state.battles.check_enemy && checkEnemy()) {
             return delay.twoMinutes
         }
+        const fast = state.battles.faster ? delay.fast : delay.third
         const changeLink = searchLink(words.changeEnemy)
-        return  changeLink ? delay.fast : delay.long;
+        return  changeLink ? fast : delay.long;
     }
 
     if (state.world.scrollLife && currentHp < +state.world.scrollLife) {
