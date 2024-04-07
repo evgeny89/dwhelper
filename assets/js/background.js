@@ -85,6 +85,7 @@ const initialState = {
         highArena: false,
         highLair: false,
         slave: false,
+        returned: true,
         map: 0,
         scrollLife: null,
         scrollMana: null,

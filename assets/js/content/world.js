@@ -198,10 +198,16 @@ waitToReadyState().then(async () => {
     }
 
     const pathBack = (user) => {
+        if (state.world.returned) {
+            return [
+                [words.leaveLairsLobby, words.yes],
+                maps.lair[user.getBack()],
+                [words.toCity]
+            ]
+        }
+
         return [
-            [words.leaveLairsLobby, words.yes],
-            maps.lair[user.getBack()],
-            [words.toCity]
+            [words.leaveLairsLobby, words.yes]
         ]
     }
 

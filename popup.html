@@ -494,33 +494,39 @@
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.highLair">
-                            сложный уровень
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.slave">
-                            ведомый
-                            <span class="popup-tooltip" data-text="?"
-                                  uk-tooltip="Если вы не лидер группы, то бот будет обновлять страницу каждые 5 сек в ожидании боя.">
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
+                        <div class="uk-column-1-2">
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.highLair">
+                                    сложный уровень
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.slave">
+                                    ведомый
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Если вы не лидер группы, то бот будет обновлять страницу каждые 5 сек в ожидании боя.">
                             </span>
-                        </label>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.highArena">
-                            арена сложный уровень
-                        </label>
-                        <span class="uk-label">auto</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.highArena">
+                                    арена сложный уровень
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.returned">
+                                    возвращаться в город
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Если выключено, то после логова не потопает в город">
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
