@@ -253,11 +253,15 @@ async function getBreakItems(href) {
         const forgePageText = await response.text();
         const el = toHtml(forgePageText)
         const form = el.querySelector('form[action^="/forge"]');
-        const options = form.querySelectorAll("option");
-        return Array.from(options)
-            .map(option => option.value)
+        if (form) {
+            const options = form.querySelectorAll("option");
+            return Array.from(options)
+                .map(option => option.value)
+        }
+        notify(messages.parseEmptyItems);
+        return []
     }
-    notify(messages.parseFlasksError, true);
+    notify(messages.parseForgeError, true);
     return [];
 }
 

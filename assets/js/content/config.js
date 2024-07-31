@@ -98,6 +98,7 @@ const messages = {
     installed: "Расширение успешно обновлено",
     parseFlasksError: "Ошибка сканирования одетых вещей",
     parseForgeError: "Ошибка сканирования доступных вещей",
+    parseEmptyItems: "Список доступных вещей пуст",
     battlefieldComplete: "Карта поля битв завершена.",
 }
 
