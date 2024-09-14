@@ -79,6 +79,9 @@ const initialState = {
     totems: {
         run: true,
     },
+    workshop: {
+        run: true,
+    },
     world: {
         attack: false,
         attackAll: false,
@@ -135,6 +138,10 @@ const paths = {
     castle: {
         url: "/world/castle.php",
         script: "assets/js/content/castle.js",
+    },
+    craft: {
+        url: "/craft.php",
+        script: "assets/js/content/craft.js",
     },
     service: "assets/js/resources/captchaClass.js",
     main: "assets/js/content/content-script.js",
@@ -506,6 +513,14 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                     chrome.scripting.executeScript({
                         target: {tabId: tabId},
                         files: [paths.castle.script],
+                    });
+                }
+                break;
+            case paths.craft.url:
+                if (state.workshop.run) {
+                    chrome.scripting.executeScript({
+                        target: {tabId: tabId},
+                        files: [paths.craft.script],
                     });
                 }
                 break;

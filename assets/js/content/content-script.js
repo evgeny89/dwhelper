@@ -111,6 +111,7 @@ chrome.storage.onChanged.addListener(async function (changes) {
                 (url.pathname === pathNames.battles && changes.hasOwnProperty('battles')) ||
                 (url.pathname === pathNames.world && changes.hasOwnProperty('world')) ||
                 (url.pathname === pathNames.castle && changes.hasOwnProperty('castle')) ||
+                (url.pathname === pathNames.workshop && changes.hasOwnProperty('workshop')) ||
                 (url.pathname === pathNames.resources && changes.hasOwnProperty('extract') && changes.extract.newValue.run !== changes.extract.oldValue.run) ||
                 (url.pathname === pathNames.resources && changes.hasOwnProperty('extract') && changes.extract.newValue.type !== changes.extract.oldValue.type) ||
                 (changes.hasOwnProperty('battlefield'))
@@ -325,7 +326,7 @@ async function queryQuests({ids, key}) {
 
     for (const id of ids) {
         searchParams.set('quest', id);
-        await fetch(`${url.origin}${pathNames.quest}?${searchParams.toString()}`);
+        await fetch(`${url.origin}${pathNames.leader}?${searchParams.toString()}`);
     }
     hideLoader();
     return true;
@@ -456,6 +457,11 @@ function allLinks(text) {
 function checkText(text) {
     const regExp = new RegExp(text);
     return regExp.test(document.body.innerHTML);
+}
+
+function extractText(text) {
+    const regExp = new RegExp(text);
+    return document.body.innerHTML.match(regExp);
 }
 
 function resetRefresh() {
