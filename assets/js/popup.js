@@ -191,7 +191,7 @@ const addCaptchaControls = (captcha) => {
     const wrapper = document.querySelector('#captcha');
 
     for (const item in captcha) {
-        if (!captcha[item].token) {
+        if (!captcha[item]?.token) {
             wrapper.querySelector(`input[value="${captcha[item].value}"]`)
                 .parentElement.classList.add('uk-hidden');
         }
