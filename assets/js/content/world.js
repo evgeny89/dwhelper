@@ -293,18 +293,24 @@ waitToReadyState().then(async () => {
 
         const response = await fetch(clanUrl.href);
         if (response.ok) {
-            const regex = new RegExp(words.killMobs);
             const text = await response.text();
-            const count = text.match(regex)[1];
-            console.log(count);
+            const div = document.createElement("div");
+            div.innerHTML = text;
+            const link = searchLink(words.questClanComplete, div);
+            if (link) {
+                link.click();
+                clanUrl.searchParams.set("get", "1");
+                await fetch(clanUrl.href);
+            }
+            return true;
         }
+        return false;
     }
 
     const isArena = checkText(words.arenaLvl) && +state.world.map === 7;
 
     const isCastleUnderground = checkText(words.checkCastleTime);
 
-    await checkCompleteQuest();
     if (checkText(words.captcha)) {
         return await solve();
     } else {
@@ -319,11 +325,11 @@ waitToReadyState().then(async () => {
         if (!isArena && !isCastleUnderground) {
             if (state?.world && state?.move) {
                 if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
-                    if (isCastleUnderground) {
-                        await checkCompleteQuest();
-                    }
                     const link = searchLink(words.toAttack) || searchLink(words.inBattle);
                     if (link) {
+                        if (isCastleUnderground) {
+                            await checkCompleteQuest();
+                        }
                         increment = false;
                         link.click();
                     }

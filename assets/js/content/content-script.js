@@ -450,8 +450,9 @@ function wait(sec = 0) {
     setTimeout(refresh, sec * 1000);
 }
 
-function searchLink(text) {
-    const links = [...document.getElementsByTagName("a")];
+function searchLink(text, element = null) {
+    const el = element || document;
+    const links = [...el.getElementsByTagName("a")];
     const regEx = new RegExp(text);
     return links.find((e) => regEx.test(e.textContent));
 }
