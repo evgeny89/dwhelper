@@ -510,7 +510,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 }
                 break;
             case paths.castle.url:
-                if (state.castle.run && !(currentUrl.searchParams.get("id") || currentUrl.searchParams.get("all"))) {
+                if (state.castle.run && !currentUrl.searchParams.get("all")) {
                     chrome.scripting.executeScript({
                         target: {tabId: tabId},
                         files: [paths.castle.script],

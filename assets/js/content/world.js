@@ -286,6 +286,8 @@ waitToReadyState().then(async () => {
     }
 
     const checkCompleteQuest = async () => {
+        if (!state.global.clan_id) return false;
+
         const clanUrl = new URL(`${url.origin}${pathNames.clan}${url.search}`);
         clanUrl.searchParams.set("id", state.global.clan_id);
         clanUrl.searchParams.set("missions", "1");

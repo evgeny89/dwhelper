@@ -437,7 +437,7 @@ async function getInfo() {
         const city = userPageText.match(/<b>Сейчас в:<\/b> ([А-я]+)/)[1];
         const lvl = userPageText.match(/<b>Уровень:<\/b> ([0-9]+)/)[1];
 
-        state.global.clan_id = userPageText.match(/<b><a href="\/clan\.php\?id=(\d+)/)[1];
+        state.global.clan_id = userPageText.match(/<b><a href="\/clan\.php\?id=(\d+)/)[1] ?? null;
         updateState({global: state.global});
 
         return {city, lvl}
