@@ -139,6 +139,7 @@ chrome.storage.onChanged.addListener(async function (changes) {
 
     if (url.pathname !== pathNames.world && changes.hasOwnProperty('world') && +changes.world.newValue.map !== 0 && +changes.world.oldValue.map === 0) {
         await beforeMapAction(+changes.world.newValue.map);
+        url.searchParams.set('map_filter', '1');
         window.location.href = `${url.origin}${pathNames.world}${url.search}`;
     }
 
@@ -194,8 +195,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             });
             return true;
         case "refresh":
-            refresh();
-            sendResponse({text: messages.installed});
+            getInfo()
+                .then(() => {
+                    refresh();
+                    sendResponse({text: messages.installed});
+                })
             return true;
         default:
             return true;
@@ -432,6 +436,10 @@ async function getInfo() {
         const userPageText = await response.text();
         const city = userPageText.match(/<b>Сейчас в:<\/b> ([А-я]+)/)[1];
         const lvl = userPageText.match(/<b>Уровень:<\/b> ([0-9]+)/)[1];
+
+        state.global.clan_id = userPageText.match(/<b><a href="\/clan\.php\?id=(\d+)/)[1];
+        updateState({global: state.global});
+
         return {city, lvl}
     }
 }

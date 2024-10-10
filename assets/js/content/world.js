@@ -28,11 +28,28 @@ waitToReadyState().then(async () => {
             north_alt: '22222222222222222642462642462224444848484626266266666668686868848866224888888888888888484844864', // Драконы центр с фармом уников.
         },
         mysterious: '6688662266666666824444444488442244888866884488666622666666226666668844448844448866888866668866226682448844222266222248688866662266224422666622668888668888448866886884', // тайны
+        // ниже подземки
+        corsairs: { // Форд корсаров
+            fromKorheim: '48866666666666668844844488888666888888888844',
+            toKorheim: '66222222222244422222666266224444444444444226',
+            fromNecropolis: '44488868844844488888666888888888844',
+            toNecropolis: '66222222222244422222666266224222666',
+        },
+        // зацикленные маршруты подземок
+        looped: {
+            corsairs: '4884448844422222668886666226',
+            2508: '86424462226686868866664242884422424242266286868666868688666222888444226442424424424284442262622266266448824424244826686884428668848442868884688886', // Крепость Чуждых Страхов
+            4644: '4444222244888844224422664488668866222266666666884444666622442244668844448888668888886688668866888844442222448888222266888866662222222222444422886666888888442244224422222266668866222222224422662222444444666666884444884422468866226666884488668868888622228866886622224428668888442244448888442244', // Крепость Тайного Братства
+            304497615: '68266266668888222244422466666444488488668888222244844688868822448888222444888222244882262226442448888222266224226444446666884448888222266668668262226888', // Цитадель Абсолютной Тьмы
+            4306: '2222666666662222448862688844442244444488444444266662444426666244224444888822666666888866226666668844448888888888442222222248888422228844882222886688888844262444884488886666226644884444222266226666226688886666222266888888226688662222488842228844222266222244448862686268884444888844222222', // Цитадель Безликих Рабов
+            304497594: '86424462226686868866664242884422424242266286868666868688666222888444226442424424424284442262622266266448824424244826686884428668848442868884688886', // Пристанище Темных Сил
+            30112: '886688888888442624262422448888888866888888666666662244226666844486666666662444426666244442666622662222222222444444224444886644422488884488626862268866226666844486668842484248444444888888666622226666668842484426244444868486844488884222248888688444222222442222222266886622224422', // Цитадель Карнарона
+        }
     }
     let increment = true;
 
     const getDragonsKey = async (iteration = 1) => {
-        if (iteration > 5) {
+        if (iteration > 10) {
             return 0;
         }
         if (!url.searchParams.has('type')) {
@@ -138,6 +155,13 @@ waitToReadyState().then(async () => {
         return tpUrl.href;
     }
 
+    const goToUnderground = () => {
+        const castleUrl = new URL(`${url.origin}${pathNames.castle}${url.search}`);
+        castleUrl.searchParams.set('enterCastle', '1');
+        castleUrl.searchParams.set('yes', '1');
+        return castleUrl.href;
+    }
+
     class UserInfo {
         city = "";
         lvl = "";
@@ -172,6 +196,9 @@ waitToReadyState().then(async () => {
                 return maps.empty;
             }
             if (type === "arena" && checkText(words.arena)) {
+                return maps.empty;
+            }
+            if (type === "corsairs" && checkText(words.corsairs)) {
                 return maps.empty;
             }
 
@@ -258,8 +285,26 @@ waitToReadyState().then(async () => {
         }
     }
 
+    const checkCompleteQuest = async () => {
+        const clanUrl = new URL(`${url.origin}${pathNames.clan}${url.search}`);
+        clanUrl.searchParams.set("id", state.global.clan_id);
+        clanUrl.searchParams.set("missions", "1");
+        clanUrl.searchParams.set("quest", "21");
+
+        const response = await fetch(clanUrl.href);
+        if (response.ok) {
+            const regex = new RegExp(words.killMobs);
+            const text = await response.text();
+            const count = text.match(regex)[1];
+            console.log(count);
+        }
+    }
+
     const isArena = checkText(words.arenaLvl) && +state.world.map === 7;
 
+    const isCastleUnderground = checkText(words.checkCastleTime);
+
+    await checkCompleteQuest();
     if (checkText(words.captcha)) {
         return await solve();
     } else {
@@ -271,9 +316,12 @@ waitToReadyState().then(async () => {
             dropMap();
         }
 
-        if (!isArena) {
+        if (!isArena && !isCastleUnderground) {
             if (state?.world && state?.move) {
                 if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
+                    if (isCastleUnderground) {
+                        await checkCompleteQuest();
+                    }
                     const link = searchLink(words.toAttack) || searchLink(words.inBattle);
                     if (link) {
                         increment = false;
@@ -347,6 +395,12 @@ waitToReadyState().then(async () => {
                                 'chooseDragonPath',
                                 ...pathBack(info),
                             ],
+                            9: [
+                                info.getForward("corsairs"),
+                                [goToUnderground()],
+                                maps.looped.corsairs,
+                                [words.toCity]
+                            ],
                         }
 
                         state.move.routes = routes[+state.world.map];
@@ -381,7 +435,9 @@ waitToReadyState().then(async () => {
                             setTimeout(doStep, delay.fast, currentStep);
                         }
                     } else if (+state.world.map && state.move.routes[state.move.active + 1] !== undefined) {
-                        state.move.active += 1;
+                        if (!isCastleUnderground) {
+                            state.move.active += 1;
+                        }
                         state.move.step = 0;
                         updateState({move: state.move});
                         setTimeout(refresh, delay.long);
@@ -390,9 +446,7 @@ waitToReadyState().then(async () => {
                     }
                 }
             } else {
-                if (!isArena) {
-                    wait();
-                }
+                wait();
             }
         }
     }

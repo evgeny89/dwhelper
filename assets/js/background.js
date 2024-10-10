@@ -34,6 +34,7 @@ const initialState = {
         captcha: 0,
         withRage: false,
         debug: false,
+        clan_id: null,
     },
     inventory_actions: {
         moved: 0,
