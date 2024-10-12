@@ -31,13 +31,16 @@ waitToReadyState().then(async () => {
         // ниже подземки
         corsairs: { // Форд корсаров
             fromKorheim: '48866666666666668844844488888666888888888844',
-            toKorheim: '66222222222244422222666266224444444444444226',
             fromNecropolis: '44488868844844488888666888888888844',
-            toNecropolis: '66222222222244422222666266224222666',
+        },
+        independence: { // Форт Независимости
+            fromKorheim: '48844444448442222222222444442222222',
+            fromNecropolis: '44488844444444444444444448442222222222444442222222',
         },
         // зацикленные маршруты подземок
         looped: {
             corsairs: '4884448844422222668886666226',
+            independence: '2424484224442226848866662222486888866868',
             2508: '86424462226686868866664242884422424242266286868666868688666222888444226442424424424284442262622266266448824424244826686884428668848442868884688886', // Крепость Чуждых Страхов
             4644: '4444222244888844224422664488668866222266666666884444666622442244668844448888668888886688668866888844442222448888222266888866662222222222444422886666888888442244224422222266668866222222224422662222444444666666884444884422468866226666884488668868888622228866886622224428668888442244448888442244', // Крепость Тайного Братства
             304497615: '68266266668888222244422466666444488488668888222244844688868822448888222444888222244882262226442448888222266224226444446666884448888222266668668262226888', // Цитадель Абсолютной Тьмы
@@ -201,6 +204,9 @@ waitToReadyState().then(async () => {
             if (type === "corsairs" && checkText(words.corsairs)) {
                 return maps.empty;
             }
+            if (type === "independence" && checkText(words.independence)) {
+                return maps.empty;
+            }
 
             switch (this.city) {
                 case "Корхейм":
@@ -285,24 +291,33 @@ waitToReadyState().then(async () => {
         }
     }
 
+    const getCastleUndergroundRoutes = (info, type) => {
+        return [
+            info.getForward(type),
+            [goToUnderground()],
+            maps.looped[type],
+            [words.toCity]
+        ]
+    }
+
     const checkCompleteQuest = async () => {
         if (!state.global.clan_id) return false;
 
-        const clanUrl = new URL(`${url.origin}${pathNames.clan}${url.search}`);
-        clanUrl.searchParams.set("id", state.global.clan_id);
-        clanUrl.searchParams.set("missions", "1");
-        clanUrl.searchParams.set("quest", "21");
+        const searchParams = new URLSearchParams(url.search);
+        searchParams.delete('loc');
+        searchParams.set("id", state.global.clan_id);
+        searchParams.set("missions", "1");
+        searchParams.set("quest", "21");
+        searchParams.set("end", "1");
 
-        const response = await fetch(clanUrl.href);
+        const response = await fetch(`${url.origin}${pathNames.clan}?${searchParams.toString()}`);
         if (response.ok) {
             const text = await response.text();
-            const div = document.createElement("div");
-            div.innerHTML = text;
-            const link = searchLink(words.questClanComplete, div);
-            if (link) {
-                link.click();
-                clanUrl.searchParams.set("get", "1");
-                await fetch(clanUrl.href);
+            debug(text);
+            if (/clan\.php\?missions=1&amp;quest=21&amp;end=1/.test(text)) {
+                searchParams.delete('end');
+                searchParams.set("get", "1");
+                await fetch(`${url.origin}${pathNames.clan}?${searchParams.toString()}`);
             }
             return true;
         }
@@ -316,22 +331,20 @@ waitToReadyState().then(async () => {
     if (checkText(words.captcha)) {
         return await solve();
     } else {
-        if (isArena) {
-            arenaLogic();
-        }
-
         if (checkText(words.failLvlLair) || checkText(words.failTimeLair)) {
             dropMap();
         }
 
-        if (!isArena && !isCastleUnderground) {
+        if (isArena) {
+            arenaLogic();
+        } else {
             if (state?.world && state?.move) {
                 if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
                     const link = searchLink(words.toAttack) || searchLink(words.inBattle);
                     if (link) {
-                        if (isCastleUnderground) {
+                        /*if (isCastleUnderground) {
                             await checkCompleteQuest();
-                        }
+                        }*/
                         increment = false;
                         link.click();
                     }
@@ -403,12 +416,8 @@ waitToReadyState().then(async () => {
                                 'chooseDragonPath',
                                 ...pathBack(info),
                             ],
-                            9: [
-                                info.getForward("corsairs"),
-                                [goToUnderground()],
-                                maps.looped.corsairs,
-                                [words.toCity]
-                            ],
+                            20: [...getCastleUndergroundRoutes(info, "corsairs")],
+                            21: [...getCastleUndergroundRoutes(info, "independence")],
                         }
 
                         state.move.routes = routes[+state.world.map];
@@ -436,14 +445,22 @@ waitToReadyState().then(async () => {
                                 if (currentStep === words.toCity) {
                                     dropMap();
                                 }
-                                searchLink(currentStep).click();
+                                searchLink(currentStep)?.click();
                             }, delay.fast)
                         } else if (checkText("Север:")) {
-                            updateStepInState();
-                            setTimeout(doStep, delay.fast, currentStep);
+                            if (+state.world.map >= 20 && state.move.active === state.move.routes.length - 2 && !isCastleUnderground) {
+                                state.move.active += 1;
+                                state.move.step = 0;
+                                updateState({move: state.move});
+                                setTimeout(refresh, delay.fiveSeconds);
+                            } else {
+                                updateStepInState();
+                                setTimeout(doStep, delay.fast, currentStep);
+                            }
                         }
                     } else if (+state.world.map && state.move.routes[state.move.active + 1] !== undefined) {
-                        if (!isCastleUnderground) {
+                        const is_looped_route = +state.world.map >= 20 && state.move.active === state.move.routes.length - 2;
+                        if (!is_looped_route) {
                             state.move.active += 1;
                         }
                         state.move.step = 0;

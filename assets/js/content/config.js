@@ -35,7 +35,7 @@ const words = {
     lairMysterious: "Таинственные Земли",
     notForgeItemsText: "Извините, но вам нечего затачивать",
     outChestText: "Из рюкзака",
-    questClanComplete: "[Завершить]",
+    questClanComplete: "\\[Завершить]",
     questClanStart: "Я сделаю это!",
     receiveLinkText: "Забрать",
     refreshLinkText: "Обновить",
@@ -51,7 +51,8 @@ const words = {
     toLairsLobby: "Вход в Логова",
     toMainLinkText: "На главную",
     yes: "Да",
-    corsairs: "[1938] Восточная Роща",
+    corsairs: "\\[1938] Восточная Роща",
+    independence: "\\[731] Холодный Берег",
 }
 
 const pathNames = {
