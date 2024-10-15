@@ -30,19 +30,32 @@ waitToReadyState().then(async () => {
         mysterious: '6688662266666666824444444488442244888866884488666622666666226666668844448844448866888866668866226682448844222266222248688866662266224422666622668888668888448866886884', // тайны
         // ниже подземки
         corsairs: { // Форд корсаров
-            fromKorheim: '48866666666666668844844488888666888888888844',
-            fromNecropolis: '44488868844844488888666888888888844',
+            fromKorheim: ['48866666666666668844844488888666888888888844'],
+            fromNecropolis: ['44488868844844488888666888888888844'],
         },
         independence: { // Форт Независимости
-            fromKorheim: '48844444448442222222222444442222222',
-            fromNecropolis: '44488844444444444444444448442222222222444442222222',
+            fromKorheim: ['48844444448442222222222444442222222'],
+            fromNecropolis: ['44488844444444444444444448442222222222444442222222'],
+        },
+        elementals: { // Замок Элементалей
+            fromKorheim: ['48888888888848886'],
+            fromNecropolis: ['44488844444444444488888888848886'],
+        },
+        brotherhood: { // Крепость Тайного Братства
+            fromKorheim: [[words.teleports.underKorheim], '22226266262224222226262222222666622622226'],
+            fromNecropolis: ['444888444444444444226', [words.teleports.underKorheim], '22226266262224222226262222222666622622226'],
+        },
+        fears: { // Крепость Чуждых Страхов
+            fromKorheim: ['488666666666666666666666222222222222222222222222'],
+            fromNecropolis: ['666666222222222222222222222'],
         },
         // зацикленные маршруты подземок
         looped: {
             corsairs: '4884448844422222668886666226',
             independence: '2424484224442226848866662222486888866868',
-            2508: '86424462226686868866664242884422424242266286868666868688666222888444226442424424424284442262622266266448824424244826686884428668848442868884688886', // Крепость Чуждых Страхов
-            4644: '4444222244888844224422664488668866222266666666884444666622442244668844448888668888886688668866888844442222448888222266888866662222222222444422886666888888442244224422222266668866222222224422662222444444666666884444884422468866226666884488668868888622228866886622224428668888442244448888442244', // Крепость Тайного Братства
+            elementals: '28',
+            fears: '86424462226686868866664242884422424242266286868666868688666222888444226442424424424284442262622266266448824424244826686884428668848442868884688886', // Крепость Чуждых Страхов
+            brotherhood: '4444222244888844224422664488668866222266666666884444666622442244668844448888668888886688668866888844442222448888222266888866662222222222444422886666888888442244224422222266668866222222224422662222444444666666884444884422468866226666884488668868888622228866886622224428668888442244448888442244', // Крепость Тайного Братства
             304497615: '68266266668888222244422466666444488488668888222244844688868822448888222444888222244882262226442448888222266224226444446666884448888222266668668262226888', // Цитадель Абсолютной Тьмы
             4306: '2222666666662222448862688844442244444488444444266662444426666244224444888822666666888866226666668844448888888888442222222248888422228844882222886688888844262444884488886666226644884444222266226666226688886666222266888888226688662222488842228844222266222244448862686268884444888844222222', // Цитадель Безликих Рабов
             304497594: '86424462226686868866664242884422424242266286868666868688666222888444226442424424424284442262622266266448824424244826686884428668848442868884688886', // Пристанище Темных Сил
@@ -165,6 +178,15 @@ waitToReadyState().then(async () => {
         return castleUrl.href;
     }
 
+    const getCastleUndergroundRoutes = (info, type) => {
+        return [
+            ...info.getForward(type),
+            [goToUnderground()],
+            maps.looped[type],
+            [words.toCity]
+        ]
+    }
+
     class UserInfo {
         city = "";
         lvl = "";
@@ -201,10 +223,19 @@ waitToReadyState().then(async () => {
             if (type === "arena" && checkText(words.arena)) {
                 return maps.empty;
             }
-            if (type === "corsairs" && checkText(words.corsairs)) {
+            if (type === "elementals" && checkText(words.castles.elementals)) {
                 return maps.empty;
             }
-            if (type === "independence" && checkText(words.independence)) {
+            if (type === "corsairs" && checkText(words.castles.corsairs)) {
+                return maps.empty;
+            }
+            if (type === "independence" && checkText(words.castles.independence)) {
+                return maps.empty;
+            }
+            if (type === "fears" && checkText(words.castles.fears)) {
+                return maps.empty;
+            }
+            if (type === "brotherhood" && checkText(words.castles.brotherhood)) {
                 return maps.empty;
             }
 
@@ -289,15 +320,6 @@ waitToReadyState().then(async () => {
         } else {
             wait(20);
         }
-    }
-
-    const getCastleUndergroundRoutes = (info, type) => {
-        return [
-            info.getForward(type),
-            [goToUnderground()],
-            maps.looped[type],
-            [words.toCity]
-        ]
     }
 
     const checkCompleteQuest = async () => {
@@ -416,8 +438,12 @@ waitToReadyState().then(async () => {
                                 'chooseDragonPath',
                                 ...pathBack(info),
                             ],
-                            20: [...getCastleUndergroundRoutes(info, "corsairs")],
-                            21: [...getCastleUndergroundRoutes(info, "independence")],
+                            20: [],
+                            21: getCastleUndergroundRoutes(info, "elementals"),
+                            22: getCastleUndergroundRoutes(info, "corsairs"),
+                            23: getCastleUndergroundRoutes(info, "independence"),
+                            26: getCastleUndergroundRoutes(info, "brotherhood"),
+                            27: getCastleUndergroundRoutes(info, "fears"),
                         }
 
                         state.move.routes = routes[+state.world.map];

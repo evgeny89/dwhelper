@@ -51,8 +51,19 @@ const words = {
     toLairsLobby: "Вход в Логова",
     toMainLinkText: "На главную",
     yes: "Да",
-    corsairs: "\\[1938] Восточная Роща",
-    independence: "\\[731] Холодный Берег",
+    castles: {
+        elementals: '\\[1472] Остров Магов',
+        corsairs: "\\[1938] Восточная Роща",
+        independence: "\\[731] Холодный Берег",
+        brotherhood: "\\[4644] Подземелье",
+        fears: "\\[2508] Дремучий лес",
+    },
+    teleports: {
+        underKorheim: "Подземный Вход В Корхейм",
+        upKorheim: "Корхейм",
+        underBairem: "Подземные Врата Байрема",
+        upBairem: "Бейрем",
+    }
 }
 
 const pathNames = {
