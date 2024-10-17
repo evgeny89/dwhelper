@@ -404,6 +404,11 @@ waitToReadyState().then(async () => {
         return false;
     }
 
+    const checkBosses = () => {
+        const block = document.querySelector('.block');
+        return bossesInCastles.some((mob) => checkText(mob, block))
+    }
+
     const isArena = checkText(words.arenaLvl) && +state.world.map === 7;
 
     const isCastleUnderground = checkText(words.checkCastleTime);
@@ -419,7 +424,11 @@ waitToReadyState().then(async () => {
             arenaLogic();
         } else {
             if (state?.world && state?.move) {
-                if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
+                let attackBoss = false;
+                if (isCastleUnderground) {
+                    attackBoss = state.castle.attackBoss && checkBosses();
+                }
+                if ((state.world.attack && !checkText("Север:")) || state.world.attackAll || attackBoss) {
                     const link = searchLink(words.toAttack) || searchLink(words.inBattle);
                     if (link) {
                         /*if (isCastleUnderground) {

@@ -15,6 +15,7 @@ const initialState = {
     captcha: {},
     castle: {
         run: true,
+        attackBoss: false,
     },
     extract: {
         run: false,
