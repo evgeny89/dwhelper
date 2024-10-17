@@ -23,6 +23,7 @@ const words = {
     help: "Помочь",
     inArena: "Вы на Арене Грез",
     inBattle: "В бой",
+    inCastleFail: "Подземелье замка",
     inChestText: "В рюкзак",
     inventoryLinkText: "Инвентарь",
     inWorld: "В Земли",
@@ -55,8 +56,17 @@ const words = {
         elementals: '\\[1472] Остров Магов',
         corsairs: "\\[1938] Восточная Роща",
         independence: "\\[731] Холодный Берег",
+        eternal: '\\[3689] Подземелье',
         brotherhood: "\\[4644] Подземелье",
         fears: "\\[2508] Дремучий лес",
+        forces: "\\[304497594] Призрачное поле",
+        paladins: "\\[304496606] Призрачное поле",
+        slaves: "\\[4306] Подземелье",
+        hermits: "\\[4306] Подземелье",
+        carnaron: "\\[30112]",
+        maurac: "\\[32422]",
+        white: "\\[304496185] Призрачное поле",
+        absolute: "\\[304497615] Призрачное поле",
     },
     teleports: {
         underKorheim: "Подземный Вход В Корхейм",
@@ -123,6 +133,7 @@ const messages = {
     parseForgeError: "Ошибка сканирования доступных вещей",
     parseEmptyItems: "Список доступных вещей пуст",
     battlefieldComplete: "Карта поля битв завершена.",
+    withoutMap: "Маршрут отсутствует. Необходимо самим добраться до локации указанного замка и запустить маршрут заново",
 }
 
 const debugTypes = {

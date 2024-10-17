@@ -463,9 +463,10 @@ function allLinks(text) {
     return links.filter((e) => regEx.test(e.textContent));
 }
 
-function checkText(text) {
+function checkText(text, element = null) {
+    const el = element || document.body;
     const regExp = new RegExp(text);
-    return regExp.test(document.body.innerHTML);
+    return regExp.test(el.innerHTML);
 }
 
 function extractText(text) {
