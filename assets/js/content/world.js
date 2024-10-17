@@ -370,11 +370,10 @@ waitToReadyState().then(async () => {
             searchLink(words.leaveLairsLobby)?.click();
         }
 
-        if ((state.world.attack && !checkText("Север:")) || state.world.attackAll) {
-            const link = searchLink(words.toAttack) || searchLink(words.inBattle) || searchLink(words.help);
-            if (link) {
-                link.click();
-            }
+        const link = searchLink(words.toAttack) || searchLink(words.inBattle) || searchLink(words.help);
+
+        if (link && ((state.world.attack && !checkText("Север:")) || state.world.attackAll)) {
+            link.click();
         } else {
             wait(20);
         }
