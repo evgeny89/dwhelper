@@ -1,9 +1,9 @@
 // state
 const initialState = {
     battles: {
-        attack: 1,
+        attack: '1',
         check_enemy: true,
-        defence: 1,
+        defence: '1',
         faster: true,
         run: false,
     },
