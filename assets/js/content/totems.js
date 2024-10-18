@@ -2,8 +2,15 @@ waitToReadyState().then(() => {
     const formEl = document.querySelector("form");
 
     const saleTotems = async (values) => {
+        const total = values.length;
+        let counter = 0;
+
         showLoader();
         for (const value of values) {
+            const progress = counter / total * 100
+            showProgressbar(progress)
+            counter++;
+
             await fetch(formEl.action, {
                 method: 'POST',
                 redirect: 'manual',
@@ -13,7 +20,7 @@ waitToReadyState().then(() => {
                 body: `item=${value}`
             })
         }
-        hideLoader();
+        hideProgressbar();
         refresh();
     }
 
@@ -25,7 +32,7 @@ waitToReadyState().then(() => {
             saleTotems(values)
                 .catch(e => {
                     console.error(e);
-                    hideLoader();
+                    hideProgressbar();
                 });
         }
     }
