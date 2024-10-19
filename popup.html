@@ -523,16 +523,25 @@
                             </div>
                             <div>
                                 <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.returned">
+                                    возвращаться в город
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Если выключено, то после логова не потопает в город">
+                                    </span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
                                     <input class="uk-checkbox" type="checkbox" data-state="world.highArena">
                                     арена сложный уровень
                                 </label>
                             </div>
                             <div>
                                 <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="world.returned">
-                                    возвращаться в город
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.infinityArena">
+                                    арена до гибели
                                     <span class="popup-tooltip" data-text="?"
-                                          uk-tooltip="Если выключено, то после логова не потопает в город">
+                                          uk-tooltip="Если включено, то будет бить арену пока не убьют">
                                     </span>
                                 </label>
                             </div>

@@ -89,6 +89,7 @@ const initialState = {
         attackAll: false,
         highArena: false,
         highLair: false,
+        infinityArena: false,
         slave: false,
         returned: true,
         map: 0,

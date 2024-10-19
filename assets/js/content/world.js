@@ -360,7 +360,7 @@ waitToReadyState().then(async () => {
     }
 
     const arenaLogic = () => {
-        if (leaveArena()) {
+        if (!state.world.infinityArena && leaveArena()) {
             searchLink(words.leaveLairsLobby)?.click();
         }
 
