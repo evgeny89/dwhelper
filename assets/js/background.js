@@ -79,6 +79,9 @@ const initialState = {
         colosseumQuest: false,
     },
     skills: {},
+    temp: {
+        od: 0,
+    },
     totems: {
         run: true,
     },
