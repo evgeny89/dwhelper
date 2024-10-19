@@ -16,6 +16,7 @@ const initialState = {
     castle: {
         run: true,
         attackBoss: false,
+        checkUndergroundQuest: true,
     },
     extract: {
         run: false,

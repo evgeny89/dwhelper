@@ -381,13 +381,13 @@ waitToReadyState().then(async () => {
         searchParams.set("id", state.global.clan_id);
         searchParams.set("missions", "1");
         searchParams.set("quest", "21");
-        searchParams.set("end", "1");
 
         const response = await fetch(`${url.origin}${pathNames.clan}?${searchParams.toString()}`);
         if (response.ok) {
             const text = await response.text();
-            debug(text);
             if (/clan\.php\?missions=1&amp;quest=21&amp;end=1/.test(text)) {
+                searchParams.set("end", "1");
+                await fetch(`${url.origin}${pathNames.clan}?${searchParams.toString()}`);
                 searchParams.delete('end');
                 searchParams.set("get", "1");
                 await fetch(`${url.origin}${pathNames.clan}?${searchParams.toString()}`);
@@ -424,9 +424,9 @@ waitToReadyState().then(async () => {
                 if ((state.world.attack && !checkText("Север:")) || state.world.attackAll || attackBoss) {
                     const link = searchLink(words.toAttack) || searchLink(words.inBattle);
                     if (link) {
-                        /*if (isCastleUnderground) {
+                        if (isCastleUnderground && state.castle.checkUndergroundQuest) {
                             await checkCompleteQuest();
-                        }*/
+                        }
                         increment = false;
                         link.click();
                     }
