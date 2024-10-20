@@ -364,7 +364,7 @@ waitToReadyState().then(async () => {
             searchLink(words.leaveLairsLobby)?.click();
         }
 
-        const link = searchLink(words.toAttack) || searchLink(words.inBattle) || searchLink(words.help);
+        const link = searchLink(words.toAttack);
 
         if (link && ((state.world.attack && !checkText("Север:")) || state.world.attackAll)) {
             link.click();
@@ -541,7 +541,7 @@ waitToReadyState().then(async () => {
                                     dropMap();
                                 }
                                 searchLink(currentStep)?.click();
-                            }, delay.fast)
+                            }, delay.none)
                         } else if (checkText("Север:")) {
                             if (+state.world.map >= 20 && state.move.active === state.move.routes.length - 2 && !isCastleUnderground) {
                                 state.move.active += 1;
@@ -550,7 +550,7 @@ waitToReadyState().then(async () => {
                                 setTimeout(refresh, delay.fiveSeconds);
                             } else {
                                 updateStepInState();
-                                setTimeout(doStep, delay.fast, currentStep);
+                                setTimeout(doStep, delay.none, currentStep);
                             }
                         }
                     } else if (+state.world.map && state.move.routes[state.move.active + 1] !== undefined) {
@@ -560,7 +560,7 @@ waitToReadyState().then(async () => {
                         }
                         state.move.step = 0;
                         updateState({move: state.move});
-                        setTimeout(refresh, delay.long);
+                        setTimeout(refresh, delay.fast);
                     } else {
                         dropMap();
                     }
