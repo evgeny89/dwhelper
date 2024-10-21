@@ -135,6 +135,7 @@ const messages = {
     parseEmptyItems: "Список доступных вещей пуст",
     battlefieldComplete: "Карта поля битв завершена.",
     withoutMap: "Маршрут отсутствует. Необходимо самим добраться до локации указанного замка и запустить маршрут заново",
+    questPageNotAvailable: "Страница кланового задания недоступна",
 }
 
 const debugTypes = {

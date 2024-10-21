@@ -41,12 +41,12 @@ waitToReadyState().then(() => {
                     console.error(e);
                     hideProgressbar();
                 });
-        } else {
-            if (state.temp.od) {
-                notify(`При обмене получено ${state.temp.od} очков доблести`);
-                state.temp.od = 0;
-                updateState({temp: state.temp});
-            }
+        }
+    } else {
+        if (state.temp.od) {
+            notify(`При обмене получено ${state.temp.od} очков доблести`);
+            state.temp.od = 0;
+            updateState({temp: state.temp});
         }
     }
 });

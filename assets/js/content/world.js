@@ -373,6 +373,31 @@ waitToReadyState().then(async () => {
         }
     }
 
+    const fetchCompleteQuest = async (uri, params, trys = 0) => {
+        await timeout(delay.long)
+        if (trys > 10) {
+            notify(messages.questPageNotAvailable)
+            return false
+        }
+        const response = await fetch(uri);
+        if (response.ok) {
+            const text = await response.text();
+            if (/href="\/clan\.php\?.*UIN.+UIN.+"/.test(text)) {
+                await fetchCompleteQuest(uri, params, ++trys)
+            }
+            debug(text);
+            if (/clan\.php\?missions=1&amp;quest=21&amp;end=1/.test(text)) {
+                params.set("end", "1");
+                await fetch(`${url.origin}${pathNames.clan}?${params.toString()}`);
+                params.delete('end');
+                params.set("get", "1");
+                await fetch(`${url.origin}${pathNames.clan}?${params.toString()}`);
+            }
+            return true;
+        }
+        return false;
+    }
+
     const checkCompleteQuest = async () => {
         if (!state.global.clan_id) return false;
 
@@ -382,19 +407,8 @@ waitToReadyState().then(async () => {
         searchParams.set("missions", "1");
         searchParams.set("quest", "21");
 
-        const response = await fetch(`${url.origin}${pathNames.clan}?${searchParams.toString()}`);
-        if (response.ok) {
-            const text = await response.text();
-            if (/clan\.php\?missions=1&amp;quest=21&amp;end=1/.test(text)) {
-                searchParams.set("end", "1");
-                await fetch(`${url.origin}${pathNames.clan}?${searchParams.toString()}`);
-                searchParams.delete('end');
-                searchParams.set("get", "1");
-                await fetch(`${url.origin}${pathNames.clan}?${searchParams.toString()}`);
-            }
-            return true;
-        }
-        return false;
+        const questUrl = `${url.origin}${pathNames.clan}?${searchParams.toString()}`;
+        return await fetchCompleteQuest(questUrl, searchParams);
     }
 
     const checkBosses = () => {

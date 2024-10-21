@@ -206,6 +206,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
+async function timeout(ms) {
+    return await new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function beforeMapAction(map) {
     if (map === 7) {
         return await queryQuests({ids: quests.arena, key: 'get'});
