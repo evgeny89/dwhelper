@@ -374,7 +374,6 @@ waitToReadyState().then(async () => {
     }
 
     const fetchCompleteQuest = async (uri, params, trys = 0) => {
-        await timeout(delay.long)
         if (trys > 10) {
             notify(messages.questPageNotAvailable)
             return false
@@ -383,6 +382,7 @@ waitToReadyState().then(async () => {
         if (response.ok) {
             const text = await response.text();
             if (/href="\/clan\.php\?.*UIN.+UIN.+"/.test(text)) {
+                await timeout(delay.long)
                 await fetchCompleteQuest(uri, params, ++trys)
             }
             debug(text);
