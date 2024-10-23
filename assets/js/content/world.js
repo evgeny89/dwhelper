@@ -366,7 +366,7 @@ waitToReadyState().then(async () => {
 
         const link = searchLink(words.toAttack);
 
-        if (link && ((state.world.attack && !checkText("Север:")) || state.world.attackAll)) {
+        if (link && (state.world.attack || state.world.attackAll)) {
             link.click();
         } else {
             wait(20);
