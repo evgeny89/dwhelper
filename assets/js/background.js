@@ -94,6 +94,7 @@ const initialState = {
         highArena: false,
         highLair: false,
         infinityArena: false,
+        manyMobs: false,
         slave: false,
         returned: true,
         map: 0,

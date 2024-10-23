@@ -1,3 +1,8 @@
+const settings = {
+    drawLifePoints: 10000, // юзать вытяжку если не хватает указанного количества HP
+    minMobsValue: 7,
+}
+
 const words = {
     arena: "Вход на Арену",
     clanArena: "Вход на Клановую Арену",
@@ -99,8 +104,8 @@ const pathNames = {
 
 const delay = {
     none: 0,
-    fast: 130,
-    third: 300,
+    fast: 100,
+    third: 200,
     long: 1000,
     fiveSeconds: 5000,
     tenSeconds: 10000,

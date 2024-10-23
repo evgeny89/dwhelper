@@ -416,6 +416,24 @@ waitToReadyState().then(async () => {
         return bossesInCastles.some((mob) => checkText(mob, block))
     }
 
+    const countMobsInLocation = () => {
+        const matches = document.body.innerHTML.matchAll(/\[(\d+) особей]/g)
+        const count = matches.reduce((acc, match) => acc + +match[1], 0)
+        return count >= settings.minMobsValue
+    }
+
+    const needAttack = (isUnder) => {
+        switch (true) {
+            case state.world.attack && !checkText("Север:"):
+            case state.world.attackAll:
+            case isUnder && state.castle.attackBoss && checkBosses():
+            case state.world.manyMobs && countMobsInLocation():
+                return true;
+            default:
+                return false;
+        }
+    }
+
     const isArena = checkText(words.arenaLvl) && +state.world.map === 7;
 
     const isCastleUnderground = checkText(words.checkCastleTime);
@@ -431,11 +449,7 @@ waitToReadyState().then(async () => {
             arenaLogic();
         } else {
             if (state?.world && state?.move) {
-                let attackBoss = false;
-                if (isCastleUnderground) {
-                    attackBoss = state.castle.attackBoss && checkBosses();
-                }
-                if ((state.world.attack && !checkText("Север:")) || state.world.attackAll || attackBoss) {
+                if (needAttack(isCastleUnderground)) {
                     const link = searchLink(words.toAttack) || searchLink(words.inBattle);
                     if (link) {
                         if (isCastleUnderground && state.castle.checkUndergroundQuest) {
