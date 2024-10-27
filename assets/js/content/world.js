@@ -399,11 +399,11 @@ waitToReadyState().then(async () => {
     }
 
     const checkCompleteQuest = async () => {
-        if (!state.global.clan_id) return false;
+        if (!state.user.clan_id) return false;
 
         const searchParams = new URLSearchParams(url.search);
         searchParams.delete('loc');
-        searchParams.set("id", state.global.clan_id);
+        searchParams.set("id", state.user.clan_id);
         searchParams.set("missions", "1");
         searchParams.set("quest", "21");
 

@@ -194,12 +194,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 sendResponse(true)
             });
             return true;
+        case "parse-user":
+            getInfo().then(() => {
+                sendResponse(true);
+            })
+            return true;
         case "refresh":
-            getInfo()
-                .then(() => {
-                    refresh();
-                    sendResponse({text: messages.installed});
-                })
+            refresh();
+            sendResponse({text: messages.installed});
             return true;
         default:
             return true;
@@ -235,6 +237,25 @@ function setBadge(text, color = 'blue') {
 const notify = (text, warn = false) => {
     const payload = {text, warn}
     chrome.runtime.sendMessage({action: 'show-message', payload});
+}
+
+const getRageStage = () => {
+    const rageSkills = [
+        {name: 'Гнев Императора I', id: '82', value: false, group: '0'},
+        {name: 'Гнев Императора II', id: '83', value: false, group: '0'},
+        {name: 'Гнев Императора III', id: '84', value: false, group: '0'},
+    ]
+
+    switch (true) {
+        case state.user.od >= 730000 && state.user.od < 870000:
+            return rageSkills[0];
+        case state.user.od >= 870000 && state.user.od < 1050000:
+            return rageSkills[1];
+        case state.user.od >= 1050000:
+            return rageSkills[2];
+    }
+
+    return null;
 }
 
 async function getDressItems() {
@@ -322,7 +343,16 @@ async function scanSkills() {
             const id = new URL(item.href).searchParams.get('info');
             result.push({name, id, value: false, group: '0'});
         })
+
+        const rage = getRageStage();
+        if (rage) {
+            result.push(rage);
+        }
+
         return [...result, ...rankSkills];
+    } else {
+        notify(messages.parseSkillsError, true);
+        return [];
     }
 }
 
@@ -438,13 +468,16 @@ async function getInfo() {
     const response = await fetch(`${url.origin}${pathNames.user}${url.search}`);
     if (response.ok) {
         const userPageText = await response.text();
-        const city = userPageText.match(/<b>Сейчас в:<\/b> ([А-я]+)/)[1];
-        const lvl = userPageText.match(/<b>Уровень:<\/b> ([0-9]+)/)[1];
 
-        state.global.clan_id = userPageText.match(/<b><a href="\/clan\.php\?id=(\d+)/)[1] ?? null;
-        updateState({global: state.global});
+        state.user.city = userPageText.match(/<b>Сейчас в:<\/b> ([А-я]+)/)[1];
+        state.user.lvl = userPageText.match(/<b>Уровень:<\/b> ([0-9]+)/)[1];
+        state.user.side = userPageText.match(/<b>Сторона:<\/b> <img.+> ([А-я]+)/)[1];
+        state.user.od = userPageText.match(/<b>Очки Доблести:<\/b> (\d+)/)[1];
+        state.user.clan_id = userPageText.match(/<b><a href="\/clan\.php\?id=(\d+)/)[1] ?? null;
 
-        return {city, lvl}
+        updateState({user: state.user});
+
+        return {...state.user}
     }
 }
 
@@ -489,26 +522,22 @@ function refresh() {
     document.location.reload();
 }
 
-async function getServiceCaptchaInstance(lvlArg = null) {
+async function getServiceCaptchaInstance() {
     let object;
-
-    if (!lvlArg) {
-        const {lvl} = await getInfo();
-        lvlArg = lvl;
-    }
+    const {lvl} = await getInfo();
 
     switch (state.global.captcha) {
         case "1":
-            object = new CaptchaBase(lvlArg)
+            object = new CaptchaBase(lvl)
             break;
         case "2":
-            object = new CaptchaCapMonster(lvlArg);
+            object = new CaptchaCapMonster(lvl);
             break;
         case "3":
-            object = new CaptchaRuCaptcha(lvlArg);
+            object = new CaptchaRuCaptcha(lvl);
             break;
         case "4":
-            object = new CaptchaAntiCaptcha(lvlArg);
+            object = new CaptchaAntiCaptcha(lvl);
             break;
         default:
             object = null

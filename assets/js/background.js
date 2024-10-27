@@ -36,7 +36,6 @@ const initialState = {
         captcha: 0,
         withRage: false,
         debug: false,
-        clan_id: null,
     },
     inventory_actions: {
         moved: 0,
@@ -100,6 +99,13 @@ const initialState = {
         map: 0,
         scrollLife: null,
         scrollMana: null,
+    },
+    user: {
+        city: null,
+        lvl: null,
+        clan_id: null,
+        side: null,
+        od: null,
     },
 };
 
@@ -261,6 +267,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
             files: [paths.secret, paths.dayjs, paths.config, paths.main],
         })
             .then(async () => {
+                await chrome.tabs.sendMessage(tab.id, {action: "parse-user"});
+
                 const folders = await chrome.tabs.sendMessage(tab.id, {action: "scan-folders"});
                 setState(folders);
 
