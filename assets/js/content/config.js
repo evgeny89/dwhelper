@@ -48,7 +48,7 @@ const words = {
     saleItemText: "продать за",
     saleSuccessText: "Вы успешно продали",
     teamVictoryText: "Победила команда номер \\d",
-    toAttack: "Битва",
+    toAttack: "\\[Битва]",
     toBattleField: "На Поле Битвы",
     toCity: "В город",
     toFolderLinkText: "В отдел",
