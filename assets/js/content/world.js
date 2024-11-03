@@ -127,6 +127,7 @@ waitToReadyState().then(async () => {
         'Убийца Песков',
         'Повешанный Висильник',
         'Каменный Гигант',
+        'Демон Храма',
     ];
     let increment = true;
 
@@ -373,8 +374,8 @@ waitToReadyState().then(async () => {
         }
     }
 
-    const fetchCompleteQuest = async (uri, params, trys = 0) => {
-        if (trys > 10) {
+    const fetchCompleteQuest = async (uri, params, tries = 0) => {
+        if (tries > 10) {
             notify(messages.questPageNotAvailable)
             return false
         }
@@ -382,13 +383,14 @@ waitToReadyState().then(async () => {
         if (response.ok) {
             const text = await response.text();
             if (/href="\/clan\.php\?.*UIN.+UIN.+"/.test(text)) {
-                await timeout(delay.long)
-                await fetchCompleteQuest(uri, params, ++trys)
+                await timeout(delay.fast)
+                await fetchCompleteQuest(uri, params, ++tries)
             }
             debug(text);
             if (/clan\.php\?missions=1&amp;quest=21&amp;end=1/.test(text)) {
                 params.set("end", "1");
                 await fetch(`${url.origin}${pathNames.clan}?${params.toString()}`);
+                await timeout(delay.fast)
                 params.delete('end');
                 params.set("get", "1");
                 await fetch(`${url.origin}${pathNames.clan}?${params.toString()}`);
