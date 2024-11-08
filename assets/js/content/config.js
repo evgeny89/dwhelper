@@ -150,5 +150,6 @@ const debugTypes = {
 }
 
 const quests = {
-    arena: [16, 17]
+    arena: [16, 17],
+    leprechaun: [8],
 }

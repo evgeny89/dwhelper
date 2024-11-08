@@ -29,6 +29,10 @@ waitToReadyState().then(async () => {
         },
         mysterious: '6688662266666666824444444488442244888866884488666622666666226666668844448844448866888866668866226682448844222266222248688866662266224422666622668888668888448866886884', // тайны
         // ниже подземки
+        leprechaun: {
+            "Дреднайты": '88844444444444444488888888868822222222222226288888888888888886882222222222222222222262888888888888888888888868222222222222222222222222628888888888888888888888888866866824224426242264222222222222222222222628888888888888888888822622222222222222222262888888888888888888226222222222222222268888888888888882622222222222222268888888888888868222222222222222688888888888888262222222222222688888888888882622222222222288868888888888262222222286888882262844444444',
+            "Темплары": '8888888866644444424466666666666266444444444444266666666666666264444444444444444266666666666666666264444444444444444444266666666666666666666244444444444444444444462666666666666666666666264444444444444444444444626666666666666666666662644444444444444444444444662666666666666666666666244444444444444444444626666666666666666666244444444444444446628662666666666666244444444444626666666666244444444446266666666244444444626666662444444462666662444442466666424444246666424444242424668686688668888888888888888888444444444488',
+        },
         elementals: { // Замок Элементалей
             fromKorheim: ['48888888888848886'],
             fromNecropolis: ['44488844444444444488888888848886'],
@@ -436,6 +440,17 @@ waitToReadyState().then(async () => {
         }
     }
 
+    const checkLopperRoute = () => {
+        switch (true) {
+            case +state.world.map === 9:
+                return true;
+            case +state.world.map >= 20:
+                return state.move.active === state.move.routes.length - 2;
+            default:
+                return false;
+        }
+    }
+
     const isArena = checkText(words.arenaLvl) && +state.world.map === 7;
 
     const isCastleUnderground = checkText(words.checkCastleTime);
@@ -528,6 +543,7 @@ waitToReadyState().then(async () => {
                                 'chooseDragonPath',
                                 ...pathBack(info),
                             ],
+                            9: [maps.leprechaun[state.user.side]],
                             // ниже подземки
                             21: getCastleUndergroundRoutes(info, "elementals"),
                             22: getCastleUndergroundRoutes(info, "corsairs"),
@@ -583,9 +599,8 @@ waitToReadyState().then(async () => {
                                 setTimeout(doStep, delay.none, currentStep);
                             }
                         }
-                    } else if (+state.world.map && state.move.routes[state.move.active + 1] !== undefined) {
-                        const is_looped_route = +state.world.map >= 20 && state.move.active === state.move.routes.length - 2;
-                        if (!is_looped_route) {
+                    } else if (+state.world.map && (state.move.routes[state.move.active + 1] !== undefined || checkLopperRoute())) {
+                        if (!checkLopperRoute()) {
                             state.move.active += 1;
                         }
                         state.move.step = 0;

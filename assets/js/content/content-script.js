@@ -216,12 +216,18 @@ async function beforeMapAction(map) {
     if (map === 7) {
         return await queryQuests({ids: quests.arena, key: 'get'});
     }
+    if (map === 9) {
+        return await queryQuests({ids: quests.leprechaun, key: 'get'});
+    }
     return await Promise.resolve();
 }
 
 async function afterMapAction(map) {
     if (map === 7) {
         return await queryQuests({ids: quests.arena, key: 'end'});
+    }
+    if (map === 9) {
+        return await queryQuests({ids: quests.leprechaun, key: 'end'});
     }
     return await Promise.resolve();
 }
