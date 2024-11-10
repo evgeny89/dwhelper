@@ -48,6 +48,7 @@ const showErrorMessage = (message) => {
 
 const setSelectOptions = (folders) => {
     const select = popup.querySelector('select[data-state="inventory_actions.to_folders"]');
+    select.innerHTML = '<option value="0">не задано</option>';
 
     for (const item in folders) {
         const el = document.createElement('option');
@@ -229,7 +230,7 @@ const reCalcPopup = (state) => {
             }
         } else {
             if (field) {
-                item[elementsType[item.type]] = state[property][subProperty][field];
+                item[elementsType[item.type]] = state[property][subProperty]?.[field] ?? 0;
             } else {
                 item[elementsType[item.type]] = state[property][subProperty];
             }

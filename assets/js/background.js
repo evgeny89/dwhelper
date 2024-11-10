@@ -190,16 +190,6 @@ const setState = (payload) => {
     chrome.storage.local.set(payload);
 }
 
-const clearState = () => {
-    chrome.storage.local.clear();
-    chrome.storage.local.set({...initialState});
-}
-
-const setBadge = (textBadge = '', colorBadge = "blue") => {
-    chrome.action.setBadgeText({text: textBadge});
-    chrome.action.setBadgeBackgroundColor({color: colorBadge});
-}
-
 function playSound() {
     let url = chrome.runtime.getURL('assets/src/audio.html');
 
@@ -215,6 +205,7 @@ function playSound() {
 }
 
 const showMessage = (payload) => {
+    const id = `DwhelperId-${Date.now()}`;
     const message = {
         type: 'basic',
         iconUrl: './../src/dw128.png',
@@ -222,11 +213,59 @@ const showMessage = (payload) => {
         message: payload.text,
     }
 
-    chrome.notifications.create("myNotificationID", message, function() {
+    chrome.notifications.create(id, message, function() {
         if (payload.warn || state.global.sound) {
             playSound();
         }
     })
+
+    if (!payload.warn) {
+        setTimeout(() => chrome.notifications.clear(id), 10000);
+    }
+}
+
+const loadDynamicValues = (installed = false) => {
+    const message = installed ? "Расширение успешно обновлено" : "Настройки сброшены!";
+    chrome.tabs.query({currentWindow: true}, async function (tabs) {
+        const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
+
+        if (!tab) {
+            return;
+        }
+
+        if (installed) {
+            await chrome.scripting.executeScript({
+                target: {tabId: tab.id},
+                files: [paths.secret, paths.dayjs, paths.config, paths.main],
+            })
+        }
+
+        const captcha = await chrome.tabs.sendMessage(tab.id, {action: "get-captcha"});
+        setState(captcha);
+
+        await chrome.tabs.sendMessage(tab.id, {action: "parse-user"});
+
+        const folders = await chrome.tabs.sendMessage(tab.id, {action: "scan-folders"});
+        setState(folders);
+
+        const skills = await chrome.tabs.sendMessage(tab.id, {action: "scan-skills"});
+        setState(skills);
+
+        await chrome.tabs.sendMessage(tab.id, {action: "refresh"});
+        showMessage({warn: true, text: message});
+        setBadge();
+    });
+}
+
+const clearState = () => {
+    chrome.storage.local.clear();
+    chrome.storage.local.set({...initialState});
+    loadDynamicValues();
+}
+
+const setBadge = (textBadge = '', colorBadge = "blue") => {
+    chrome.action.setBadgeText({text: textBadge});
+    chrome.action.setBadgeBackgroundColor({color: colorBadge});
 }
 
 const getQuestsIds = () => {
@@ -257,31 +296,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
             console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
         }*/
     chrome.storage.local.set({...initialState});
-    chrome.tabs.query({currentWindow: true}, function (tabs) {
-        const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
-        if (!tab) {
-            return;
-        }
-        chrome.scripting.executeScript({
-            target: {tabId: tab.id},
-            files: [paths.secret, paths.dayjs, paths.config, paths.main],
-        })
-            .then(async () => {
-                await chrome.tabs.sendMessage(tab.id, {action: "parse-user"});
-
-                const folders = await chrome.tabs.sendMessage(tab.id, {action: "scan-folders"});
-                setState(folders);
-
-                const skills = await chrome.tabs.sendMessage(tab.id, {action: "scan-skills"});
-                setState(skills);
-
-                const captcha = await chrome.tabs.sendMessage(tab.id, {action: "get-captcha"});
-                setState(captcha);
-
-                const response = await chrome.tabs.sendMessage(tab.id, {action: "refresh"});
-                showMessage(response);
-            });
-    });
+    loadDynamicValues(true);
 });
 
 chrome.storage.local.get(null, function (res) {

@@ -10,6 +10,7 @@ const words = {
     captcha: "Введите код",
     castleName: "Великая Русь",
     checkCastleTime: "Осталось времени в подземелье:",
+    checkSteps: "Север:",
     changeEnemy: "Сменить",
     chemist: "Главный Химик Лаборатории Самарсиан",
     chemistImpaired: "Ослабленный Главный Химик Лаборатории Самарсиан",
@@ -134,7 +135,6 @@ const api = {
 const messages = {
     captcha: "Пожалуйста, введите код",
     notMoney: "У Вас недостаточно средств",
-    installed: "Расширение успешно обновлено",
     parseFlasksError: "Ошибка сканирования одетых вещей",
     parseForgeError: "Ошибка сканирования доступных вещей",
     parseEmptyItems: "Список доступных вещей пуст",

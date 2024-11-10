@@ -430,7 +430,7 @@ waitToReadyState().then(async () => {
 
     const needAttack = (isUnder) => {
         switch (true) {
-            case state.world.attack && !checkText("Север:"):
+            case state.world.attack && !checkText(words.checkSteps):
             case state.world.attackAll:
             case isUnder && state.castle.attackBoss && checkBosses():
             case state.world.manyMobs && countMobsInLocation():
@@ -588,7 +588,7 @@ waitToReadyState().then(async () => {
                                 }
                                 searchLink(currentStep)?.click();
                             }, delay.none)
-                        } else if (checkText("Север:")) {
+                        } else if (checkText(words.checkSteps)) {
                             if (+state.world.map >= 20 && state.move.active === state.move.routes.length - 2 && !isCastleUnderground) {
                                 state.move.active += 1;
                                 state.move.step = 0;

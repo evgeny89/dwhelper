@@ -41,7 +41,7 @@ waitToReadyState().then(async () => {
                 return;
             }
 
-            if ((state.world.attack && !checkText("Север:")) || state.world.attackAll || searchLink(words.inBattle)) {
+            if ((state.world.attack && !checkText(words.checkSteps)) || state.world.attackAll || searchLink(words.inBattle)) {
                 attack();
             } else {
                 const step = state.battlefield.step;

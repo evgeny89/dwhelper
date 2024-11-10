@@ -121,10 +121,10 @@ chrome.storage.onChanged.addListener(async function (changes) {
         setTimeout(refresh, delay.long);
     }
 
-    if (changes.global && (+changes.global.newValue.captcha >= state.captcha.capMonster.value)) {
+    if (changes.global && (+changes.global.newValue?.captcha >= state.captcha.capMonster?.value)) {
         setBadge('$', '#ecaa15');
     }
-    if (changes.global && (+changes.global.newValue.captcha < state.captcha.capMonster.value)) {
+    if (changes.global && (+changes.global.newValue?.captcha < state.captcha.capMonster?.value)) {
         setBadge('');
     }
 
@@ -201,7 +201,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             return true;
         case "refresh":
             refresh();
-            sendResponse({text: messages.installed});
+            sendResponse(true);
             return true;
         default:
             return true;
