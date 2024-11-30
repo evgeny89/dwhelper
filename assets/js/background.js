@@ -4,7 +4,7 @@ const initialState = {
         attack: '1',
         check_enemy: true,
         defence: '1',
-        faster: true,
+        faster: false,
         run: false,
     },
     battlefield: {

@@ -110,8 +110,8 @@ const pathNames = {
 
 const delay = {
     none: 0,
-    fast: 100,
-    third: 200,
+    fast: 200,
+    third: 300,
     long: 1000,
     fiveSeconds: 5000,
     tenSeconds: 10000,
@@ -138,14 +138,15 @@ const api = {
 }
 
 const messages = {
+    battlefieldComplete: "Карта поля битв завершена.",
     captcha: "Пожалуйста, введите код",
+    notDetectCity: "Город не определен",
+    notDetectSide: "Сторона не определена",
     notMoney: "У Вас недостаточно средств",
+    parseEmptyItems: "Список доступных вещей пуст",
     parseFlasksError: "Ошибка сканирования одетых вещей",
     parseForgeError: "Ошибка сканирования доступных вещей",
-    parseEmptyItems: "Список доступных вещей пуст",
     parseSkillsError: "Ошибка сканирования навыков",
-    battlefieldComplete: "Карта поля битв завершена.",
-    withoutMap: "Маршрут отсутствует. Необходимо самим добраться до локации указанного замка и запустить маршрут заново",
     questPageNotAvailable: "Страница кланового задания недоступна",
     withoutMap: "Маршрут отсутствует. Необходимо самим добраться до локации старта и запустить маршрут заново",
 }

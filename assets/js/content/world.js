@@ -133,6 +133,7 @@ waitToReadyState().then(async () => {
         'Каменный Гигант',
         'Демон Храма',
     ];
+    const leprechaunWord = "Лепрекон";
     let increment = true;
 
     const getDragonsKey = async (iteration = 1) => {
@@ -255,6 +256,23 @@ waitToReadyState().then(async () => {
             [goToUnderground()],
             maps.looped[type],
             [words.toCity]
+        ]
+    }
+
+    const getLeprechaunRoutes = (side) => {
+        if (side !== "Дреднайты" && side !== "Темплары") {
+            notify(messages.notDetectSide);
+            dropMap();
+        }
+        if (!checkText(words.leprechaun[side])) {
+            notify(messages.withoutMap);
+            dropMap();
+        }
+
+        return [
+            maps.leprechaun[side],
+            [words.giveUp],
+            [words.toCity],
         ]
     }
 
@@ -439,6 +457,7 @@ waitToReadyState().then(async () => {
         switch (true) {
             case state.world.attack && !checkText(words.checkSteps):
             case state.world.attackAll:
+            case +state.world.map === 9 && searchLink(leprechaunWord):
             case isUnder && state.castle.attackBoss && checkBosses():
             case state.world.manyMobs && countMobsInLocation():
                 return true;
@@ -450,7 +469,7 @@ waitToReadyState().then(async () => {
     const checkLopperRoute = () => {
         switch (true) {
             case +state.world.map === 9:
-                return true;
+                return state.move.active === state.move.routes.length - 3;
             case +state.world.map >= 20:
                 return state.move.active === state.move.routes.length - 2;
             default:
