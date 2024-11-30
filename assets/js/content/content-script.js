@@ -614,3 +614,10 @@ function debug(data, type = null) {
 function confirming(text) {
     return window.confirm(text);
 }
+
+function submitForm(form) {
+    const event = new PointerEvent("pointerdown");
+    const button = form.querySelector('input[type="submit"]');
+    button.dispatchEvent(event);
+    button.click();
+}

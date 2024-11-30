@@ -18,7 +18,7 @@ waitToReadyState().then(() => {
         }
 
         if (form) {
-            form.submit()
+            submitForm(form);
         }
 
         if (ok) {

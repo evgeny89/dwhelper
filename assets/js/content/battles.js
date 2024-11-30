@@ -206,7 +206,7 @@ waitToReadyState().then(() => {
         }
 
         setTimeout((el) => {
-            el.submit();
+            submitForm(el);
         }, delayTime, form);
     } else {
         setTimeout(() => {

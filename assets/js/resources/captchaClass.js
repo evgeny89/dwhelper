@@ -83,7 +83,7 @@ class CaptchaBase {
         hideLoader();
         const form = document.forms[0];
         form.elements.code.value = code;
-        form.submit();
+        submitForm(form);
     }
 
     _getBase64Image(blob) {

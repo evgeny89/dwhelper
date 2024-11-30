@@ -43,7 +43,7 @@ waitToReadyState().then(() => {
                 if (noCaptcha) {
                     const form = document.querySelector("form");
                     if (form) {
-                        form.submit()
+                        submitForm(form);
                     } else {
                         wait()
                     }
