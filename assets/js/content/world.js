@@ -301,12 +301,19 @@ waitToReadyState().then(async () => {
             switch (this.city) {
                 case "Корхейм":
                     if (maps[type].fromKorheim) return maps[type].fromKorheim;
-                    return maps.empty;
+                    if (!castleTypes.includes(type)) return maps.empty;
+                    notify(messages.withoutMap);
+                    dropMap();
+                    break;
                 case "Некрополь":
                     if (maps[type].fromNecropolis) return maps[type].fromNecropolis;
-                    return maps.empty;
+                    if (!castleTypes.includes(type)) return maps.empty;
+                    notify(messages.withoutMap);
+                    dropMap();
+                    break;
                 default:
-                    return maps.empty;
+                    notify(messages.notDetectCity);
+                    dropMap();
             }
         }
 
@@ -481,87 +488,133 @@ waitToReadyState().then(async () => {
                     await (async () => {
                         const info = await UserInfo.getUserData();
 
-                        const routes = {
-                            1: [
-                                info.getForward("lair"),
-                                checkInLair(words.lairForsworn, info),
-                                maps.fallen,
-                                ...pathBack(info),
-                            ],
-                            2: [
-                                info.getForward("lair"),
-                                checkInLair(words.lairFallen, info),
-                                maps.fallen,
-                                ...pathBack(info),
-                            ],
-                            3: [
-                                info.getForward("lair"),
-                                checkInLair(words.lairDragon, info),
-                                maps.dragons.entry,
-                                'chooseDragonPath',
-                                ...pathBack(info),
-                            ],
-                            4: [
-                                info.getForward("lair"),
-                                checkInLair(words.lairMysterious, info),
-                                maps.mysterious,
-                                ...pathBack(info),
-                            ],
-                            5: [
-                                info.getForward("lair"),
-                                checkInLair(words.lairFallen, info),
-                                maps.fallen,
-                                [words.leaveLairsLobby, words.yes],
-                                checkInLair(words.lairDragon, info),
-                                maps.dragons.entry,
-                                'chooseDragonPath',
-                                [words.leaveLairsLobby, words.yes],
-                                checkInLair(words.lairMysterious, info),
-                                maps.mysterious,
-                                ...pathBack(info),
-                            ],
-                            6: [
-                                info.getForward("castle"),
-                                [words.castleName],
-                                maps.castle[info.getBack()],
-                                [words.toCity]
-                            ],
-                            7: [
-                                info.getForward("arena"),
-                                [words.arena],
-                                [words.yes],
-                                maps.lair[info.getBack()],
-                                [words.toCity]
-                            ],
-                            8: [
-                                info.getForward("lair"),
-                                checkInLair(words.lairFallen, info),
-                                maps.fallen,
-                                [words.leaveLairsLobby, words.yes],
-                                checkInLair(words.lairDragon, info),
-                                maps.dragons.entry,
-                                'chooseDragonPath',
-                                ...pathBack(info),
-                            ],
-                            9: [maps.leprechaun[state.user.side]],
+                        switch (+state.world.map) {
+                            case 1:
+                                state.move.routes = [
+                                    info.getForward("lair"),
+                                    checkInLair(words.lairForsworn, info),
+                                    maps.fallen,
+                                    ...pathBack(info),
+                                ]
+                                break;
+                            case 2:
+                                state.move.routes = [
+                                    info.getForward("lair"),
+                                    checkInLair(words.lairFallen, info),
+                                    maps.fallen,
+                                    ...pathBack(info),
+                                ]
+                                break;
+                            case 3:
+                                state.move.routes = [
+                                    info.getForward("lair"),
+                                    checkInLair(words.lairDragon, info),
+                                    maps.dragons.entry,
+                                    'chooseDragonPath',
+                                    ...pathBack(info),
+                                ]
+                                break;
+                            case 4:
+                                state.move.routes = [
+                                    info.getForward("lair"),
+                                    checkInLair(words.lairMysterious, info),
+                                    maps.mysterious,
+                                    ...pathBack(info),
+                                ]
+                                break;
+                            case 5:
+                                state.move.routes = [
+                                    info.getForward("lair"),
+                                    checkInLair(words.lairFallen, info),
+                                    maps.fallen,
+                                    [words.leaveLairsLobby, words.yes],
+                                    checkInLair(words.lairDragon, info),
+                                    maps.dragons.entry,
+                                    'chooseDragonPath',
+                                    [words.leaveLairsLobby, words.yes],
+                                    checkInLair(words.lairMysterious, info),
+                                    maps.mysterious,
+                                    ...pathBack(info),
+                                ]
+                                break;
+                            case 6:
+                                state.move.routes = [
+                                    info.getForward("castle"),
+                                    [words.castleName],
+                                    maps.castle[info.getBack()],
+                                    [words.toCity]
+                                ]
+                                break;
+                            case 7:
+                                state.move.routes = [
+                                    info.getForward("arena"),
+                                    [words.arena],
+                                    [words.yes],
+                                    maps.lair[info.getBack()],
+                                    [words.toCity]
+                                ]
+                                break;
+                            case 8:
+                                state.move.routes = [
+                                    info.getForward("lair"),
+                                    checkInLair(words.lairFallen, info),
+                                    maps.fallen,
+                                    [words.leaveLairsLobby, words.yes],
+                                    checkInLair(words.lairDragon, info),
+                                    maps.dragons.entry,
+                                    'chooseDragonPath',
+                                    ...pathBack(info),
+                                ]
+                                break;
+                            case 9:
+                                state.move.routes = getLeprechaunRoutes(state.user.side)
+                                break;
                             // ниже подземки
-                            21: getCastleUndergroundRoutes(info, "elementals"),
-                            22: getCastleUndergroundRoutes(info, "corsairs"),
-                            23: getCastleUndergroundRoutes(info, "independence"),
-                            24: getCastleUndergroundRoutes(info, "eternal"),
-                            26: getCastleUndergroundRoutes(info, "brotherhood"),
-                            27: getCastleUndergroundRoutes(info, "fears"),
-                            28: getCastleUndergroundRoutes(info, 'paladins'),
-                            29: getCastleUndergroundRoutes(info, 'forces'),
-                            33: getCastleUndergroundRoutes(info, 'hermits'),
-                            34: getCastleUndergroundRoutes(info, "slaves"),
-                            36: getCastleUndergroundRoutes(info, "carnaron"),
-                            37: getCastleUndergroundRoutes(info, "maurac"),
-                            38: getCastleUndergroundRoutes(info, "white"),
-                            39: getCastleUndergroundRoutes(info, "absolute"),
+                            case 21:
+                                state.move.routes = getCastleUndergroundRoutes(info, "elementals")
+                                break;
+                            case 22:
+                                state.move.routes = getCastleUndergroundRoutes(info, "corsairs")
+                                break;
+                            case 23:
+                                state.move.routes = getCastleUndergroundRoutes(info, "independence")
+                                break;
+                            case 24:
+                                state.move.routes = getCastleUndergroundRoutes(info, "eternal")
+                                break;
+                            case 26:
+                                state.move.routes = getCastleUndergroundRoutes(info, "brotherhood")
+                                break;
+                            case 27:
+                                state.move.routes = getCastleUndergroundRoutes(info, "fears")
+                                break;
+                            case 28:
+                                state.move.routes = getCastleUndergroundRoutes(info, 'paladins')
+                                break;
+                            case 29:
+                                state.move.routes = getCastleUndergroundRoutes(info, 'forces')
+                                break;
+                            case 33:
+                                state.move.routes = getCastleUndergroundRoutes(info, 'hermits')
+                                break;
+                            case 34:
+                                state.move.routes = getCastleUndergroundRoutes(info, "slaves")
+                                break;
+                            case 36:
+                                state.move.routes = getCastleUndergroundRoutes(info, "carnaron")
+                                break;
+                            case 37:
+                                state.move.routes = getCastleUndergroundRoutes(info, "maurac")
+                                break;
+                            case 38:
+                                state.move.routes = getCastleUndergroundRoutes(info, "white")
+                                break;
+                            case 39:
+                                state.move.routes = getCastleUndergroundRoutes(info, "absolute")
+                                break;
+                            default:
+                                dropMap();
                         }
-
-                        state.move.routes = routes[+state.world.map];
                         updateState({move: state.move});
                         refresh();
                     })();
