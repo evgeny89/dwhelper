@@ -615,9 +615,29 @@ function confirming(text) {
     return window.confirm(text);
 }
 
+function setCsrf(form) {
+    const content = document.querySelector("meta[name=csrf]")?.content ?? '';
+    const csrf = form.querySelector("input[name=csrf]");
+    const value = form.querySelector("input[name=sid]")?.value ?? '';
+
+    if (!csrf) {
+        return
+    }
+
+    let result = "";
+    for (let i = 0; i !== content.length; i++) {
+        result += content[i] + (value[i] ? value[i] : "");
+    }
+
+    csrf.value = btoa(result)
+        .replace(/=/g, "")
+        .split("")
+        .reverse()
+        .join("")
+        .toLowerCase();
+}
+
 function submitForm(form) {
-    const event = new PointerEvent("pointerdown");
-    const button = form.querySelector('input[type="submit"]');
-    button.dispatchEvent(event);
-    button.click();
+    setCsrf(form);
+    form.submit();
 }

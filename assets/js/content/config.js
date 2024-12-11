@@ -112,7 +112,7 @@ const delay = {
     none: 0,
     fast: 200,
     third: 300,
-    long: 1000,
+    long: 900,
     fiveSeconds: 5000,
     tenSeconds: 10000,
     halfMinute: 30000,
