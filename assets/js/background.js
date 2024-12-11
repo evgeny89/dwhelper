@@ -230,6 +230,8 @@ const loadDynamicValues = (installed = false) => {
         const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
 
         if (!tab) {
+            const message = "Вкладка не найдена, начальные настройки бота не загружены. Откройте вкладку игры и нажмите кнопку сбросить настройки.";
+            showMessage({warn: true, text: message});
             return;
         }
 
