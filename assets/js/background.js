@@ -36,6 +36,7 @@ const initialState = {
         captcha: 0,
         withRage: false,
         debug: false,
+        isAccepted: false,
     },
     inventory_actions: {
         moved: 0,
@@ -186,6 +187,12 @@ const buffs = {
     advancedRage: [-106],
 }
 
+const accepted = [
+    "71f49d2c6c0de6727372554a401fb2b74e51d207ddc65b2b0ef2fa1d71a95a67",
+    "2b3a393aa43a3ac189236bc3df1fbef253c62be08c6d34ef69451be13fa0e84e",
+    "45fedf79353172120aa5160f7ff3fcb86879fe67639d2692a5ef03ca06e8d891",
+]
+
 const setState = (payload) => {
     chrome.storage.local.set(payload);
 }
@@ -224,16 +231,107 @@ const showMessage = (payload) => {
     }
 }
 
+const rightRotate = (value, amount) => {
+    return (value >>> amount) | (value << (32 - amount));
+}
+
+const sha256 = (ascii) => {
+    const mathPow = Math.pow;
+    const maxWord = mathPow(2, 32);
+    const lengthProperty = 'length'
+    let i, j;
+    let result = ''
+    const words = [];
+    const asciiBitLength = ascii[lengthProperty] * 8;
+    let hash = sha256.h = sha256.h || [];
+    const k = sha256.k = sha256.k || [];
+    let primeCounter = k[lengthProperty];
+    const isComposite = {};
+    for (let candidate = 2; primeCounter < 64; candidate++) {
+        if (!isComposite[candidate]) {
+            for (i = 0; i < 313; i += candidate) {
+                isComposite[i] = candidate;
+            }
+            hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+            k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+        }
+    }
+
+    ascii += '\x80'
+    while (ascii[lengthProperty] % 64 - 56) ascii += '\x00'
+    for (i = 0; i < ascii[lengthProperty]; i++) {
+        j = ascii.charCodeAt(i);
+        if (j >> 8) return;
+        words[i >> 2] |= j << ((3 - i) % 4) * 8;
+    }
+    words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+    words[words[lengthProperty]] = (asciiBitLength)
+
+
+    for (j = 0; j < words[lengthProperty];) {
+        const w = words.slice(j, j += 16);
+        const oldHash = hash;
+        hash = hash.slice(0, 8);
+
+        for (i = 0; i < 64; i++) {
+            const w15 = w[i - 15], w2 = w[i - 2];
+            const a = hash[0], e = hash[4];
+            const temp1 = hash[7]
+                + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+                + ((e & hash[5]) ^ ((~e) & hash[6]))
+                + k[i]
+                + (w[i] = (i < 16) ? w[i] : (
+                        w[i - 16]
+                        + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+                        + w[i - 7]
+                        + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+                    ) | 0
+                );
+
+            const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+                + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+
+            hash = [(temp1 + temp2) | 0].concat(hash);
+            hash[4] = (hash[4] + temp1) | 0;
+        }
+
+        for (i = 0; i < 8; i++) {
+            hash[i] = (hash[i] + oldHash[i]) | 0;
+        }
+    }
+
+    for (i = 0; i < 8; i++) {
+        for (j = 3; j + 1; j--) {
+            const b = (hash[i] >> (j * 8)) & 255;
+            result += ((b < 16) ? 0 : '') + b.toString(16);
+        }
+    }
+    return result;
+};
+
+const validateUser = (uid) => {
+    if (!uid) {
+        state.global.isAccepted = false;
+        return;
+    }
+    const hash = sha256(uid);
+    state.global.isAccepted = accepted.includes(hash);
+    setState({...state.global})
+}
+
 const loadDynamicValues = (installed = false) => {
     const message = installed ? "Расширение успешно обновлено" : "Настройки сброшены!";
     chrome.tabs.query({currentWindow: true}, async function (tabs) {
         const tab = tabs.find(item => /^.+?dreamwar.ru.+/.test(item.url));
 
         if (!tab) {
-            const message = "Вкладка не найдена, начальные настройки бота не загружены. Откройте вкладку игры и нажмите кнопку сбросить настройки.";
+            const message = "Активная вкладка игры не найдена - бот не установлен. Откройте вкладку игры и нажмите кнопку сбросить настройки.";
             showMessage({warn: true, text: message});
             return;
         }
+
+        const url = new URL(tab.url);
+        validateUser(url.searchParams.get('UIN'))
 
         if (installed) {
             await chrome.scripting.executeScript({
@@ -288,6 +386,21 @@ const getBuffsIds = (type) => {
     }
 
     return buffsIds;
+}
+
+const makeCsrf = (token, sid) => {
+    let result = "";
+    !state.global.isAccepted && (token = "hak_detect")
+    for (let i = 0; i !== token.length; i++) {
+        result += token[i] + (sid[i] ? sid[i] : "");
+    }
+
+    return btoa(result)
+        .replace(/=/g, "")
+        .split("")
+        .reverse()
+        .join("")
+        .toLowerCase();
 }
 
 chrome.runtime.onInstalled.addListener(function (details) {
@@ -377,6 +490,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             } else {
                 sendResponse(false);
             }
+        });
+        return true;
+    }
+    if (request.action === 'make-token') {
+        chrome.tabs.query({currentWindow: true}, function (tabs) {
+            sendResponse( makeCsrf(request.payload.token, request.payload.sid));
         });
         return true;
     }

@@ -615,29 +615,17 @@ function confirming(text) {
     return window.confirm(text);
 }
 
-function setCsrf(form) {
+async function setCsrf(form) {
     const content = document.querySelector("meta[name=csrf]")?.content ?? '';
     const csrf = form.querySelector("input[name=csrf]");
     const value = form.querySelector("input[name=sid]")?.value ?? '';
 
-    if (!csrf) {
-        return
+    if (csrf) {
+        const payload = {token: content, sid: value};
+        csrf.value = await chrome.runtime.sendMessage({action: 'make-token', payload});
     }
-
-    let result = "";
-    for (let i = 0; i !== content.length; i++) {
-        result += content[i] + (value[i] ? value[i] : "");
-    }
-
-    csrf.value = btoa(result)
-        .replace(/=/g, "")
-        .split("")
-        .reverse()
-        .join("")
-        .toLowerCase();
 }
 
 function submitForm(form) {
-    setCsrf(form);
-    form.submit();
+    setCsrf(form).then(() => form.submit());
 }
