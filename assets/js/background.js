@@ -324,8 +324,8 @@ const validateUser = (uid) => {
         return;
     }
     const hash = sha256(uid);
-    state.global.isAccepted = accepted.includes(hash);
-    setState({...state.global})
+    initialState.global.isAccepted = accepted.includes(hash);
+    setState({global: initialState.global})
 }
 
 const loadDynamicValues = (installed = false) => {
