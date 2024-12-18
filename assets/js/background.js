@@ -398,8 +398,10 @@ const getBuffsIds = (type) => {
 }
 
 const makeCsrf = (token, sid) => {
+    if (!state.global.isAccepted) {
+        return "hacking_attempt";
+    }
     let result = "";
-    !state.global.isAccepted && (token = "hak_detect")
     for (let i = 0; i !== token.length; i++) {
         result += token[i] + (sid[i] ? sid[i] : "");
     }
