@@ -1136,26 +1136,20 @@
                 </li>
                 <li>
                     <div class="uk-margin">
-                        <div class="uk-margin-small-bottom">
-                            <h6 class="uk-margin-remove">capMonster:</h6>
-                            <div class=" uk-flex uk-flex-between uk-flex-top">
-                                <input class="uk-input uk-form-blank uk-form-small" type="text"
-                                       data-state="captcha.capMonster.token" placeholder="Тема посылок">
-                            </div>
+                        <div class="uk-margin-small-bottom uk-flex uk-flex-between uk-flex-middle">
+                            <div class="uk-margin-remove">capMonster:</div>
+                            <input class="uk-input uk-form-blank uk-form-small uk-margin-small-left" type="text"
+                                   data-state="captcha.capMonster.token" placeholder="Токен capMonster">
                         </div>
-                        <div class="uk-margin-small-bottom">
-                            <h6 class="uk-margin-remove">ruCaptcha:</h6>
-                            <div class=" uk-flex uk-flex-between uk-flex-top">
-                                <input class="uk-input uk-form-blank uk-form-small" type="text"
-                                       data-state="captcha.ruCaptcha.token" placeholder="Текст посылок">
-                            </div>
+                        <div class="uk-margin-small-bottom uk-flex uk-flex-between uk-flex-middle">
+                            <div class="uk-margin-remove uk-margin-right">ruCaptcha:</div>
+                            <input class="uk-input uk-form-blank uk-form-small uk-margin-small-left" type="text"
+                                   data-state="captcha.ruCaptcha.token" placeholder="Токен ruCaptcha">
                         </div>
-                        <div class="uk-margin-small-bottom">
-                            <h6 class="uk-margin-remove">antiCaptcha:</h6>
-                            <div class=" uk-flex uk-flex-between uk-flex-top">
-                                    <input class="uk-input uk-form-blank uk-form-small" type="text"
-                                           data-state="captcha.antiCaptcha.token" placeholder="Текст посылок">
-                                </div>
+                        <div class="uk-margin-small-bottom uk-flex uk-flex-between uk-flex-middle">
+                            <div class="uk-margin-remove">antiCaptcha:</div>
+                            <input class="uk-input uk-form-blank uk-form-small uk-margin-small-left" type="text"
+                                   data-state="captcha.antiCaptcha.token" placeholder="Токен antiCaptcha">
                         </div>
                     </div>
                 </li>
@@ -1168,7 +1162,7 @@
                     <span class="uk-label uk-margin-small-left">auto</span>
                 </li>
                 <li class="uk-flex uk-flex-between uk-flex-top">
-                    <p class="uk-margin-remove-vertical">Выполняет вспомогательные действия, но не всю работу</p>
+                    <p class="uk-margin-remove-vertical">Выполняет вспомогательные действия</p>
                     <span class="uk-label uk-label-success uk-flex-top uk-margin-small-left">semi&#8209;auto</span>
                 </li>
                 <li class="uk-flex uk-flex-between uk-flex-top">
@@ -1189,9 +1183,32 @@
                 <li class="uk-flex uk-flex-between uk-flex-top">
                     <p class="uk-margin-remove-vertical uk-flex uk-flex-center">
                         <span uk-icon="icon: credit-card"></span>
-                        <span class="uk-text-primary uk-margin-small-left">2202 2023 0460 9203</span>
+                        <span class="uk-text-primary uk-margin-small-left uk-text-small">2202 2023 0460 9203</span>
                     </p>
-                    <span>МИР</span>
+                    <span>
+                        МИР
+                        <span class="popup-tooltip" data-text="?" uk-tooltip="Номер карты мир"></span>
+                    </span>
+                </li>
+                <li class="uk-flex uk-flex-between uk-flex-top">
+                    <p class="uk-margin-remove-vertical uk-flex uk-flex-center">
+                        <span uk-icon="icon: link"></span>
+                        <span class="uk-text-primary uk-margin-small-left uk-text-small">TUu56C8dwm1WdmsVcKF4H9169vaXoN2iv6</span>
+                    </p>
+                    <span>
+                        USDT
+                        <span class="popup-tooltip" data-text="?" uk-tooltip="Адрес USDT TRC20"></span>
+                    </span>
+                </li>
+                <li class="uk-flex uk-flex-between uk-flex-top">
+                    <p class="uk-margin-remove-vertical uk-flex uk-flex-center uk-text-small">
+                        <span uk-icon="icon: link"></span>
+                        <span class="uk-text-primary uk-margin-small-left">UQDVPSZdaHYmgtMzj6sQczTF_4gn6uQJ3lSQ460fiX2B6MCZ</span>
+                    </p>
+                    <span>
+                        TON
+                        <span class="popup-tooltip" data-text="?" uk-tooltip="Адрес Toncoin (TON)"></span>
+                    </span>
                 </li>
             </ul>
         </li>
