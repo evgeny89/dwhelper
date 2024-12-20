@@ -477,9 +477,9 @@ async function getInfo() {
 
         state.user.city = userPageText.match(/<b>Сейчас в:<\/b> ([А-я]+)/)[1];
         state.user.lvl = userPageText.match(/<b>Уровень:<\/b> ([0-9]+)/)[1];
-        state.user.side = userPageText.match(/<b>Сторона:<\/b> <img.+> ([А-я]+)/)[1];
-        state.user.od = userPageText.match(/<b>Очки Доблести:<\/b> (\d+)/)[1];
-        state.user.clan_id = userPageText.match(/<b><a href="\/clan\.php\?id=(\d+)/)[1] ?? null;
+        state.user.side = userPageText.match(/<b>Сторона:<\/b> <img.+> ([А-я]+)/)?.[1] ?? null;
+        state.user.od = userPageText.match(/<b>Очки Доблести:<\/b> (\d+)/)?.[1] ?? null;
+        state.user.clan_id = userPageText.match(/<b><a href="\/clan\.php\?id=(\d+)/)?.[1] ?? null;
 
         updateState({user: state.user});
 

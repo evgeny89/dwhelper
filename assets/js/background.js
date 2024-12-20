@@ -122,6 +122,9 @@ const paths = {
     dungeon: {
         url: "/world/dungeon.php",
     },
+    world_bg: {
+        url: "/world/world_bg.php",
+    },
     battlefield: {
         url: "/battleground.php",
         script: {
@@ -679,6 +682,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                     });
                 }
                 break;
+            case paths.world_bg.url:
             case paths.battlefield.url:
                 if (state.battlefield.run) {
                     chrome.scripting.executeScript({

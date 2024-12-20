@@ -25,7 +25,7 @@ const attack = () => {
 }
 
 waitToReadyState().then(async () => {
-    if (url.pathname === pathNames.battlefield) {
+    if (url.pathname === pathNames.battlefield_running) {
         if (checkText(words.captcha)) {
             return await solve();
         }
@@ -63,14 +63,12 @@ waitToReadyState().then(async () => {
             }
         }
     } else {
-        const isTrackStartBattlefield = isBattlefieldTime()
         const timeToStart = timeToBattlefield()
-
         if (timeToStart > 5) {
             notify(`До начала пб осталось ${timeToStart} минут`)
             wait(delay.tenMinutes)
         } else {
-            if (isTrackStartBattlefield) {
+            if (isBattlefieldTime()) {
                 wait(delay.halfMinute)
             }
         }

@@ -90,6 +90,7 @@ const words = {
 const pathNames = {
     battles: "/battle_group.php",
     battlefield: "/battleground.php",
+    battlefield_running: "/world/world_bg.php",
     buff: "/buff.php",
     castle: "/world/castle.php",
     clan: "/clan.php",
