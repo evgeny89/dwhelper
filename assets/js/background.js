@@ -36,7 +36,6 @@ const initialState = {
         captcha: 0,
         withRage: false,
         debug: false,
-        isAccepted: false,
     },
     inventory_actions: {
         moved: 0,
@@ -319,13 +318,9 @@ const sha256 = (ascii) => {
 };
 
 const validateUser = (uid) => {
-    if (!uid) {
-        state.global.isAccepted = false;
-        return;
-    }
-    const hash = sha256(uid);
-    initialState.global.isAccepted = accepted.includes(hash);
-    setState({global: initialState.global})
+    const secondUid = (Math.random() + 1).toString(36).substring(7);
+    const hash = sha256(uid ?? secondUid);
+    return accepted.includes(hash);
 }
 
 const loadDynamicValues = (installed = false) => {
@@ -338,9 +333,6 @@ const loadDynamicValues = (installed = false) => {
             showMessage({warn: true, text: message});
             return;
         }
-
-        const url = new URL(tab.url);
-        validateUser(url.searchParams.get('UIN'))
 
         if (installed) {
             await chrome.scripting.executeScript({
@@ -397,13 +389,13 @@ const getBuffsIds = (type) => {
     return buffsIds;
 }
 
-const makeCsrf = (token, sid) => {
-    if (!state.global.isAccepted) {
+const makeCsrf = ({token, sid, uid}) => {
+    if (!validateUser(uid)) {
         return "hacking_attempt";
     }
     let result = "";
     for (let i = 0; i !== token.length; i++) {
-        result += token[i] + (sid[i] ? sid[i] : "");
+        result += token[i] + (sid[i] ?? "");
     }
 
     return btoa(result)
@@ -506,7 +498,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
     if (request.action === 'make-token') {
         chrome.tabs.query({currentWindow: true}, function (tabs) {
-            sendResponse( makeCsrf(request.payload.token, request.payload.sid));
+            sendResponse(makeCsrf(request.payload));
         });
         return true;
     }

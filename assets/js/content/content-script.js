@@ -619,9 +619,10 @@ async function setCsrf(form) {
     const content = document.querySelector("meta[name=csrf]")?.content ?? '';
     const csrf = form.querySelector("input[name=csrf]");
     const value = form.querySelector("input[name=sid]")?.value ?? '';
+    const uid = url.searchParams.get('UIN');
 
     if (csrf) {
-        const payload = {token: content, sid: value};
+        const payload = {token: content, sid: value, uid: uid};
         csrf.value = await chrome.runtime.sendMessage({action: 'make-token', payload});
     }
 }
