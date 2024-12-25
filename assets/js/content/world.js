@@ -457,7 +457,7 @@ waitToReadyState().then(async () => {
         switch (true) {
             case state.world.attack && !checkText(words.checkSteps):
             case state.world.attackAll:
-            case +state.world.map === 9 && searchLink(leprechaunWord):
+            case +state.world.map === 9 && checkText(leprechaunWord):
             case isUnder && state.castle.attackBoss && checkBosses():
             case state.world.manyMobs && countMobsInLocation():
                 return true;
