@@ -80,6 +80,7 @@ const initialState = {
     skills: {},
     temp: {
         od: 0,
+        leprechauns: 0,
     },
     totems: {
         run: true,
@@ -206,6 +207,12 @@ const accepted = [
     "b7e7f12e1261da3d1e9aa12aa8635d79fda21caa8354b55c1922a9e64b32b204",
     "793659bc23ca377068a7dc2928ade38c72a0fab05ab578a006f4229e923f5d87",
     "9262350459b91bf25a8efc4281ac2b3b46abaaa9acfba745be243bdc495c6968",
+    "b70140b10f3eeb98075d9ae277e5887ad3ef89dffbee0c3356489122178b16f5",
+    "9c1d5e5b9e057590151e59f45a10c8058b1dff02f67ebb7d9e8b12fb6e8c8aa5",
+    "d54c7153224dae8784c7071fef6c4b3af3e982a74a9d1169aa3f0b8950b88e0d",
+    "b655d3f38d2a150f07b833a8514a1182a693534c149880ef0a7ecb4235a1bb80",
+    "1d627f4b2c1ee42a1285acb79e071956a1b0e85c2499a6d875452f5a4f58ab9b",
+    "6b79b0396c91e3584e8d8f10e4471f263eb5141b814cb04aa90a31e9af2da2e8",
 ]
 
 const setState = (payload) => {

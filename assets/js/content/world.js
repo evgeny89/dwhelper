@@ -276,6 +276,13 @@ waitToReadyState().then(async () => {
         ]
     }
 
+    const toNextRoute = (delay) => {
+        state.move.active += 1;
+        state.move.step = 0;
+        updateState({move: state.move});
+        setTimeout(refresh, delay);
+    }
+
     class UserInfo {
         city = "";
         lvl = "";
@@ -440,6 +447,28 @@ waitToReadyState().then(async () => {
 
         const questUrl = `${url.origin}${pathNames.clan}?${searchParams.toString()}`;
         return await fetchCompleteQuest(questUrl, searchParams);
+    }
+
+    const calculateLeprechaun = async () => {
+        if (checkText(words.events)) {
+            const regex = new RegExp(words.leprechaun.regex);
+            if (!url.searchParams.has('type')) {
+                url.searchParams.set('type', '8');
+            }
+
+            const response = await fetch(`${url.origin}${pathNames.events}${url.search}`);
+            const html = await response.text();
+            const matches = html.match(regex);
+
+            if (matches) {
+                const isComplete = state.temp.leprechauns + matches.length >= 10
+                if (isComplete) {
+                    toNextRoute(delay.long);
+                }
+                state.temp.leprechauns = isComplete ? 0 : state.temp.leprechauns + matches.length;
+                updateState({temp: state.temp});
+            }
+        }
     }
 
     const checkBosses = () => {
@@ -642,6 +671,10 @@ waitToReadyState().then(async () => {
                     const activeRoute = state.move.routes[state.move.active];
                     const currentStep = activeRoute[step];
 
+                    if (+state.world.map === 9 && state.move.active === 0) {
+                        await calculateLeprechaun()
+                    }
+
                     if (step < activeRoute.length) {
                         if (/^http(s?):\/\/.+$/.test(currentStep)) {
                             updateStepInState();
@@ -654,18 +687,17 @@ waitToReadyState().then(async () => {
                             })()
                         } else if (isNaN(currentStep)) {
                             updateStepInState();
+                            let time = delay.none
+                            if (currentStep === words.toCity) {
+                                dropMap();
+                                time = delay.long
+                            }
                             setTimeout(() => {
-                                if (currentStep === words.toCity) {
-                                    dropMap();
-                                }
                                 searchLink(currentStep)?.click();
-                            }, delay.none)
+                            }, time)
                         } else if (checkText(words.checkSteps)) {
                             if (+state.world.map >= 20 && state.move.active === state.move.routes.length - 2 && !isCastleUnderground) {
-                                state.move.active += 1;
-                                state.move.step = 0;
-                                updateState({move: state.move});
-                                setTimeout(refresh, delay.fiveSeconds);
+                                toNextRoute(delay.fiveSeconds);
                             } else {
                                 updateStepInState();
                                 setTimeout(doStep, delay.none, currentStep);
