@@ -687,14 +687,13 @@ waitToReadyState().then(async () => {
                             })()
                         } else if (isNaN(currentStep)) {
                             updateStepInState();
-                            let time = delay.none
-                            if (currentStep === words.toCity) {
-                                dropMap();
-                                time = delay.long
-                            }
                             setTimeout(() => {
+                                if (currentStep === words.toCity) {
+                                    setLastMap(+state.world.map)
+                                    dropMap();
+                                }
                                 searchLink(currentStep)?.click();
-                            }, time)
+                            }, delay.none)
                         } else if (checkText(words.checkSteps)) {
                             if (+state.world.map >= 20 && state.move.active === state.move.routes.length - 2 && !isCastleUnderground) {
                                 toNextRoute(delay.fiveSeconds);

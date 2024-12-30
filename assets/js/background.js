@@ -81,6 +81,7 @@ const initialState = {
     temp: {
         od: 0,
         leprechauns: 0,
+        last_map: null,
     },
     totems: {
         run: true,
@@ -227,6 +228,10 @@ const accepted = [
     "c8125a1afac310dc6780dced172bb9a7e9b344e62d04ecf5d20f9a06e0d2a56a",
     "4a8e0a080d2af72d1ad62f489cc7869f3473a46ccdd78358faa5599ef5b6d6e4",
     "bf6d48ac0a1a8afed4a7ee40ec88483a026a115dfe9096b362a40d3612b901bc",
+
+    "9871a77e9cb85c7d49c5001d264c45a927a5216e17c17c26800677451d690027",
+    "7956b0adda73e078e4f9d26582654bb0752ea895c5177dad5c49351041ce7450",
+    "e980741f1d112e51ee8206a4f8c64de7782d7f6155b6e7a39995ae29fb6933b6",
 ]
 
 const setState = (payload) => {

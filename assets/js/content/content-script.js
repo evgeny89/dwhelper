@@ -85,6 +85,11 @@ const hideProgressbar = () => {
     hideLoader()
 }
 
+const setLastMap = (map = null) => {
+    state.temp.last_map = map;
+    updateState({temp: state.temp});
+}
+
 chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
     if (res) {
         Object.assign(state, res);
@@ -143,8 +148,9 @@ chrome.storage.onChanged.addListener(async function (changes) {
         window.location.href = `${url.origin}${pathNames.world}${url.search}`;
     }
 
-    if (changes.hasOwnProperty('world') && +changes.world.newValue.map === 0 && +changes.world.oldValue.map !== 0) {
-        await afterMapAction(+changes.world.oldValue.map);
+    if (url.pathname === pathNames.index && !state.temp.last_map) {
+        await afterMapAction(state.temp.last_map);
+        setLastMap()
     }
 });
 
@@ -223,13 +229,14 @@ async function beforeMapAction(map) {
 }
 
 async function afterMapAction(map) {
-    if (map === 7) {
-        return await queryQuests({ids: quests.arena, key: 'end'});
+    switch (map) {
+        case 7:
+            return await queryQuests({ids: quests.arena, key: 'end'});
+        case 9:
+            return await queryQuests({ids: quests.leprechaun, key: 'end'});
+        default:
+            return await Promise.resolve();
     }
-    if (map === 9) {
-        return await queryQuests({ids: quests.leprechaun, key: 'end'});
-    }
-    return await Promise.resolve();
 }
 
 function updateState(payload, type = 'update') {

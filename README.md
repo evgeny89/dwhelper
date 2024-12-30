@@ -4,7 +4,7 @@
 
 - copy secret-example.js to secret.js.
     ```shell
-  cp ./assets/secret-example.js ./assets/secret.js
+  cp ./secret-example.js ./secret.js
     ```
   
 - add tokens in secret.js file
