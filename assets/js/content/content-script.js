@@ -90,11 +90,22 @@ const setLastMap = (map = null) => {
     updateState({temp: state.temp});
 }
 
-chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, function (res) {
+const onLoadAction = async () => {
+    if (!state.temp.last_map && url.pathname === pathNames.index) {
+        await afterMapAction(state.temp.last_map);
+        setLastMap()
+    }
+}
+
+chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, async function (res) {
     if (res) {
         Object.assign(state, res);
         state.onLoad = true;
-        resetRefresh();
+        if (state.global.isRefresh) {
+            state.global.isRefresh = false;
+            updateState({global: state.global});
+        }
+        await onLoadAction();
     } else {
         refresh();
     }
@@ -146,11 +157,6 @@ chrome.storage.onChanged.addListener(async function (changes) {
         await beforeMapAction(+changes.world.newValue.map);
         url.searchParams.set('map_filter', '1');
         window.location.href = `${url.origin}${pathNames.world}${url.search}`;
-    }
-
-    if (url.pathname === pathNames.index && !state.temp.last_map) {
-        await afterMapAction(state.temp.last_map);
-        setLastMap()
     }
 });
 
@@ -522,13 +528,6 @@ function checkText(text, element = null) {
 function extractText(text) {
     const regExp = new RegExp(text);
     return document.body.innerHTML.match(regExp);
-}
-
-function resetRefresh() {
-    if (state.global.isRefresh) {
-        state.global.isRefresh = false;
-        updateState({global: state.global});
-    }
 }
 
 function refresh() {
