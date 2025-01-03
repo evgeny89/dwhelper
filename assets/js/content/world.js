@@ -34,6 +34,7 @@ waitToReadyState().then(async () => {
             "Темплары": '8888888866644444424466666666666266444444444444266666666666666264444444444444444266666666666666666264444444444444444444266666666666666666666244444444444444444444462666666666666666666666264444444444444444444444626666666666666666666662644444444444444444444444662666666666666666666666244444444444444444444626666666666666666666244444444444444446628662666666666666244444444444626666666666244444444446266666666244444444626666662444444462666662444442466666424444246666424444242424668686688668888888888888888888444444444488',
         },
         farming: {
+            '60': '2222222666666666666844444444444866666666668444444444486666666666844444444448666666666668444444444444',
             '65': '444444444442666666666624444444444426666666666624444444444442666666666866668888',
             '68': '222222222688888888862222222226888888888622222222262222266666666844444448666666668444444448666666666844444444488888888862222222268888888862222222268888888862222222268888888884444444444442',
         },
@@ -53,6 +54,18 @@ waitToReadyState().then(async () => {
             ],
             '65': "8888886666662",
             '68': "444448888888888888888888888866666",
+        },
+        toFarming60: {
+            fromKorheim: [
+                '488666666666666666666666662222222666666666666666666666',
+                [words.teleports.underForestOfFerns],
+                '888888888888888888666666666',
+            ],
+            fromNecropolis: [
+                '666666662222666666666666666666666',
+                [words.teleports.underForestOfFerns],
+                '888888888888888888666666666',
+            ],
         },
         elementals: { // Замок Элементалей
             fromKorheim: ['48888888888848886'],
@@ -287,7 +300,7 @@ waitToReadyState().then(async () => {
         ]
     }
 
-    const getLeprechaunRoutes = (side) => {
+    const getLeprechaunRoute = (side) => {
         if (side !== "Дреднайты" && side !== "Темплары") {
             notify(messages.notDetectSide);
             dropMap();
@@ -297,11 +310,7 @@ waitToReadyState().then(async () => {
             dropMap();
         }
 
-        return [
-            maps.leprechaun[side],
-            [words.giveUp],
-            [words.toCity],
-        ]
+        return maps.leprechaun[side]
     }
 
     const toNextRoute = (delay) => {
@@ -349,7 +358,7 @@ waitToReadyState().then(async () => {
             }
             if (type === "toFarming") {
                 if (url.pathname !== pathNames.index || !searchLink(words.toCity)) {
-                    notify("Старт только из города.");
+                    notify(messages.needToBeCity);
                     dropMap();
                     return;
                 }
@@ -536,7 +545,7 @@ waitToReadyState().then(async () => {
                 return state.move.active === state.move.routes.length - 3;
             case +state.world.map >= 20:
                 return state.move.active === state.move.routes.length - 2;
-            case ['10', '11'].includes(state.world.map):
+            case ['10', '11', '12', '13'].includes(state.world.map):
                 return state.move.active === state.move.routes.length - 1;
             default:
                 return false;
@@ -652,21 +661,34 @@ waitToReadyState().then(async () => {
                                 ]
                                 break;
                             case 9:
-                                state.move.routes = getLeprechaunRoutes(state.user.side)
+                                state.move.routes = [
+                                    getLeprechaunRoute(state.user.side),
+                                    [words.giveUp],
+                                    [words.toCity],
+                                ]
                                 break;
                             case 10:
+                                state.move.routes = [
+                                    ...info.getForward("toFarming60"),
+                                    maps.farming["60"],
+                                ]
+                                break;
+                            case 11:
                                 state.move.routes = [
                                     ...info.getForward("toFarming"),
                                     maps.toFarming["65"],
                                     maps.farming["65"],
                                 ]
                                 break;
-                            case 11:
+                            case 12:
                                 state.move.routes = [
                                     ...info.getForward("toFarming"),
                                     maps.toFarming["68"],
                                     maps.farming["68"],
                                 ]
+                                break;
+                            case 13:
+                                state.move.routes = [getLeprechaunRoute(state.user.side)]
                                 break;
                             // ниже подземки
                             case 21:

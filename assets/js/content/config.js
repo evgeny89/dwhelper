@@ -82,10 +82,11 @@ const words = {
         regex: "<b>\\[.+] Вы выполнили задание Штаба Обороны на поимку Лепрекона!<\\/b><br>"
     },
     teleports: {
-        underKorheim: "Подземный Вход В Корхейм",
-        upKorheim: "Корхейм",
         underBairem: "Подземные Врата Байрема",
+        underForestOfFerns: "Лес древовидных Папоротников",
+        underKorheim: "Подземный Вход В Корхейм",
         upBairem: "Бейрем",
+        upKorheim: "Корхейм",
         upTo202: "Древние Врата",
     }
 }
@@ -144,6 +145,7 @@ const api = {
 const messages = {
     battlefieldComplete: "Карта поля битв завершена.",
     captcha: "Пожалуйста, введите код",
+    needToBeCity: "Старт только из города.",
     notDetectCity: "Город не определен",
     notDetectSide: "Сторона не определена",
     notMoney: "У Вас недостаточно средств",

@@ -409,41 +409,54 @@
             </ul>
         </li>
         <li class="uk-list-divider">
-            <ul class="uk-list uk-margin">
+            <ul class="uk-list">
                 <li>
                     <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Поле битв (в разработке)</h5>
+                        <h5 class="uk-text-primary">Бои</h5>
                         <span class="uk-label">auto</span>
                     </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                <li class="uk-column-1-3">
+                    <div class="uk-flex uk-flex-between">
                         <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="battlefield.run">
-                            активировать
+                            <input class="uk-checkbox" type="checkbox" data-state="battles.run">
+                            авто-бой
+                        </label>
+                    </div>
+                    <div class="uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="world.attack">
+                            авто-нападение
+                        </label>
+                    </div>
+                    <div class="uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="world.attackAll">
+                            нападать на всех
+                        </label>
+                    </div>
+                    <div class="uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="battles.check_enemy">
+                            тянуть бой
                             <span class="popup-tooltip" data-text="?"
-                                  uk-tooltip="будет следить за началом, перемещаться по карте и бить мобов">
+                                  uk-tooltip="Если в бой заходит противник - таймаут устанавливается на 2 минуты.">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="uk-flex uk-flex-between">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="battles.faster">
+                            ускорить
+                            <span class="popup-tooltip" data-text="?"
+                                  uk-tooltip="Убрать задержку между ударами">
                             </span>
                         </label>
                     </div>
                 </li>
-                <hr class="uk-divider-small">
-                <li>
-                    <div class="uk-margin uk-flex uk-flex-between">
-                        <button class="uk-button-small uk-button-primary" data-action="create-battleground">
-                            создать команду
-                        </button>
-                        <button class="uk-button-small uk-button-primary" data-action="ready-battleground">
-                            подать готовность
-                        </button>
-                    </div>
-                </li>
-                <hr class="uk-divider-small">
             </ul>
-        </li>
-        <li class="uk-list-divider">
-            <ul class="uk-list uk-margin">
+            <ul class="uk-list">
                 <li>
                     <h5 class="uk-text-primary uk-margin-small-bottom">Добыча ресурсов</h5>
                     <hr class="uk-divider-small uk-margin-remove">
@@ -500,7 +513,10 @@
             </ul>
             <ul class="uk-list">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Логова, арена, замки</h5>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Логова, арена, замки</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
@@ -576,6 +592,40 @@
                     </div>
                 </li>
             </ul>
+            <ul class="uk-list">
+                <li>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Поле битв (в разработке)</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" data-state="battlefield.run">
+                            активировать
+                            <span class="popup-tooltip" data-text="?"
+                                  uk-tooltip="будет следить за началом, перемещаться по карте и бить мобов">
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                <hr class="uk-divider-small">
+                <li>
+                    <div class="uk-margin uk-flex uk-flex-between">
+                        <button class="uk-button-small uk-button-primary" data-action="create-battleground">
+                            создать команду
+                        </button>
+                        <button class="uk-button-small uk-button-primary" data-action="ready-battleground">
+                            подать готовность
+                        </button>
+                    </div>
+                </li>
+                <hr class="uk-divider-small">
+            </ul>
+        </li>
+        <li class="uk-list-divider">
             <ul class="uk-list">
                 <li>
                     <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
@@ -664,6 +714,17 @@
                         <p class="uk-margin-small">
                             <label>
                                 <input class="uk-radio" type="radio" name="world" data-state="world.map" value="10">
+                                фарм 60
+                                <span
+                                        class="popup-tooltip"
+                                        data-text="?"
+                                        uk-tooltip="Прокачка и фарм на 60-х мобах"
+                                ></span>
+                            </label>
+                        </p>
+                        <p class="uk-margin-small">
+                            <label>
+                                <input class="uk-radio" type="radio" name="world" data-state="world.map" value="11">
                                 фарм 65
                                 <span
                                         class="popup-tooltip"
@@ -674,12 +735,23 @@
                         </p>
                         <p class="uk-margin-small">
                             <label>
-                                <input class="uk-radio" type="radio" name="world" data-state="world.map" value="11">
+                                <input class="uk-radio" type="radio" name="world" data-state="world.map" value="12">
                                 фарм 68
                                 <span
                                         class="popup-tooltip"
                                         data-text="?"
                                         uk-tooltip="Прокачка и фарм на 68-х мобах"
+                                ></span>
+                            </label>
+                        </p>
+                        <p class="uk-margin-small">
+                            <label>
+                                <input class="uk-radio" type="radio" name="world" data-state="world.map" value="13">
+                                фарм 75
+                                <span
+                                        class="popup-tooltip"
+                                        data-text="?"
+                                        uk-tooltip="Прокачка и фарм на 75-х мобах. Необходимо как с лепрами добраться до Площади служителя своей стороны"
                                 ></span>
                             </label>
                         </p>
@@ -859,42 +931,6 @@
             </ul>
             <ul class="uk-list">
                 <li>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Пить свитки</h5>
-                        <span class="uk-label uk-label-success uk-flex-top">help</span>
-                    </div>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li>
-                    <div class="uk-margin uk-flex uk-flex-between uk-flex-top">
-                        <div class="uk-flex">
-                            <div class="uk-flex uk-flex-middle">
-                                <h6 class="uk-margin-remove">Полные:</h6>
-                                <div class="uk-flex uk-flex-between uk-flex-top">
-                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
-                                           type="number"
-                                           data-state="world.scrollLife"
-                                           placeholder="если меньше"
-                                    >
-                                </div>
-                            </div>
-                            <div class="uk-margin-small-left uk-flex uk-flex-middle">
-                                <h6 class="uk-margin-remove">Маны:</h6>
-                                <div class="uk-flex uk-flex-between uk-flex-top">
-                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
-                                           type="number"
-                                           data-state="world.scrollMana"
-                                           placeholder="если меньше"
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <span class="uk-label">auto</span>
-                    </div>
-                </li>
-            </ul>
-            <ul class="uk-list">
-                <li>
                     <h5 class="uk-text-primary uk-margin-small-bottom">Квесты</h5>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
@@ -1020,53 +1056,6 @@
             <ul class="uk-list">
                 <li>
                     <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Бои</h5>
-                        <span class="uk-label">auto</span>
-                    </div>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li class="uk-column-1-3">
-                    <div class="uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="battles.run">
-                            авто-бой
-                        </label>
-                    </div>
-                    <div class="uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.attack">
-                            авто-нападение
-                        </label>
-                    </div>
-                    <div class="uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="world.attackAll">
-                            нападать на всех
-                        </label>
-                    </div>
-                    <div class="uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="battles.check_enemy">
-                            тянуть бой
-                            <span class="popup-tooltip" data-text="?"
-                                  uk-tooltip="Если в бой заходит противник - таймаут устанавливается на 2 минуты.">
-                            </span>
-                        </label>
-                    </div>
-                    <div class="uk-flex uk-flex-between">
-                        <label>
-                            <input class="uk-checkbox" type="checkbox" data-state="battles.faster">
-                            ускорить
-                            <span class="popup-tooltip" data-text="?"
-                                  uk-tooltip="Убрать задержку между ударами">
-                            </span>
-                        </label>
-                    </div>
-                </li>
-            </ul>
-            <ul class="uk-list">
-                <li>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
                         <h5 class="uk-text-primary">Тактика</h5>
                         <span class="uk-label">auto</span>
                     </div>
@@ -1106,6 +1095,42 @@
                             </span>
                             </div>
                         </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="uk-list">
+                <li>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Пить свитки</h5>
+                        <span class="uk-label uk-label-success uk-flex-top">help</span>
+                    </div>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li>
+                    <div class="uk-margin uk-flex uk-flex-between uk-flex-top">
+                        <div class="uk-flex">
+                            <div class="uk-flex uk-flex-middle">
+                                <h6 class="uk-margin-remove">Полные:</h6>
+                                <div class="uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
+                                           type="number"
+                                           data-state="world.scrollLife"
+                                           placeholder="если меньше"
+                                    >
+                                </div>
+                            </div>
+                            <div class="uk-margin-small-left uk-flex uk-flex-middle">
+                                <h6 class="uk-margin-remove">Маны:</h6>
+                                <div class="uk-flex uk-flex-between uk-flex-top">
+                                    <input class="uk-input uk-form-blank uk-form-width-small uk-form-small"
+                                           type="number"
+                                           data-state="world.scrollMana"
+                                           placeholder="если меньше"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <span class="uk-label">auto</span>
                     </div>
                 </li>
             </ul>
