@@ -86,6 +86,7 @@ const words = {
         upKorheim: "Корхейм",
         underBairem: "Подземные Врата Байрема",
         upBairem: "Бейрем",
+        upTo202: "Древние Врата",
     }
 }
 

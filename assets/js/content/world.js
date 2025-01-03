@@ -33,6 +33,27 @@ waitToReadyState().then(async () => {
             "Дреднайты": '88844444444444444488888888868822222222222226288888888888888886882222222222222222222262888888888888888888888868222222222222222222222222628888888888888888888888888866866824224426242264222222222222222222222628888888888888888888822622222222222222222262888888888888888888226222222222222222268888888888888882622222222222222268888888888888868222222222222222688888888888888262222222222222688888888888882622222222222288868888888888262222222286888882262844444444',
             "Темплары": '8888888866644444424466666666666266444444444444266666666666666264444444444444444266666666666666666264444444444444444444266666666666666666666244444444444444444444462666666666666666666666264444444444444444444444626666666666666666666662644444444444444444444444662666666666666666666666244444444444444444444626666666666666666666244444444444444446628662666666666666244444444444626666666666244444444446266666666244444444626666662444444462666662444442466666424444246666424444242424668686688668888888888888888888444444444488',
         },
+        farming: {
+            '65': '444444444442666666666624444444444426666666666624444444444442666666666866668888',
+            '68': '222222222688888888862222222226888888888622222222262222266666666844444448666666668444444448666666666844444444488888888862222222268888888862222222268888888862222222268888888884444444444442',
+        },
+        toFarming: {
+            fromKorheim: [
+                [words.teleports.underKorheim],
+                '4448484844848844884848448844444888884484848442242244',
+                [words.teleports.upTo202],
+                '88688666666666688',
+            ],
+            fromNecropolis: [
+                '444888444444444444226',
+                [words.teleports.underKorheim],
+                '4448484844848844884848448844444888884484848442242244',
+                [words.teleports.upTo202],
+                '88688666666666688',
+            ],
+            '65': "8888886666662",
+            '68': "444448888888888888888888888866666",
+        },
         elementals: { // Замок Элементалей
             fromKorheim: ['48888888888848886'],
             fromNecropolis: ['44488844444444444488888888848886'],
@@ -46,8 +67,15 @@ waitToReadyState().then(async () => {
             fromNecropolis: ['44488844444444444444444448442222222222444442222222'],
         },
         eternal: { // Замок Вечной Тьмы
-            fromKorheim: [[words.teleports.underKorheim], '4442424244222222444242222666'],
-            fromNecropolis: ['444888444444444444226', [words.teleports.underKorheim], '4442424244222222444242222666'],
+            fromKorheim: [
+                [words.teleports.underKorheim],
+                '4442424244222222444242222666'
+            ],
+            fromNecropolis: [
+                '444888444444444444226',
+                [words.teleports.underKorheim],
+                '4442424244222222444242222666'
+            ],
         },
         brotherhood: { // Крепость Тайного Братства
             fromKorheim: [[words.teleports.underKorheim], '22226266262224222226262222222666622622226'],
@@ -319,6 +347,13 @@ waitToReadyState().then(async () => {
             if (type === "arena" && checkText(words.arena)) {
                 return maps.empty;
             }
+            if (type === "toFarming") {
+                if (url.pathname !== pathNames.index || !searchLink(words.toCity)) {
+                    notify("Старт только из города.");
+                    dropMap();
+                    return;
+                }
+            }
             if (castleTypes.includes(type) && checkText(words.castles[type])) {
                 return maps.empty;
             }
@@ -501,6 +536,8 @@ waitToReadyState().then(async () => {
                 return state.move.active === state.move.routes.length - 3;
             case +state.world.map >= 20:
                 return state.move.active === state.move.routes.length - 2;
+            case ['10', '11'].includes(state.world.map):
+                return state.move.active === state.move.routes.length - 1;
             default:
                 return false;
         }
@@ -616,6 +653,20 @@ waitToReadyState().then(async () => {
                                 break;
                             case 9:
                                 state.move.routes = getLeprechaunRoutes(state.user.side)
+                                break;
+                            case 10:
+                                state.move.routes = [
+                                    ...info.getForward("toFarming"),
+                                    maps.toFarming["65"],
+                                    maps.farming["65"],
+                                ]
+                                break;
+                            case 11:
+                                state.move.routes = [
+                                    ...info.getForward("toFarming"),
+                                    maps.toFarming["68"],
+                                    maps.farming["68"],
+                                ]
                                 break;
                             // ниже подземки
                             case 21:
