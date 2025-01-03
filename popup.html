@@ -17,7 +17,8 @@
         <li><a href="#"><span uk-icon="icon: location"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bookmark"></span></a></li>
         <li><a href="#"><span uk-icon="icon: bolt"></span></a></li>
-        <li><a href="#"><span uk-icon="icon: cog"></span></a></li>
+        <li><a href="#"><span uk-icon="icon: settings"></span></a></li>
+        <li><a href="#"><span uk-icon="icon: info"></span></a></li>
     </ul>
     <ul class="uk-switcher">
         <li class="uk-list-divider">
@@ -33,7 +34,10 @@
                     <button class="uk-close-large" type="button" id="sleep-time-close" uk-close></button>
                 </li>
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">Основные настройки</h5>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Основные настройки</h5>
+                        <span id="version" class="uk-flex uk-flex-right uk-text-small uk-text-warning"></span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
@@ -69,101 +73,121 @@
                     </div>
                 </li>
             </ul>
-            <ul class="uk-list uk-margin">
+            <ul class="uk-list">
                 <li>
-                    <h5 class="uk-text-primary uk-margin-small-bottom">
-                        <div class="uk-flex uk-flex-between">
-                            <span>
-                                Сервис капчи
-                                <span class="popup-tooltip" data-text="?"
-                                      uk-tooltip="Настраивается в файле secret.js, если включен, то на иконке появится соответствующий бейдж"
-                                ></span>
-                            </span>
-                            <span class="uk-label">auto</span>
-                        </div>
-                    </h5>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Логова, арена, замки</h5>
+                        <span class="uk-label">auto</span>
+                    </div>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
-                    <div id="captcha" class="uk-margin uk-column-1-3">
-                        <p class="uk-margin-small">
-                            <label class="uk-margin-right">
-                                <input class="uk-radio"
-                                       type="radio"
-                                       name="captcha"
-                                       data-state="global.captcha"
-                                       value="0"
-                                >
-                                выкл
-                            </label>
-                        </p>
-                        <p class="uk-margin-small">
-                            <label class="uk-margin-right">
-                                <input class="uk-radio"
-                                       type="radio"
-                                       name="captcha"
-                                       data-state="global.captcha"
-                                       value="1"
-                                >
-                                База
-                            </label>
-                        </p>
-                        <p class="uk-margin-small">
-                            <label class="uk-margin-right">
-                                <input class="uk-radio"
-                                       type="radio"
-                                       name="captcha"
-                                       data-state="global.captcha"
-                                       value="2"
-                                >
-                                CapMonster
-                            </label>
-                        </p>
-                        <p class="uk-margin-small">
-                            <label class="uk-margin-right">
-                                <input class="uk-radio"
-                                       type="radio"
-                                       name="captcha"
-                                       data-state="global.captcha"
-                                       value="3"
-                                >
-                                ruCaptcha
-                            </label>
-                        </p>
-                        <p class="uk-margin-small">
-                            <label class="uk-margin-right">
-                                <input class="uk-radio"
-                                       type="radio"
-                                       name="captcha"
-                                       data-state="global.captcha"
-                                       value="4"
-                                >
-                                anti-captcha
-                            </label>
-                        </p>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
+                        <div class="uk-column-1-2">
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.highLair">
+                                    сложный уровень
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.slave">
+                                    ведомый
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Если вы не лидер группы, то бот будет обновлять страницу каждые 5 сек в ожидании боя.">
+                            </span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.highArena">
+                                    арена сложный уровень
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.infinityArena">
+                                    арена до гибели
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Если включено, то будет бить арену пока не убьют">
+                                    </span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="castle.checkUndergroundQuest">
+                                    Сдавать квест на мобов
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Если включено, бот будет проверять кол-во убитых мобов для кланового квеста 'Зачистка подземелий'">
+                                    </span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="castle.attackBoss">
+                                    атаковать боссов
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Для тех у кого куплен обход мобов, в подземках будет нападать только на боссов">
+                            </span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.manyMobs">
+                                    крупные пачки
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Для тех у кого куплен обход мобов, Будет нападать только на пачки от 6-ти мобов">
+                                    </span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="world.returned">
+                                    возвращаться в город
+                                    <span class="popup-tooltip" data-text="?"
+                                          uk-tooltip="Если выключено, то после логова не потопает в город">
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
             <ul class="uk-list uk-margin">
                 <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
-                        <button class="uk-margin-left uk-button-small uk-button-primary" data-action="scan-folders">
-                            сканировать отделы рюкзака
-                        </button>
+                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
+                        <h5 class="uk-text-primary">Прочее</h5>
+                        <span class="uk-label">auto</span>
                     </div>
+                    <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                        <button class="uk-margin-left uk-button-small uk-button-primary" data-action="scan-skills">
-                            сканировать умения
-                        </button>
-                    </div>
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                        <button class="uk-margin-left uk-button-small uk-button-danger" data-action="clear-state">
-                            сброс настроек
-                        </button>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
+                        <div class="uk-column-1-3">
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="totems.run">
+                                    Продавать тотемы
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="castle.run">
+                                    Точить вещи
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" data-state="workshop.run">
+                                    Auto craft
+                                    <span class="popup-tooltip"
+                                          data-text="?"
+                                          uk-tooltip="Включает авто обновление при создании предметов в мастерской">
+                                </span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -304,43 +328,6 @@
                                 из отдела
                             </label>
                         </p>
-                    </div>
-                </li>
-            </ul>
-            <ul class="uk-list uk-margin">
-                <li>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Прочее</h5>
-                        <span class="uk-label">auto</span>
-                    </div>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
-                        <div class="uk-column-1-3">
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="totems.run">
-                                    Продавать тотемы
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="castle.run">
-                                    Точить вещи
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="workshop.run">
-                                    Auto craft
-                                    <span class="popup-tooltip"
-                                          data-text="?"
-                                          uk-tooltip="Включает авто обновление при создании предметов в мастерской">
-                                </span>
-                                </label>
-                            </div>
-                        </div>
                     </div>
                 </li>
             </ul>
@@ -505,87 +492,6 @@
                                     <span class="popup-tooltip" data-text="?"
                                           uk-tooltip="На главной выбирается активный сервис. Не забудьте установить токен в файле secret.js">
                                 </span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <ul class="uk-list">
-                <li>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Логова, арена, замки</h5>
-                        <span class="uk-label">auto</span>
-                    </div>
-                    <hr class="uk-divider-small uk-margin-remove">
-                </li>
-                <li>
-                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-flex uk-flex-between">
-                        <div class="uk-column-1-2">
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="world.highLair">
-                                    сложный уровень
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="world.slave">
-                                    ведомый
-                                    <span class="popup-tooltip" data-text="?"
-                                          uk-tooltip="Если вы не лидер группы, то бот будет обновлять страницу каждые 5 сек в ожидании боя.">
-                            </span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="world.highArena">
-                                    арена сложный уровень
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="world.infinityArena">
-                                    арена до гибели
-                                    <span class="popup-tooltip" data-text="?"
-                                          uk-tooltip="Если включено, то будет бить арену пока не убьют">
-                                    </span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="castle.checkUndergroundQuest">
-                                    Сдавать квест на мобов
-                                    <span class="popup-tooltip" data-text="?"
-                                          uk-tooltip="Если включено, бот будет проверять кол-во убитых мобов для кланового квеста 'Зачистка подземелий'">
-                                    </span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="castle.attackBoss">
-                                    атаковать боссов
-                                    <span class="popup-tooltip" data-text="?"
-                                          uk-tooltip="Для тех у кого куплен обход мобов, в подземках будет нападать только на боссов">
-                            </span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="world.manyMobs">
-                                    крупные пачки
-                                    <span class="popup-tooltip" data-text="?"
-                                          uk-tooltip="Для тех у кого куплен обход мобов, Будет нападать только на пачки от 6-ти мобов">
-                                    </span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" data-state="world.returned">
-                                    возвращаться в город
-                                    <span class="popup-tooltip" data-text="?"
-                                          uk-tooltip="Если выключено, то после логова не потопает в город">
-                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -1167,10 +1073,7 @@
         <li class="uk-list-divider">
             <ul class="uk-list uk-text-meta">
                 <li>
-                    <div class="uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between uk-margin-small-bottom">
-                        <h5 class="uk-text-primary">Основные настройки</h5>
-                        <span id="version" class="uk-flex uk-flex-right uk-text-small uk-text-warning"></span>
-                    </div>
+                    <h5 class="uk-text-primary uk-margin-small-bottom">Системные настройки</h5>
                     <hr class="uk-divider-small uk-margin-remove">
                 </li>
                 <li>
@@ -1200,6 +1103,108 @@
                         </div>
                     </div>
                 </li>
+            </ul>
+            <ul class="uk-list uk-margin">
+                <li>
+                    <h5 class="uk-text-primary uk-margin-small-bottom">
+                        <div class="uk-flex uk-flex-between">
+                            <span>
+                                Сервис капчи
+                                <span class="popup-tooltip" data-text="?"
+                                      uk-tooltip="Настраивается в файле secret.js, если включен, то на иконке появится соответствующий бейдж"
+                                ></span>
+                            </span>
+                            <span class="uk-label">auto</span>
+                        </div>
+                    </h5>
+                    <hr class="uk-divider-small uk-margin-remove">
+                </li>
+                <li>
+                    <div id="captcha" class="uk-margin uk-column-1-3">
+                        <p class="uk-margin-small">
+                            <label class="uk-margin-right">
+                                <input class="uk-radio"
+                                       type="radio"
+                                       name="captcha"
+                                       data-state="global.captcha"
+                                       value="0"
+                                >
+                                выкл
+                            </label>
+                        </p>
+                        <p class="uk-margin-small">
+                            <label class="uk-margin-right">
+                                <input class="uk-radio"
+                                       type="radio"
+                                       name="captcha"
+                                       data-state="global.captcha"
+                                       value="1"
+                                >
+                                База
+                            </label>
+                        </p>
+                        <p class="uk-margin-small">
+                            <label class="uk-margin-right">
+                                <input class="uk-radio"
+                                       type="radio"
+                                       name="captcha"
+                                       data-state="global.captcha"
+                                       value="2"
+                                >
+                                CapMonster
+                            </label>
+                        </p>
+                        <p class="uk-margin-small">
+                            <label class="uk-margin-right">
+                                <input class="uk-radio"
+                                       type="radio"
+                                       name="captcha"
+                                       data-state="global.captcha"
+                                       value="3"
+                                >
+                                ruCaptcha
+                            </label>
+                        </p>
+                        <p class="uk-margin-small">
+                            <label class="uk-margin-right">
+                                <input class="uk-radio"
+                                       type="radio"
+                                       name="captcha"
+                                       data-state="global.captcha"
+                                       value="4"
+                                >
+                                anti-captcha
+                            </label>
+                        </p>
+                    </div>
+                </li>
+            </ul>
+            <ul class="uk-list uk-margin">
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex uk-flex-between">
+                        <button class="uk-margin-left uk-button-small uk-button-primary" data-action="scan-folders">
+                            сканировать отделы рюкзака
+                        </button>
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        <button class="uk-margin-left uk-button-small uk-button-primary" data-action="scan-skills">
+                            сканировать умения
+                        </button>
+                    </div>
+                </li>
+                <li>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        <button class="uk-margin-left uk-button-small uk-button-danger" data-action="clear-state">
+                            сброс настроек
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li class="uk-list-divider">
+            <ul class="uk-list uk-text-meta">
                 <li>
                     <h5 class="uk-text-primary uk-margin-small-bottom">Бейджи</h5>
                     <hr class="uk-divider-small uk-margin-remove">
