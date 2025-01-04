@@ -184,6 +184,28 @@ waitToReadyState().then(() => {
         return  changeLink ? fast : delay.long;
     }
 
+    const calculateLeprechaun = async () => {
+        if (checkText(words.events)) {
+            const regex = new RegExp(words.leprechaun.regex);
+            if (!url.searchParams.has('type')) {
+                url.searchParams.set('type', '8');
+            }
+
+            const response = await fetch(`${url.origin}${pathNames.events}${url.search}`);
+            const html = await response.text();
+            const matches = html.match(regex);
+
+            if (matches) {
+                const isComplete = state.temp.leprechauns + matches.length >= 10
+                if (isComplete) {
+                    toNextRoute(delay.long);
+                }
+                state.temp.leprechauns = isComplete ? 0 : state.temp.leprechauns + matches.length;
+                updateState({temp: state.temp});
+            }
+        }
+    }
+
     if (state.world.scrollLife && currentHp < +state.world.scrollLife) {
         setScrolls(scrollTypes.hp);
     } else if (state.world.scrollMana && currentMana < +state.world.scrollMana) {
@@ -209,11 +231,14 @@ waitToReadyState().then(() => {
             submitForm(el);
         }, delayTime, form);
     } else {
-        setTimeout(() => {
+        setTimeout(async () => {
             const endBattle = checkText(words.teamVictoryText);
             const toBattle = searchLink(words.inBattle);
             if (endBattle) {
                 checkDefeat();
+                if (+state.world.map === 9 && state.move.active === 0) {
+                    await calculateLeprechaun()
+                }
                 const toWorldLink = getToWorldLink();
                 toWorldLink?.click()
             } else {

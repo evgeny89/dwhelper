@@ -636,3 +636,10 @@ async function setCsrf(form) {
 function submitForm(form) {
     setCsrf(form).then(() => form.submit());
 }
+
+const toNextRoute = (delay) => {
+    state.move.active += 1;
+    state.move.step = 0;
+    updateState({move: state.move});
+    setTimeout(refresh, delay);
+}
