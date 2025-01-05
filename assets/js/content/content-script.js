@@ -4,6 +4,82 @@ const state = {
 
 const url = new URL(location.href)
 
+const towerMaps = ['11', '12', '23']
+const castleMaps = ['9', '13', '28', '29', '36', '37', '38', '39']
+const tpForMap = {
+    '11': [3, 29],
+    '12': [31, 3, 29],
+    '23': [18],
+    '9': [131, 132],
+    '13': [131, 132],
+    '28': [131, 132],
+    '29': [132, 131],
+    '36': [131, 132],
+    '37': [131, 132],
+    '38': [131, 132],
+    '39': [132, 131],
+}
+
+async function tpAccessibleTowers(map) {
+    const ids = tpForMap[map]
+    const regex = new RegExp(`(?<=<img src="\/i\/sides\/2\\.gif" alt="" \/>.+tower\\.php\\?id=)(${ids.join('|')})(?=&)`, 'g');
+
+    if (!url.searchParams.has('all')) {
+        url.searchParams.set('all', '1')
+    }
+
+    const response = await fetch(`${url.origin}${pathNames.towers}${url.search}`);
+    const text = await response.text();
+    const matches = text.match(regex);
+    if (matches) {
+        const towers = matches.map(id => +id)
+        const ids = tpForMap[map]
+        const tpId = ids.find(id => towers.includes(id))
+        if (tpId) {
+            url.searchParams.delete('all')
+            url.searchParams.set('tp_id', `${tpId}`)
+            url.searchParams.set('tower', '1')
+            window.location.href = `${url.origin}${pathNames.towers}${url.search}`;
+        }
+    }
+}
+
+async function tpAccessibleCastles(map) {
+    const castlesRegexp = /<img src="\/i\/sides\/2\.gif" alt="" \/>.+?castle\.php\?id=(131|132).+?\[.+?]<\/div>/g;
+    const clansRegexp = /(?<=<img src="\/i\/klans\/)(\d+)(?=\.gif" alt="" \/>)/g;
+    const teleportRegexp = /(?<=<a href="\/clan\.php\?tp=)(131|132)(?=.+?">\[Телепорт]<\/a>)/g;
+
+    if (!url.searchParams.has('all')) {
+        url.searchParams.set('all', '1')
+    }
+
+    const response = await fetch(`${url.origin}${pathNames.castle}${url.search}`);
+    const text = await response.text();
+    const matches = text.match(castlesRegexp);
+    const clans = matches ? [...new Set(matches.map(str => +str.match(clansRegexp)))] : []
+
+    url.searchParams.delete('all')
+
+    const ids = tpForMap[map]
+    const castles = []
+
+    for (const id of clans) {
+        url.searchParams.set('id', `${id}`);
+        const response = await fetch(`${url.origin}${pathNames.clan}${url.search}`);
+        const text = await response.text();
+        const matches = text.match(teleportRegexp);
+        if (matches) {
+            castles.push(...matches.map(id => +id))
+        }
+    }
+
+    const tpId = ids.find(id => castles.includes(id))
+    if (tpId) {
+        url.searchParams.set('tp', `${tpId}`)
+        window.location.href = `${url.origin}${pathNames.clan}${url.search}`;
+    }
+}
+
 const loaderSVG = () => `
     <svg xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" viewBox="0 0 128 128">
         <g>
@@ -97,8 +173,24 @@ const onLoadAction = async () => {
     }
 }
 
+const teleportation = async (map) => {
+    switch (true) {
+        case towerMaps.includes(map):
+            await tpAccessibleTowers(map)
+            break;
+        case castleMaps.includes(map):
+            await tpAccessibleCastles(map)
+            break;
+        default:
+            url.searchParams.set('map_filter', '1');
+            window.location.href = `${url.origin}${pathNames.world}${url.search}`;
+    }
+
+    return await Promise.resolve();
+}
+
 chrome.runtime.sendMessage({action: 'get-state', payload: 'content'}, async function (res) {
-    if (res) {
+    if (res && res.global) {
         Object.assign(state, res);
         state.onLoad = true;
         if (state.global.isRefresh) {
@@ -155,8 +247,7 @@ chrome.storage.onChanged.addListener(async function (changes) {
 
     if (url.pathname !== pathNames.world && changes.hasOwnProperty('world') && +changes.world.newValue.map !== 0 && +changes.world.oldValue.map === 0) {
         await beforeMapAction(+changes.world.newValue.map);
-        url.searchParams.set('map_filter', '1');
-        window.location.href = `${url.origin}${pathNames.world}${url.search}`;
+        await teleportation(changes.world.newValue.map);
     }
 });
 
@@ -189,8 +280,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             return true;
         case "flasks":
             flasksAction(request.payload).then(() => {
-                    sendResponse(true)
-                });
+                sendResponse(true)
+            });
             return true;
         case "battleground":
             battlegroundActions(request)
@@ -437,7 +528,7 @@ async function breakItems() {
     breakUrl.searchParams.set('UIN', url.searchParams.get('UIN'));
     breakUrl.searchParams.set('pass', url.searchParams.get('pass'));
 
-    const ids =  await getBreakItems(breakUrl.href)
+    const ids = await getBreakItems(breakUrl.href)
 
     breakUrl.searchParams.set('yes', '1');
 

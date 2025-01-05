@@ -32,28 +32,72 @@ waitToReadyState().then(async () => {
         leprechaun: {
             "Дреднайты": '88844444444444444488888888868822222222222226288888888888888886882222222222222222222262888888888888888888888868222222222222222222222222628888888888888888888888888866866824224426242264222222222222222222222628888888888888888888822622222222222222222262888888888888888888226222222222222222268888888888888882622222222222222268888888888888868222222222222222688888888888888262222222222222688888888888882622222222222288868888888888262222222286888882262844444444',
             "Темплары": '8888888866644444424466666666666266444444444444266666666666666264444444444444444266666666666666666264444444444444444444266666666666666666666244444444444444444444462666666666666666666666264444444444444444444444626666666666666666666662644444444444444444444444662666666666666666666666244444444444444444444626666666666666666666244444444444444446628662666666666666244444444444626666666666244444444446266666666244444444626666662444444462666662444442466666424444246666424444242424668686688668888888888888888888444444444488',
+            teleports: {
+                "Дреднайты": {
+                    '304495774': [
+                        '66222222666666222222226688886622222244442244442222444444',
+                        [words.teleports.upToServantSquare],
+                    ],
+                    '304497318': [
+                        '222222226666224444222266662266662222224444442222222222226666226666888888888888888888888888888888884488888888884444224444884444444444226622222266224422222222224444442222222222222222224422224444444444444444',
+                        [words.teleports.upToServantSquare],
+                    ],
+                },
+                "Темплары": {
+                    '304495774': [
+                        '662222226666662222222266888866668888888888886688888866668844886688866888448866666666662266668866662222222222668888888888',
+                        [words.teleports.upToServantSquare],
+                    ],
+                    '304497318': [
+                        '222222226666224444222266662266662222224444442222222222226666226666888888888888888888888888888888888888888888',
+                        [words.teleports.upToServantSquare],
+                    ],
+                },
+            },
         },
         farming: {
             '60': '2222222666666666666844444444444866666666668444444444486666666666844444444448666666666668444444444444',
             '65': '444444444442666666666624444444444426666666666624444444444442666666666866668888',
             '68': '222222222688888888862222222226888888888622222222262222266666666844444448666666668444444448666666666844444444488888888862222222268888888862222222268888888862222222268888888884444444444442',
         },
-        toFarming: {
+        toFarming65: {
             fromKorheim: [
                 [words.teleports.underKorheim],
                 '4448484844848844884848448844444888884484848442242244',
                 [words.teleports.upTo202],
-                '88688666666666688',
+                '886886666666666888888886666662',
             ],
             fromNecropolis: [
                 '444888444444444444226',
                 [words.teleports.underKorheim],
                 '4448484844848844884848448844444888884484848442242244',
                 [words.teleports.upTo202],
-                '88688666666666688',
+                '886886666666666888888886666662',
             ],
-            '65': "8888886666662",
-            '68': "444448888888888888888888888866666",
+            teleports: {
+                '202': ['886666666668888886666668'],
+                '8276': ['6'],
+            },
+        },
+        toFarming68: {
+            fromKorheim: [
+                [words.teleports.underKorheim],
+                '4448484844848844884848448844444888884484848442242244',
+                [words.teleports.upTo202],
+                '88688666666666688444448888888888888888888888866666',
+            ],
+            fromNecropolis: [
+                '444888444444444444226',
+                [words.teleports.underKorheim],
+                '4448484844848844884848448844444888884484848442242244',
+                [words.teleports.upTo202],
+                '88688666666666688444448888888888888888888888866666',
+            ],
+            teleports: {
+                '202': ['8866666666688888884444488888888888888888866666'],
+                '8276': ['444444444488888888888888888866666'],
+                '9982': ['86666666'],
+            },
         },
         toFarming60: {
             fromKorheim: [
@@ -78,6 +122,9 @@ waitToReadyState().then(async () => {
         independence: { // Форт Независимости
             fromKorheim: ['48844444448442222222222444442222222'],
             fromNecropolis: ['44488844444444444444444448442222222222444442222222'],
+            teleports: {
+                '630': ['662'],
+            },
         },
         eternal: { // Замок Вечной Тьмы
             fromKorheim: [
@@ -91,8 +138,15 @@ waitToReadyState().then(async () => {
             ],
         },
         brotherhood: { // Крепость Тайного Братства
-            fromKorheim: [[words.teleports.underKorheim], '22226266262224222226262222222666622622226'],
-            fromNecropolis: ['444888444444444444226', [words.teleports.underKorheim], '22226266262224222226262222222666622622226'],
+            fromKorheim: [
+                [words.teleports.underKorheim],
+                '22226266262224222226262222222666622622226'
+            ],
+            fromNecropolis: [
+                '444888444444444444226',
+                [words.teleports.underKorheim],
+                '22226266262224222226262222222666622622226'
+            ],
         },
         fears: { // Крепость Чуждых Страхов
             fromKorheim: ['488666666666666666666666222222222222222222222222'],
@@ -101,10 +155,18 @@ waitToReadyState().then(async () => {
         paladins: { // Пристанище Паладинов
             fromKorheim: null,
             fromNecropolis: null,
+            teleports: {
+                '304495774': ['662222226666662222222266888866668888888888886688888866668844886688884444'],
+                '304497318': ['22222222666622444422226666226666222222444444222222222222666622666688888888888888888888888888888888448888888888444422444488444444444422662224484444'],
+            },
         },
         forces: { // Пристанище Темных Сил
             fromKorheim: null,
             fromNecropolis: null,
+            teleports: {
+                '304495774': ['66222222666666222222226688886666888888888888668888886666884488668886688844886666666666226666886666222222222266222222222222222222222222222222224444884444888888888866666622224444222266'],
+                '304497318': ['2222222266662244442222666622666622222222224444222266'],
+            },
         },
         hermits: { // Цитадель Отшельников Крови
             fromKorheim: '4886666666666662222222222222224444',
@@ -117,18 +179,77 @@ waitToReadyState().then(async () => {
         carnaron: { // Цитадель Карнарона
             fromKorheim: null,
             fromNecropolis: null,
+            teleports: {
+                "Дреднайты": {
+                    '304495774': [
+                        '66222222666666222222226688886622222244442244442222444444',
+                        [words.teleports.upToServantSquare],
+                        '222266666666',
+                    ],
+                    '304497318': [
+                        '222222226666224444222266662266662222224444442222222222226666226666888888888888888888888888888888884488888888884444224444884444444444226622222266224422222222224444442222222222222222224422224444444444444444',
+                        [words.teleports.upToServantSquare],
+                        '222266666666',
+                    ],
+                },
+                "Темплары": {
+                    '304495774': [
+                        '662222226666662222222266888866668888888888886688888866668844886688866888448866666666662266668866662222222222668888888888',
+                        [words.teleports.upToServantSquare],
+                        '66666666622222222222222222222444',
+                    ],
+                    '304497318': [
+                        '222222226666224444222266662266662222224444442222222222226666226666888888888888888888888888888888888888888888',
+                        [words.teleports.upToServantSquare],
+                        '66666666622222222222222222222444',
+                    ],
+                },
+            },
         },
         maurac: { // Цитадель Маурака
             fromKorheim: null,
             fromNecropolis: null,
+            teleports: {
+                "Дреднайты": {
+                    '304495774': [
+                        '66222222666666222222226688886622222244442244442222444444',
+                        [words.teleports.upToServantSquare],
+                        '444444448888888888888888888666',
+                    ],
+                    '304497318': [
+                        '222222226666224444222266662266662222224444442222222222226666226666888888888888888888888888888888884488888888884444224444884444444444226622222266224422222222224444442222222222222222224422224444444444444444',
+                        [words.teleports.upToServantSquare],
+                        '444444448888888888888888888666',
+                    ],
+                },
+                "Темплары": {
+                    '304495774': [
+                        '662222226666662222222266888866668888888888886688888866668844886688866888448866666666662266668866662222222222668888888888',
+                        [words.teleports.upToServantSquare],
+                        '8884444444',
+                    ],
+                    '304497318': [
+                        '222222226666224444222266662266662222224444442222222222226666226666888888888888888888888888888888888888888888',
+                        [words.teleports.upToServantSquare],
+                        '8884444444',
+                    ],
+                },
+            },
         },
         white: { // Цитадель Ослепляющей Белизны
             fromKorheim: null,
-            fromNecropolis: null,
+            teleports: {
+                '304495774': ['662222226666666688888888844'],
+                '304497318': ['222222226666224444222266662266662222224444442222222222226666226666888888888888888888888888888888884488888888884444224444884444444444444444444422222244442244444422222222666622226688866'],
+            },
         },
         absolute: { // Цитадель Абсолютной Тьмы
             fromKorheim: null,
             fromNecropolis: null,
+            teleports: {
+                '304495774': ['662222226666662222222266888866668888888888886688888866668844886688866888448866666666662266668866662222222222662222222222222222222222222222222244448844448888888888666666888888444488444488886666668'],
+                '304497318': ['222222226666662'],
+            },
         },
         // зацикленные маршруты подземок
         looped: {
@@ -176,6 +297,11 @@ waitToReadyState().then(async () => {
     ];
     const leprechaunWord = "Лепрекон";
     let increment = true;
+
+    const getLocation = () => {
+        const [, location] = extractText('(?<=<div class="main">\\[)(\\d+)(?=].+<\\/div>)');
+        return location
+    }
 
     const getDragonsKey = async (iteration = 1) => {
         if (iteration > 10) {
@@ -284,33 +410,26 @@ waitToReadyState().then(async () => {
         return tpUrl.href;
     }
 
-    const goToUnderground = () => {
-        const castleUrl = new URL(`${url.origin}${pathNames.castle}${url.search}`);
-        castleUrl.searchParams.set('enterCastle', '1');
-        castleUrl.searchParams.set('yes', '1');
-        return castleUrl.href;
-    }
-
-    const getCastleUndergroundRoutes = (info, type) => {
-        return [
-            ...info.getForward(type),
-            [goToUnderground()],
-            maps.looped[type],
-            [words.toCity]
-        ]
-    }
-
     const getLeprechaunRoute = (side) => {
         if (side !== "Дреднайты" && side !== "Темплары") {
             notify(messages.notDetectSide);
             dropMap();
         }
-        if (!checkText(words.leprechaun[side])) {
+        if (!checkText(words.leprechaun[side]) && !checkText(words.castles.cloudOfLight) && !checkText(words.castles.cloudOfDarkness)) {
             notify(messages.withoutMap);
             dropMap();
         }
 
-        return maps.leprechaun[side]
+        const location = getLocation()
+
+        if (maps.leprechaun.teleports[side]?.[location]) {
+            return [
+                ...maps.leprechaun.teleports[side]?.[location],
+                maps.leprechaun[side]
+            ]
+        }
+
+        return [maps.leprechaun[side]]
     }
 
     class UserInfo {
@@ -523,6 +642,39 @@ waitToReadyState().then(async () => {
         }
     }
 
+    const tryTeleportationMap = (type, userInfo = null) => {
+        const location = getLocation()
+
+        switch (true) {
+            case !!maps[type]?.teleports?.[location]:
+                return maps[type]?.teleports?.[location]
+            case !!maps[type]?.teleports?.[state.user.side]?.[location]:
+                return maps[type]?.teleports?.[state.user.side]?.[location]
+            case userInfo instanceof UserInfo:
+                return userInfo.getForward(type)
+            default:
+                notify(messages.withoutMap);
+                dropMap();
+                return maps.empty
+        }
+    }
+
+    const goToUnderground = () => {
+        const castleUrl = new URL(`${url.origin}${pathNames.castle}${url.search}`);
+        castleUrl.searchParams.set('enterCastle', '1');
+        castleUrl.searchParams.set('yes', '1');
+        return castleUrl.href;
+    }
+
+    const getCastleUndergroundRoutes = (info, type) => {
+        return [
+            ...tryTeleportationMap(type, info),
+            [goToUnderground()],
+            maps.looped[type],
+            [words.toCity]
+        ]
+    }
+
     const isArena = checkText(words.arenaLvl) && +state.world.map === 7;
 
     const isCastleUnderground = checkText(words.checkCastleTime);
@@ -633,34 +785,32 @@ waitToReadyState().then(async () => {
                                 break;
                             case 9:
                                 state.move.routes = [
-                                    getLeprechaunRoute(state.user.side),
+                                    ...getLeprechaunRoute(state.user.side),
                                     [words.giveUp],
                                     [words.toCity],
                                 ]
                                 break;
                             case 10:
                                 state.move.routes = [
-                                    teleportToLair(),
+                                    [teleportToLair()],
                                     ...info.getForward("toFarming60"),
                                     maps.farming["60"],
                                 ]
                                 break;
                             case 11:
                                 state.move.routes = [
-                                    ...info.getForward("toFarming"),
-                                    maps.toFarming["65"],
+                                    ...tryTeleportationMap("toFarming65", info),
                                     maps.farming["65"],
                                 ]
                                 break;
                             case 12:
                                 state.move.routes = [
-                                    ...info.getForward("toFarming"),
-                                    maps.toFarming["68"],
+                                    ...tryTeleportationMap("toFarming68", info),
                                     maps.farming["68"],
                                 ]
                                 break;
                             case 13:
-                                state.move.routes = [getLeprechaunRoute(state.user.side)]
+                                state.move.routes = getLeprechaunRoute(state.user.side)
                                 break;
                             // ниже подземки
                             case 21:

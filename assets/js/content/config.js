@@ -61,7 +61,7 @@ const words = {
     toMainLinkText: "На главную",
     yes: "Да",
     castles: {
-        elementals: '\\[1472] Остров Магов',
+        elementals: "\\[1472] Остров Магов",
         corsairs: "\\[1938] Восточная Роща",
         independence: "\\[731] Холодный Берег",
         eternal: '\\[3689] Подземелье',
@@ -69,12 +69,21 @@ const words = {
         fears: "\\[2508] Дремучий лес",
         forces: "\\[304497594] Призрачное поле",
         paladins: "\\[304496606] Призрачное поле",
+        cloudOfLight: "\\[304495774] Призрачное поле",
+        cloudOfDarkness: "\\[304497318] Призрачное поле",
         slaves: "\\[4306] Подземелье",
         hermits: "\\[4306] Подземелье",
         carnaron: "\\[30112]",
         maurac: "\\[32422]",
         white: "\\[304496185] Призрачное поле",
         absolute: "\\[304497615] Призрачное поле",
+    },
+    towers: {
+        dragonDomain: "\\[202] Остров Дракона",
+        ashCity: "\\[8276] Пепельный город",
+        throneOfHeroes: "\\[9982] Башня",
+        ruinedHordeTower: "\\[6576] Берег стеклянных песков",
+        throneOfOppression: "\\[630] Холодный Берег",
     },
     leprechaun: {
         "Дреднайты": "\\[30508]",
@@ -88,6 +97,7 @@ const words = {
         upBairem: "Бейрем",
         upKorheim: "Корхейм",
         upTo202: "Древние Врата",
+        upToServantSquare: "Площадь Служителя",
     }
 }
 
@@ -108,6 +118,7 @@ const pathNames = {
     parcels: "/parcels.php",
     resources: "/world/resource.php",
     skills: "/skill_learn.php",
+    towers: "/world/tower.php",
     user: "/user.php",
     world: "/world/world.php",
     item: "/item.php",
