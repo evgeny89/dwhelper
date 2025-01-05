@@ -468,8 +468,11 @@ waitToReadyState().then(async () => {
             if (type === "arena" && checkText(words.arena)) {
                 return maps.empty;
             }
-            if (type === "toFarming") {
-                if (url.pathname !== pathNames.index && !searchLink(words.toCity)) {
+            if (type === "toFarming68" && url.pathname !== pathNames.index && !searchLink(words.toCity)) {
+                const location = getLocation()
+                if (+location === 10089) {
+                    return maps.empty
+                } else {
                     notify(messages.needToBeCity);
                     dropMap();
                     return;
